@@ -1,0 +1,80 @@
+/* pages/mobile/mobile.wxss */
+page{
+  background: #f2f2f2;
+}
+.contain{
+  width: 86%;
+  margin: 0 auto;
+  margin-top: 100rpx;
+  background: #fff;
+  position: relative;
+  padding:160rpx 0 120rpx 0;
+  border-radius: 20rpx;
+}
+.contain_logo{
+  width:100rpx;
+  height: 100rpx;
+  border-radius: 90rpx;
+  position: absolute;
+  left: 50%;
+  top: -50rpx;
+  margin-left: -50rpx;
+
+}
+.contain_num{
+  width:100%;
+  text-align: center;
+  font-size: 0.8em;
+  font-weight: bolder;
+}
+.contain_phone{
+  width:70%;
+  height:60rpx;
+  margin: 0 auto;
+  border-radius: 20rpx;
+  background: #EBEBEB;
+  margin-top: 60rpx;
+}
+.contain_phone input{
+    padding-left: 20rpx;
+  box-sizing: border-box;
+  font-size: 0.7em;
+}
+.contain_verification{
+  width:70%;
+  height: 60rpx;
+  margin:0 auto;
+  display: flex;
+  flex-direction: row;
+  border-radius: 20rpx;
+  background: #EBEBEB;
+  margin-top: 30rpx;
+}
+.contain_verification_ipt{
+  height:100%;
+  padding-left: 20rpx;
+  box-sizing: border-box;
+  font-size: 0.7em;
+}
+.contain_verification_text{
+  width:160rpx;
+  height: 60rpx;
+  font-size: 0.55em;
+  text-align: center;
+  line-height: 60rpx;
+  background: black;
+  color:#fff;
+  border-radius: 20rpx;
+}
+.contain_btn{
+  width:70%;
+  height: 60rpx;
+  line-height: 60rpx;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 50rpx;
+  background: black;
+  color:#fff;
+  font-size: 0.6rem;
+  border-radius: 20rpx;
+}

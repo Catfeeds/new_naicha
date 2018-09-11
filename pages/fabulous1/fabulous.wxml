@@ -1,0 +1,123 @@
+<view class='faContain'>
+  <view class='faContain_top'>
+    <view>配方合伙人点赞排行榜</view>
+    <view>为你的专属配方点赞，成为CLAB配方合伙人，瓜分佣金</view>
+  </view>
+  <view class='faContain_bottom'>
+    <view class='faContain_bottom_list'>
+      <view class='faContain_bottom_list_list'>
+        <view>
+          <image src='/images/crown.png' class='logo'></image>
+        </view>
+        <view>
+          1
+        </view>
+      </view>
+      <view class='faContain_bottom_list_name'>
+        <image src='/images/hamburger.png' class='logo'></image>
+        <text>九碗</text>
+      </view>
+      <view class='faContain_bottom_list_collocation'>
+        雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖
+      </view>
+      <view class='faContain_bottom_list_num'>
+        <view>点赞数</view>
+        <view>10.000.0000.00</view>
+      </view>
+      <view class='faContain_bottom_list_fa'>
+        <image src='/images/fabulous.png' class='logo'></image>
+      </view>
+    </view>
+    <block wx:for="{{formulas}}">
+      <view class='faContain_bottom_list'>
+      <view class='faContain_bottom_list_list lineHeight'>
+        {{item.position}}
+      </view>
+      <view class='faContain_bottom_list_name'>
+        <image src='/images/hamburger.png' class='logo'></image>
+        <text>{{item.name}}</text>
+      </view>
+      <view class='faContain_bottom_list_collocation'>
+        {{item.collocation}}
+      </view>
+      <view class='faContain_bottom_list_num'>
+        <view>点赞数</view>
+        <view>{{item.num}}</view>
+      </view>
+      <view class='faContain_bottom_list_fa' bindtap='setLike' data-pk="{{item.pk}}">
+        <image src='/images/fabulous.png' class='logo'></image>
+      </view>
+      </view>
+    </block>
+  </view>
+  <view id='popup' style='display:none'>
+    <view class='popup_top'>
+      <view class='popup_top_title'>
+        <view class='popup_top_title_left'>
+    
+        </view>
+        <view class='popup_top_title_cen'>
+          <image src='/images/l1.png'></image>
+        </view>
+        <view class='popup_top_title_right'>
+          <image src='/images/close.png'></image>
+        </view>
+      </view>
+      <view class='popup_top_text'>
+        美味需要分享,让你的朋友一起为你喜爱的配方点赞吧!
+      </view>
+    </view>
+    <view class='popup_bot' >
+      <view class='popup_bot_text'>
+        <view class='popup_bot_text_con' >
+          雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖
+          <view class='popup_bot_text_con_jiu'>
+            <image src='/images/crown.png'></image> <text >九碗</text>
+          </view>
+        </view>
+        <view class='popup_bot_text_num' >
+          点赞数:10.000.0000.00
+        </view>
+      </view>
+      <view class='popup_bot_share'>
+        <view class='popup_bot_share_left'>
+
+        </view>
+        <view class='popup_bot_share_text'>
+          分享
+        </view>
+        <view class='popup_bot_share_right'>
+
+        </view>
+      </view>
+      <view class='popup_bot_img'>
+        <view class='popup_bot_img_vx'>
+          <image src='/images/vx.png'></image>
+        </view>
+        <view class='popup_bot_img_fx'>
+          <image src='/images/vx.png'></image>
+        </view>
+        <view class='popup_bot_img_wb'>
+          <image src='/images/vx.png'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="wrap" >
+    <swiper class="swipers" autoplay="{{autoplay}}" current="{{currentSwiper}}" bindchange="swiperChange">  
+        <block wx:for="{{imgs}}">  
+            <swiper-item >  
+                 <image src="{{item.url}}" style='width:100%;height:300px;'></image>  
+            </swiper-item>  
+        </block>  
+    </swiper>  
+   <!--重置小圆点的样式  -->
+    <view class="dots">  
+        <block wx:for="{{imgs}}">  
+            <view class="dot{{index == currentSwiper ? ' active' : ''}}"></view>  
+        </block>  
+    </view>  
+  </view>
+</view>
+

@@ -1,0 +1,51 @@
+{
+  "pages":[
+    "pages/fabulous1/fabulous",
+    "pages/me5/me",
+    "pages/make_complete/complete",    
+    "pages/logs/logs",
+    "pages/make_formula/formula",
+    "pages/make/make",
+    "pages/login/login",
+    "pages/index/index",
+    "pages/mobile/mobile",
+    "pages/formula/formula"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#11cd6e",
+    "borderStyle": "white",
+    "list": [
+      {
+        "selectedIconPath": "images/index1.png",
+        "iconPath": "/images/index2.png",
+        "pagePath": "pages/fabulous1/fabulous",
+        "text": "首页"
+      },
+      {
+        "selectedIconPath": "images/point1.png",
+        "iconPath": "images/point2.png",
+        "pagePath": "pages/login/login",
+        "text": "点单"
+      },
+      {
+        "selectedIconPath": "images/order1.png",
+        "iconPath": "images/order2.png",
+        "pagePath": "pages/make/make",
+        "text": "订单"
+      },
+      {
+        "selectedIconPath": "images/me1.png",
+        "iconPath": "images/me2.png",
+        "pagePath": "pages/me5/me",
+        "text": "我的"
+      }
+    ]
+  }
+}

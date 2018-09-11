@@ -1,0 +1,40 @@
+<swiper>
+  <block wx:for="{{swiper}}">
+    <swiper-item>
+      <view class='contain'>
+        <view id='top'>
+
+        </view>
+        <view id='right'>
+
+        </view>
+        <view id="left">
+        </view>
+        <view class='top'>
+          <view class='top_process'>
+            <view class='top_process_border'>
+              正在制作中
+            </view>
+          </view>
+          <view class='top_img'>
+            <image src='/images/hamburger.png'></image>
+          </view>
+          <view class='top_status'>
+            排队状态：<text>{{item.num}}</text>杯
+          </view>
+        </view>
+
+        <view class="words">
+          您的配方
+        </view>
+        <view class='bot'>
+          <block wx:for="{{foot}}">
+            <view class='bot_foot' style="{{item.txtStyle}}">
+              {{item.name}}
+            </view>
+          </block>
+        </view>
+      </view>
+    </swiper-item>
+  </block>
+</swiper>

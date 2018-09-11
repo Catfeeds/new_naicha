@@ -1,0 +1,15 @@
+<view class='contain'>
+  <image src='/images/mobile_logo.png' class='contain_logo'></image>
+
+  <view class="contain_num">手机号绑定</view>
+  <view class='contain_phone'>
+    <input placeholder='输入手机号' placeholder-class="place-holder"></input>
+  </view>
+  <view class='contain_verification'>
+    <input placeholder='输入验证码' placeholder-class="place-holder" class='contain_verification_ipt'></input>
+    <view class='contain_verification_text'>获取验证码</view>
+  </view>
+  <view class="contain_btn">
+    确认绑定
+  </view>
+</view>
