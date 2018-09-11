@@ -1,3 +1,4 @@
+var app = getApp();
 Page({
   data: {
     //判断小程序的API，回调，参数，组件等是否在当前版本可用。
@@ -29,9 +30,9 @@ Page({
       var that = this;
       //插入登录的用户的相关信息到数据库
       wx.request({
-        url: App().globalData.urlPath + 'user/insert',
+        url: app.globalData.siteBaseUrl + 'user/insert',
         data: {
-          openid: App().globalData.openid,
+          openid: app.globalData.openid,
           nickName: e.detail.userInfo.nickName,
           avatarUrl: e.detail.userInfo.avatarUrl,
           province: e.detail.userInfo.province,
@@ -67,19 +68,20 @@ Page({
   },
   //获取用户信息接口
   queryUsreInfo: function () {
-    wx.request({
-      url: App().globalData.urlPath + 'index/pushes',
-      data: {
-        openid: App().globalData.openid
-      },
-      header: {
-        'content-type': 'application/json'
-      },
+    if (app.globalData.openid == undefined) {
+      app.showModal({
+        content: '您还未授权登陆，请先授权',
+      })
+      return;
+    }
+    
+    app.sendRequest({
+      url: 'user/info',
+      data: { openid: app.globalData.openid},
       success: function (res) {
-        console.log(res.data);
-        App().globalData.userInfo = res.data;
+        app.globalData.userInfo = res.data;
       }
-    })
+    });
   },
 
 })

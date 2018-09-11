@@ -222,94 +222,11 @@ App({
       }
     })
   },
-  pageScrollFunc: function (event) {
-    let pageInstance = this.getAppCurrentPage();
-    this._pageScrollFunc(event);
-  },
-  _pageScrollFunc: function (event) {
-    let pageInstance = this.getAppCurrentPage();
-    let compid = typeof event == 'object' ? event.currentTarget.dataset.compid : event;
-    let compData = pageInstance.data[compid];
-    let curpage = compData.curpage + 1;
-    let newdata = {};
-    let param = {};
-    let _this = this;
-    let customFeature = compData.customFeature;
-
-    if (!compData.is_more && typeof event == 'object' && event.type == 'tap') {
-      _this.showModal({
-        content: '已经加载到最后了'
-      });
-      // todo 显示加载到最后
-    }
-    if (pageInstance.requesting || !compData.is_more) {
-      return;
-    }
-    pageInstance.requesting = true;
-
-    if (pageInstance.list_compids_params) {
-      for (let index in pageInstance.list_compids_params) {
-        if (pageInstance.list_compids_params[index].compid === compid) {
-          param = pageInstance.list_compids_params[index].param;
-          break;
-        }
-      }
-    }
-    if (pageInstance.dynamicClassifyGroupidsParams.length != 0) {
-      param = {
-        form: compData.classifyGroupForm,
-        idx_arr: {
-          idx: 'category',
-          idx_value: compData.currentCategory[compData.currentCategory.length - 1]
-        }
-      }
-    }
-    if (customFeature.vesselAutoheight == 1 && customFeature.loadingMethod == 1) {
-      param.page_size = customFeature.loadingNum || 10;
-    }
-    param.page = curpage;
-    _this.sendRequest({
-      url: '/AppData/getFormDataList',
-      data: param,
-      method: 'post',
-      success: function (res) {
-        newdata = {};
-
-        for (let j in res.data) {
-          for (let k in res.data[j].form_data) {
-            if (k == 'category') {
-              continue;
-            }
-            if (/region/.test(k)) {
-              continue;
-            }
-
-            let description = res.data[j].form_data[k];
-
-            if (_this.needParseRichText(description)) {
-              res.data[j].form_data[k] = _this.getWxParseResult(description);
-            }
-          }
-        }
-
-        newdata[compid + '.list_data'] = compData.list_data.concat(res.data);
-        newdata[compid + '.is_more'] = res.is_more;
-        newdata[compid + '.curpage'] = res.current_page;
-
-        pageInstance.setData(newdata);
-      },
-      complete: function () {
-        setTimeout(function () {
-          pageInstance.requesting = false;
-        }, 300);
-      }
-    })
-  }, 
   globalData: {
     userInfo: null,
     shopId: 0,
     sessionId:'',
-    openid: 0,
+    openid: '',
     wx_url_1: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx0844817c7a6d15cc&secret=fe4b64e1f96f38463033927e038e97a1&js_code=',
     wx_url_2: '&grant_type=authorization_code',
     siteBaseUrl: 'http://nc.laravel.com/api/',
