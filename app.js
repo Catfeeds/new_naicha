@@ -13,6 +13,21 @@ App({
       }
     });
 
+    wx.getSetting({
+      success: function (res){
+        that.globalData.authSetting = 1; // 是否授权
+        console.log(res);
+        wx.switchTab({
+          url: '/login'
+        })
+      },
+      fail: function (res) {
+        wx.redirectTo({
+          url: 'login/login'
+        })
+      }
+    })
+
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -42,6 +57,13 @@ App({
             }
           })
         }
+
+        that.globalData.authSetting = 1; // 是否授权
+      },
+      fail: function (res) {
+        wx.redirectTo({
+          url: '/login'
+        })
       }
     })
 
@@ -231,5 +253,6 @@ App({
     wx_url_2: '&grant_type=authorization_code',
     siteBaseUrl: 'http://nc.laravel.com/api/',
     sessionKey: 'aaaaa',
+    authSetting: 0
   }
 })

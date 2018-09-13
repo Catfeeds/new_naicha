@@ -1,6 +1,8 @@
 <view wx:if="{{canIUse}}">
     <view class='header'>
-        <image src='/images/vx.png'></image>
+      <view class='image'>
+        <open-data type="userAvatarUrl"></open-data>
+      </view>
     </view>
  
     <view class='content'>

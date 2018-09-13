@@ -1,0 +1,267 @@
+<view class='contain'>
+  <view class='top'>
+    <view class='top_status'>
+      九碗
+    </view>
+    <view class='top_img'>
+      <image src='/images/hamburger.png'></image>
+    </view>
+    <view class='top_process'>
+      <view class='top_process_border'>
+        个人信息
+      </view>
+    </view>
+  </view>
+  <view class="top_title">
+    <view class='top_bor_text'>
+      我的首推配方
+    </view>
+    <view class='top_title_img'>
+      <image src='/images/share.png'></image>
+    </view>
+    <text>{{title_formula}}</text>
+  </view>
+
+  <view class="navbar">
+    <text wx:for="{{navbar}}" data-index="{{index}}" class="item {{currentIndex==index?'active':''}}" bindtap="navbarTab" wx:key="unique">{{item}}</text>
+  </view>
+  <view hidden="{{currentIndex!==0}}" id='flavor'>
+    <!-- 三角 -->
+    <view class='triangle-flovar'></view>
+    <view class='con'>
+      <block wx:for="{{con}}" wx:for-index="key">
+        <view style='background:#FFF;display:flex;flex-direction:row;margin:20rpx 0;border-radius:30rpx;'>
+          <view class="con_list" bindtap='list' style='right:{{item.right}}px' data-id='{{item.id}}'>
+            <view class='con_list_num' data-index="0">
+              <image src='/images/vx.png' data-index="0"></image>
+            </view>
+            <view class='con_list_text' data-index="0">
+              {{item.text}}
+            </view>
+            <view class='con_list_del' data-index="0" bindtap='carts'>
+              <image src='/images/vx.png'></image>
+            </view>
+            <view class='con_list_btn' data-index="0" >
+              <view class='con_list_btn_text' bindtap='setTo' data-id='{{item.id}}'>
+                {{item.btn}}
+              </view>
+            </view>
+          </view>
+          <view class='delete' >
+            <image src='/images/close.png' data-index='{{key}}' hidden="{{hidImg}}"  bindtap='closeImg' class='close_img'></image>
+            <button class='delete_block' hidden='{{!hidImg}}' type="primary" bindtap="modalcnt" style='width:100rpx;text-align:center;margin-right:3px;'>
+            </button>
+            <view hidden='{{!hidImg}}' style='font-size:0.6em;transition:all 0.6s;width:50px;text-align:center;padding-right:15px;box-sizing:border-box'>删除</view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <view class='txt'>
+      CLAB将从购买记录中简历您专属的口味库，可以直接购买您喜爱的口味配方，也可将已购买的口味配方设置为“我的首推配方”参与点赞排行,成为CLAB的配方合伙人。
+    </view>
+    <view class='logo'>
+      <image src='/images/logo.png'></image>
+    </view>
+  </view>
+  <view hidden="{{currentIndex!==1}}" id='record'>
+    <view class='triangle-record'></view>
+    <view class='record'>
+      <block wx:for="{{record}}">
+        <view class='record_list'>
+          <view class='record_list_left'>
+            <view class='record_list_left_title'>
+              <view>
+                <image src='/images/glass.png' style='width:30rpx;height:30rpx;'></image>
+              </view>
+              <view class='txt_left'>{{item.name}}</view>
+              <view class='txt_left'>等
+                <text>{{item.num}}</text>件商品</view>
+              <view class='txt_left'>已完成</view>
+            </view>
+            <view class='record_list_left_num' style=''>
+              <view class='record_list_left_num_left'>订单编号：</view>
+              <text class='record_list_left_num_right'>{{item.numb}}</text>
+            </view>
+            <view class='record_list_left_time'>
+              <view>购买时间：</view>
+              <text>{{item.time}}</text>
+            </view>
+          </view>
+          <view class='record_list_right'>
+            <view class='record_list_right_btn'>
+              加入我的口味库
+            </view>
+            <view class='record_list_right_money'>
+              ￥
+              <text>{{item.money}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class='logo marginTop'>
+      <image src='/images/logo.png'></image>
+    </view>
+  </view>
+  <view hidden="{{currentIndex!==2}}" id='coupon'>
+    <view class='triangle-coupon'></view>
+    <view class='coupon'>
+      <block wx:for="{{coupon}}">
+        <view class='coupon_list'>
+          <view class='coupon_list_img'>
+            <image src='/images/couponbg.png'></image>
+          </view>
+          <view class='coupon_list_con'>
+            <view class='coupon_list_con_free'>免费茶底券</view>
+            <view>有效期至:
+              <text>{{item.time}}</text>
+            </view>
+            <view>在小程序内结算将自行抵扣</view>
+          </view>
+          <view class='coupon_list_btn'>
+            <view class='coupon_list_btn_use' bindtap='uses'>
+              立即使用
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class='txt'>
+      CLAB将从购买记录中简历您专属的口味库，可以直接购买您喜爱的口味配方，也可将已购买的口味配方设置为“我的首推配方”参与点赞排行,成为CLAB的配方合伙人。
+    </view>
+    <view class='logo'>
+      <image src='/images/logo.png'></image>
+    </view>
+  </view>
+</view>
+
+<!-- 模态框 -->
+<!-- <view >
+    <button  bindtap="modalcnt">模态弹窗</button> 
+</view> -->
+
+
+<!-- 遮罩 -->
+<view id='mask' class='' hidden='{{mask}}' bindtap='masks'>
+
+</view>
+
+<!-- 是否将此配方从口味库删除 -->
+<view id='choice' class='display' style='z-index:123123'>
+  <view class='choice_text'>是否将此配方从口味库删除</view>
+  <view class='choice_btn'>
+    <view class='choice_btn_yes'>
+      <view>是</view>
+    </view>
+    <view class='choice_btn_no'>
+      <view>否</view>
+    </view>
+  </view>
+</view>
+
+<!-- 我的首推配方 -->
+<view class='set' hidden='{{recommend}}'>
+  <view class="set_top">
+    <view class='set_top_formula'>
+      我的首推配方
+    </view>
+    <view class='set_top_img' style='z-index:1221313123123123'>
+      <image src='/images/delete.png' style='z-index:1221313123123123'></image>
+    </view>
+    雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖2
+  </view>
+  <view class='set_bot'>
+    <view class='set_bot_left'>
+      是否将本配方设置为首推配方?
+    </view>
+    <view class='set_bot_right' bindtap='sures' >
+      确定
+    </view>
+  </view>
+</view>
+
+<!-- 购物车弹窗 -->
+<view id='shop' hidden='{{cart}}'>
+  <view class='shop_img'>
+    <image src='/images/shop.png'></image>
+  </view>
+  <view class='shop_text'>
+    已将本配方添加至购物车,请至点单页面结算
+  </view>
+</view>
+
+<!-- 美味需要分享.... -->
+<view id='popup' class='display'>
+  <view class='popup_top'>
+    <view class='popup_top_title'>
+      <view class='popup_top_title_left'>
+
+      </view>
+      <view class='popup_top_title_cen'>
+        <image src='/images/l1.png'></image>
+      </view>
+      <view class='popup_top_title_right'>
+        <image src='/images/close.png'></image>
+      </view>
+    </view>
+    <view class='popup_top_text'>
+      美味需要分享,让你的朋友一起为你喜爱的配方点赞吧!
+    </view>
+  </view>
+  <view class='popup_bot'>
+    <view class='popup_bot_text'>
+      <view class='popup_bot_text_con'>
+        雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖
+        <view class='popup_bot_text_con_jiu'>
+          <image src='/images/crown.png'></image>
+          <text>九碗</text>
+        </view>
+      </view>
+      <view class='popup_bot_text_num'>
+        点赞数:10.000.0000.00
+      </view>
+    </view>
+    <view class='popup_bot_share'>
+      <view class='popup_bot_share_left'>
+
+      </view>
+      <view class='popup_bot_share_text'>
+        分享
+      </view>
+      <view class='popup_bot_share_right'>
+
+      </view>
+    </view>
+    <view class='popup_bot_img'>
+      <view class='popup_bot_img_vx'>
+        <image src='/images/vx.png'></image>
+      </view>
+      <view class='popup_bot_img_fx'>
+        <image src='/images/vx.png'></image>
+      </view>
+      <view class='popup_bot_img_wb'>
+        <image src='/images/vx.png'></image>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 茶底免费券 -->
+<view class="tea" hidden='{{tea}}' >
+  <view class='tea_top'>
+    <image src='/images/mobile_logo.png' class='tea_top_logo'></image>
+    <image src='/images/close.png' class='tea_top_close'></image>
+  </view>
+  <view class='tea_bot'>
+    <view class='tea_title'>
+      茶底免费券
+    </view>
+    <view class="tea_erweima">
+      <image src='/images/erweima.png'></image>
+    </view>
+    <view class='tea_text'>
+      在柜台结算前向收银员出示此二维码进行优惠减扣
+    </view>
+  </view>
+</view>

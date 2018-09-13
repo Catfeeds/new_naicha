@@ -1,10 +1,11 @@
 {
   "pages":[
+    "pages/user/user",
+    "pages/make_formula/formula",
     "pages/fabulous1/fabulous",
     "pages/me5/me",
     "pages/make_complete/complete",    
     "pages/logs/logs",
-    "pages/make_formula/formula",
     "pages/make/make",
     "pages/login/login",
     "pages/index/index",
@@ -43,7 +44,7 @@
       {
         "selectedIconPath": "images/me1.png",
         "iconPath": "images/me2.png",
-        "pagePath": "pages/me5/me",
+        "pagePath": "pages/user/user",
         "text": "我的"
       }
     ]
