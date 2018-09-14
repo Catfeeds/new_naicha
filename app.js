@@ -15,6 +15,10 @@ App({
               if (res.data.openid) {
                 that.globalData.openid = res.data.openid;
                 wx.setStorageSync('openid', res.data.openid);
+
+                if (! wx.getStorageSync('session_key')) {
+                  that.queryUsreInfo();
+                }
               }
             }
           })
