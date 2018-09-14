@@ -41,9 +41,9 @@ page{
   margin-top: 40rpx;
   line-height: 57rpx;
 }
-.top_img image{
+.top_img{
   width: 150rpx;
-  height: 150rpx;
+  height: 200rpx;
   margin-top: -75rpx;
 }
 .top_title{

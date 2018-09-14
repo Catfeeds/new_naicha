@@ -32,7 +32,7 @@
       {
         "selectedIconPath": "images/point1.png",
         "iconPath": "images/point2.png",
-        "pagePath": "pages/login/login",
+        "pagePath": "pages/make_formula/formula",
         "text": "点单"
       },
       {

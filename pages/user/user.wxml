@@ -1,15 +1,15 @@
 <view class='contain'>
   <view class='top'>
     <view class='top_status'>
-      九碗
+      <open-data type="userNickName"></open-data>
     </view>
     <view class='top_img'>
-      <image src='/images/hamburger.png'></image>
+      <open-data type="userAvatarUrl"></open-data>
     </view>
     <view class='top_process'>
-      <view class='top_process_border'>
+      <!-- <view class='top_process_border'>
         个人信息
-      </view>
+      </view> -->
     </view>
   </view>
   <view class="top_title">

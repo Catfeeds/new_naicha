@@ -1,44 +1,37 @@
-//dddddddddd//app.js
+//app.js
 App({
+
+  // 小程序启动时触发
   onLaunch: function (options) {
     var that = this;
     wx.login({
       success: res => {
-        wx.request({
-          url: that.globalData.wx_url_1 + res.code + that.globalData.wx_url_2,
-          success: res => {
-            that.globalData.openid = res.data.openid;
-          }
-        })
+        let openid = wx.getStorageSync('openid');
+
+        if (! openid.length) {
+          wx.request({
+            url: that.globalData.wx_query_openid + res.code + '&grant_type=authorization_code',
+            success: res => {
+              if (res.data.openid) {
+                that.globalData.openid = res.data.openid;
+                wx.setStorageSync('openid', res.data.openid);
+              }
+            }
+          })
+        } else {
+          that.globalData.openid = openid;
+        }
+
+        console.log(that.globalData);
       }
     });
-
-    wx.getSetting({
-      success: function (res){
-        that.globalData.authSetting = 1; // 是否授权
-        console.log(res);
-        wx.switchTab({
-          url: '/login'
-        })
-      },
-      fail: function (res) {
-        wx.redirectTo({
-          url: 'login/login'
-        })
-      }
-    })
 
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs);
     console.log("[onLaunch] 场景值:", options.scene)
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -61,8 +54,8 @@ App({
         that.globalData.authSetting = 1; // 是否授权
       },
       fail: function (res) {
-        wx.redirectTo({
-          url: '/login'
+        wx.switchTab({
+          url: '/pages/login/login'
         })
       }
     })
@@ -80,9 +73,24 @@ App({
           content: '尚未进行授权，请点击确定跳转到授权页面进行授权。',
           success: function (res) {
             if (res.confirm) {
-              console.log('用户点击确定')
-              wx.navigateTo({
-                url: '../tologin/tologin',
+              wx.redirectTo({
+                url: '/pages/login/login'
+              })
+            } else {
+              //用户按了拒绝按钮
+              wx.showModal({
+                title: '警告',
+                content: '您点击了拒绝授权，将无法进入小程序，请授权之后再进入!!!',
+                showCancel: false,
+                confirmText: '返回授权',
+                success: function (res) {
+                  if (res.confirm) {
+                    wx.redirectTo({
+                      url: '/pages/login/login'
+                    })
+                    console.log('用户点击了“返回授权”')
+                  }
+                }
               })
             }
           }
@@ -90,16 +98,46 @@ App({
       }
     });
   },
-  getSessionKey: function () {
-    var sessionKey = this.globalData.sessionKey;
-    return sessionKey ? sessionKey : wx.getStorageSync('session_key');
+  //获取用户信息接口
+  queryUsreInfo: function () {
+    var that = this;
+    that.sendRequest({
+      url: 'user/info',
+      data: {},
+      success: function (res) {
+        that.globalData.userInfo = res.data;
+        that.globalData.sessionKey = res.data.session_key;
+
+        wx.setStorageSync('session_key', res.data.session_key);
+      }
+    });
   },
+  // user auth callback
+  userInfoReadyCallback: function(res) {
+    this.queryUsreInfo();
+  },
+
+  getSessionKey: function () {
+    var sessionKey = wx.getStorageSync('session_key');
+
+    if (sessionKey) {
+      return sessionKey;
+    } else {
+      this.queryUsreInfo();
+      return wx.getStorageSync('session_key');
+    }
+  },
+
+  // 发送请求
   sendRequest: function (param, customSiteUrl) {
     let that = this;
     let data = param.data || {};
     let header = param.header;
     let requestUrl;
 
+    // 店铺ID
+    data.shopId = that.globalData.shopId;
+    data.openid = that.globalData.openid;
     //if(!this.globalData.notBindXcxAppId){
     data.session_key = this.getSessionKey();
     //}
@@ -115,7 +153,7 @@ App({
         data = this._modifyPostParam(data);
         header = header || {
           'content-type': 'application/x-www-form-urlencoded;',
-          'Cookie': 'PHPSESSID=' + that.getSessionId()
+          //'Cookie': 'PHPSESSID=' + that.getSessionId()
         }
       }
       param.method = param.method.toUpperCase();
@@ -134,7 +172,7 @@ App({
       method: param.method || 'GET',
       header: header || {
         'content-type': 'application/json',
-        'Cookie': 'PHPSESSID=' + that.getSessionId()
+        //'Cookie': 'PHPSESSID=' + that.getSessionId()
       },
       success: function (res) {
         if (res.code == 408) {
@@ -193,14 +231,49 @@ App({
       }
     });
   },
+  _modifyPostParam: function (obj) {
+    let query = '';
+    let name, value, fullSubName, subName, subValue, innerObj, i;
+
+    for (name in obj) {
+      value = obj[name];
+
+      if (value instanceof Array) {
+        for (i = 0; i < value.length; ++i) {
+          subValue = value[i];
+          fullSubName = name + '[' + i + ']';
+          innerObj = {};
+          innerObj[fullSubName] = subValue;
+          query += this._modifyPostParam(innerObj) + '&';
+        }
+      } else if (value instanceof Object) {
+        for (subName in value) {
+          subValue = value[subName];
+          fullSubName = name + '[' + subName + ']';
+          innerObj = {};
+          innerObj[fullSubName] = subValue;
+          query += this._modifyPostParam(innerObj) + '&';
+        }
+      } else if (value !== undefined && value !== null) {
+        query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+      }
+    }
+
+    return query.length ? query.substr(0, query.length - 1) : query;
+  },
+  // 获取sessionid
   getSessionId: function () {
     return wx.getStorageSync('session_id');
   },
+
+  // 设置页面tittle
   setPageTitle: function (title) {
     wx.setNavigationBarTitle({
       title: title
     });
   },
+
+  // 展示弹窗提示
   showToast: function (param) {
     wx.showToast({
       title: param.title,
@@ -244,15 +317,16 @@ App({
       }
     })
   },
+
+  // 全局设置
   globalData: {
     userInfo: null,
-    shopId: 0,
+    shopId: 1,
     sessionId:'',
     openid: '',
-    wx_url_1: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx0844817c7a6d15cc&secret=fe4b64e1f96f38463033927e038e97a1&js_code=',
-    wx_url_2: '&grant_type=authorization_code',
+    wx_query_openid: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx31c29e4d7c15086a&secret=5fafeb1162405ee7ff235e5a0e9a92c3&js_code=',
     siteBaseUrl: 'http://nc.laravel.com/api/',
-    sessionKey: 'aaaaa',
+    sessionKey: '',
     authSetting: 0
   }
 })
