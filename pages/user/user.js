@@ -8,39 +8,267 @@ Page({
   data: {
     navbar: ["我的口味库", "购买历史记录", "优惠券"],
     currentIndex: 0,//tabbar索引 
-    con:[
-      { img: "/images/me1.png", text: "雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖1", btn: "设为首推", right: "0", hidImg:"true",id:0,},
-      { img: "/images/me2.png", text: "雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖2", btn: "设为首推1", right: "0", hidImg: "true", id: 1,},
-      { img: "/images/me2.png", text: "雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖3", btn: "设为首推4", right: "0", hidImg: "true",id:2},
-      { img: "/images/me2.png", text: "雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖4", btn: "设为首推98", right: "0", hidImg: "true",id:3},
-      { img: "/images/me2.png", text: "雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖5", btn: "设为首推5", right: "0", hidImg: "true",id:4},
-      { img: "/images/me2.png", text: "雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖6", btn: "设为首推00", right: "0", hidImg: "true",id:5},
-      { img: "/images/me2.png", text: "雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖7", btn: "设为首推3", right: "0", hidImg: "true",id:6}
-    ],
-    record:[
-      {name:"菊花茶",num:"2",numb:"123123123123123123123",time:"2014-01-55 11:87:66",money:"131.00"},
-      { name: "雨前龙井", num: "5", numb: "22333334322342", time: "2015-01-55 11:87:66", money: "441.00" },
-      { name: "明朝", num: "44", numb: "8997979747464", time: "2016-01-55 11:87:66", money: "121.00" },
-      { name: "反清复明", num: "22", numb: "5656555656", time: "2017-01-55 11:87:66", money: "12.00" },
-      { name: "桂花茶", num: "43", numb: "7777777777777", time: "2018-01-55 13:87:66", money: "21.00" },
-      { name: "大红袍", num: "77", numb: "4660321313103106", time: "2019-01-55 11:87:66", money: "01.00" }
-    ],
-    coupon:[
-      {time:"2012.12.21"},
-      { time: "2012.12.21" },
-      { time: "2013.12.231" },
-      { time: "2014.12.21" },
-      { time: "2015.12.21" },
-      { time: "2016.12.21" },
-      { time: "2017.12.21" }
-    ],
-    title_formula: "雨前龙井 + 蝶豆花 + 水蜜桃 + 糖浆少糖 + 黄金珍珠 + 芝士奶盖1",
+    currentTaste: '暂无首推配方，请在口味库中设置',
+    formulaId: 0,
+    con: [],
+    record: [],
+    coupon: [],
+    title_formula: "",
+    taste_name: '',
+    taste_id: 0,
     mask:true,
     recommend:true,
     cart:true,
     getId:0,
     yi:true,
-    tea:true
+    tea:true,
+    scrollParam: {
+      taste: { page: 1, is_more: 0, total_page: 2 },
+      order: { page: 1, is_more: 0, total_page: 2 },
+    }
+  },
+  onLoad: function (e) {
+    var that = this;
+    wx.showShareMenu();
+    app.sendRequest({
+      url: 'user/index',
+      data: {},
+      success: function (res) {
+        var data = res.data;
+        that.setData({
+          'currentTaste': data.title,
+          'formulaId': data.formula_id
+        })
+
+        // 我的口味库
+        that.getTastes();
+      }
+    });
+  },
+  closePop: function () {
+    var that = this;
+    that.data.recommend = true;
+    that.data.mask = true;
+    this.setData({
+      recommend: that.data.recommend,
+      mask: that.data.mask
+    })
+  },
+  // 加载口味库
+  getTastes: function (e) {
+    let that = this;
+
+    if (that.data.scrollParam.taste.page == 1 || (that.data.scrollParam.taste.page <= that.data.scrollParam.taste.total_page)) {
+      app.sendRequest({
+        url: 'user/tastes',
+        data: { page: that.data.scrollParam.taste.page },
+        success: function (res) {
+          var data = res.data;
+          let dataList = that.data.con;
+          console.log(that.data.formulaId);
+          for (var i = 0, j = data.length - 1; i <= j; i++) {
+            let item = {};
+            item['pk'] = data[i]['id'];
+            item['img'] = '/images/me1.png';
+            item['text'] = data[i]['title'];
+
+            if (that.data.formulaId == data[i]['id']) {
+              item['btn'] = "已是首推";
+              item['setTo'] = '';
+              item['selected'] = 'selected';
+            } else {
+              item['btn'] = "设为首推";
+              item['setTo'] = 'setTo';
+              item['selected'] = '';
+            }
+
+            item['right'] = "0";
+            item['hidImg'] = "true";
+            dataList.push(item);
+          }
+
+          that.setData({
+            'con': dataList,
+            'scrollParam.taste.page': that.data.scrollParam.taste.page + 1,
+            'scrollParam.taste.is_more': res.is_more,
+            'scrollParam.taste.total_page': res.total_page
+          });
+        }
+      });
+    }
+  },
+  // 加载历史纪录
+  getOrders: function (e) {
+    let that = this;
+    if (that.data.scrollParam.order.page == 1 || (that.data.scrollParam.order.page <= that.data.scrollParam.order.total_page)) {
+      app.sendRequest({
+        url: 'user/orders',
+        data: { page: that.data.scrollParam.order.page },
+        success: function (res) {
+          var data = res.data;
+          let dataList = that.data.record;
+          for (var i = 0, j = data.length - 1; i <= j; i++) {
+            let item = {};
+            item['pk'] = data[i]['id'];
+            item['image'] = data[i]['image'];
+            item['name'] = data[i]['title'];
+            item['num'] = data[i]['num'];
+            item['status'] = data[i]['status'];
+            item['order_sn'] = data[i]['order_sn'];
+            item['time'] = data[i]['created_at'];
+            item['money'] = data[i]['price'];
+            item['has_taste'] = data[i]['has_taste'];
+            item['selected'] = data[i]['has_taste'] ? 'selected': '';
+            dataList.push(item);
+          }
+
+          that.setData({
+            'record': dataList,
+            'scrollParam.order.page': that.data.scrollParam.order.page + 1,
+            'scrollParam.order.is_more': res.is_more,
+            'scrollParam.order.total_page': res.total_page
+          });
+        }
+      });
+    }
+  },
+  // 优惠券
+  getCoupons: function (e) {
+    let that = this;
+
+    app.sendRequest({
+      url: 'user/coupons',
+      data: {},
+      success: function (res) {
+        var data = res.data;
+        let dataList = that.data.coupon;
+        for (var i = 0, j = data.length - 1; i <= j; i++) {
+          let item = {};
+          item['time'] = data[i]['deadline'];
+          item['title'] = data[i]['title'];
+          dataList.push(item);
+        }
+
+        that.setData({
+          'coupon': dataList,
+        });
+      }
+    });
+
+  },
+  // 加入口味库
+  joinTaste: function (e) {
+    let orderId = e.currentTarget.dataset.pk;
+    var that = this;
+
+    app.sendRequest({
+      url: 'user/joinTaste/' + orderId,
+      data: {},
+      success: function (res) {
+        var data = res.data;
+        if (res.code == 200) {
+          //that.text = '已加入';
+          let record = that.data.record;
+          for (let i in record) {
+            if (record[i].pk == orderId) {
+              record[i].has_taste = 1;
+              record[i].selected = 'selected';
+            } 
+          }
+
+          that.setData({
+            record: record,
+          });
+        }
+      }
+    });
+  },
+  // 删除口味
+  deleteTaste: function (e) {
+    let id = e.currentTarget.dataset.pk;
+    var that = this;
+
+    wx.showModal({
+      cancelText: '放弃',
+      confirmText: '确定',
+      content: '确定删除该口味吗',
+      success: function (res) {
+        if (res.confirm) {
+          app.sendRequest({
+            url: 'user/deleteTaste/' + id,
+            data: {},
+            success: function (res) {
+              if (res.code == 200) {
+                let tastes = that.data.con;
+                for (let i in tastes) {
+                  console.log(tastes[i]);
+                  if (tastes[i].pk == id) {
+                    tastes.remove(i);
+                  }
+                }
+
+                that.setData({
+                  con: tastes,
+                });
+
+                if (res.data.title) {
+                  that.setData({
+                    currentTaste: res.data.title,
+                    formulaId: 0
+                  });
+                }
+              }
+            }
+          });
+        }
+      }
+    });
+    
+  },
+
+  navbarTab: function (e) {
+
+    if (e.currentTarget.dataset.index == 1) {
+      if (this.data.record.length == 0) {
+        this.getOrders();
+      }
+    }
+
+    if (e.currentTarget.dataset.index == 2) {
+      if (this.data.coupon.length == 0) {
+        this.getCoupons();
+      }
+    }
+
+    this.setData({
+      currentIndex: e.currentTarget.dataset.index
+    });
+
+  },
+  closeRight: function () {
+    var that = this;
+    that.data.tea = true;
+    that.data.mask = true;
+    that.setData({
+      tea: that.data.tea,
+      mask: that.data.mask
+    })
+  },
+  // 设为首推弹窗
+  setTo: function (e) {
+    var that = this;
+    that.data.mask = false;
+    that.data.recommend = false;
+
+    var id = e.target.dataset.pk;
+    var name = e.target.dataset.text;
+
+    this.setData({
+      mask: that.data.mask,
+      recommend: that.data.recommend,
+      taste_id: id,
+      taste_name: name,
+    });
   },
   // 弹窗
   modalcnt: function (e) {
@@ -54,40 +282,6 @@ Page({
           console.log('用户点击取消')
         }
       }
-    })
-  },
-  setTo:function(e){
-    var that = this;
-    that.data.mask = false;
-    that.data.recommend =false;
-    console.log(e);
-    var id = e.target.dataset.id;
-    console.log(id);    
-    that.data.getId = id;
-    this.setData({
-      mask:that.data.mask,
-      recommend:that.data.recommend,
-      getId:that.data.getId
-    })
-  },
-  sures:function(e){
-    var that = this;
-    that.data.recommend = true;
-    that.data.mask = true;
-    
-    for(var i= 0;i<that.data.con.length;i++){
-      if ( that.data.con[i].id == that.data.getId){
-        console.log(that.data.con[i].text);
-        var text = that.data.con[i].text;
-        
-      }
-      that.data.title_formula = text;
-    };
-    that.setData({
-      recommend:that.data.recommend,
-      mask:that.data.mask,
-      title_formula:that.data.title_formula,
-      con:that.data.con
     })
   },
   carts:function(){
@@ -152,6 +346,54 @@ Page({
       mask:that.data.mask
     })
   },
+  // 设为首推
+  sures: function (e) {
+    var that = this;
+    var text;
+
+    for (var i = 0; i < that.data.con.length; i++) {
+      if (that.data.con[i].pk == that.data.taste_id) {
+        text = that.data.con[i].text;
+        that.data.con[i].btn = "已是首推";
+        that.data.con[i].setTo = "";
+        that.data.con[i].selected = "";
+      }
+    };
+
+    var that = this;
+    let id = that.data.taste_id;// e.currentTarget.dataset.pk;
+
+    app.sendRequest({
+      url: 'user/setIndex/' + that.data.taste_id,
+      data: { },
+      success: function (res) {
+        if (res.code == 200) {
+          let dataList = that.data.con;
+
+          for (var i = 0, j = dataList.length - 1; i <= j; i++) {
+
+            if (that.data.taste_id == dataList[i]['pk']) {
+              dataList[i]['btn'] = "已是首推";
+              dataList[i]['setTo'] = '';
+              dataList[i]['selected'] = 'selected';
+            } else {
+              dataList[i]['btn'] = "设为首推";
+              dataList[i]['setTo'] = 'setTo';
+              dataList[i]['selected'] = '';
+            }
+          }
+
+          that.setData({
+            currentTaste: res.data.title,
+            formulaId: id,
+            con: dataList,
+            recommend: true,
+            mask: true
+          });
+        }
+      }
+    });
+  },
 
   //取消按钮点击事件
   modalBindcancel: function () {
@@ -159,12 +401,17 @@ Page({
       modalHidden: !this.data.modalHidden,
     })
   },
-  
-  navbarTab: function (e) {
-    this.setData({
-      currentIndex: e.currentTarget.dataset.index
-    });
-  },
-  
 
-})
+});
+// 删除数组元素
+Array.prototype.remove = function (dx) {
+  if (isNaN(dx) || dx > this.length) {
+    return false;
+  }
+  for (var i = 0, n = 0; i < this.length; i++) {
+    if (this[i] != this[dx]) {
+      this[n++] = this[i]
+    }
+  }
+  this.length -= 1
+}

@@ -1,0 +1,13 @@
+<template name="postItem">
+  <swiper-item>
+      <view class='optionBox' style='text-align:center'>
+        <view class='mask' wx:if='{{ index != current }}'></view>
+        <image src="{{src}}" mode='widthFix' style='width:80px;height:80px;'/>
+        <view class='wineNameitemNameText'>{{ text }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ price }}</text>
+        </view>
+      </view> 
+    </swiper-item>
+</template>

@@ -36,8 +36,8 @@
 			"list": [
 				{
 					"id": -1,
-					"name": "make",
-					"pathName": "pages/fabulous1/fabulous"
+					"name": "index",
+					"pathName": "pages/index/index"
 				}
 			]
 		}

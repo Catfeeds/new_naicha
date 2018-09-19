@@ -1,66 +1,112 @@
-// pages/index/index.js
+var app = getApp();
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    imgs: [ ],
+    currentSwiper: 0,
+    autoplay: true,
+    formulas:[],
+    current: { title:'', username: '',likes: 0},
+    display: 'none',
+    myRank: 'none', // 我的排名
+    mine: [], //我的数据
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+  // 关闭弹窗
+  closeWin: function () {
+    this.setData({
+      display: 'none'
+    })
   },
+  chooseItem: function(e) {
+    let id = e.currentTarget.dataset.pk;
+    var that = this;
+    let dataList = that.data.formulas;
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+    for (var i = 0, j = dataList.length - 1; i <= j; i++) {
+      if (id == dataList[i]['pk']) {
+        that.setData({
+          'current.title': dataList[i]['collocation'],
+          'current.username': dataList[i]['name'],
+          'current.likes': dataList[i]['num'],
+          display: 'block'
+        });
+      }
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  swiperChange: function (e) {
+    this.setData({
+      currentSwiper: e.detail.current
+    })
   },
+  onLoad: function (e) {
+    var that = this;
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
+    app.sendRequest({
+      url: 'index/index',
+      data: {},
+      success: function (res) {
+        var data = res.data.formulas;
+        let dataList = that.data.formulas;
+        for (var i = 0, j = data.length - 1; i <= j; i++) {
+          let item = {};
+          item['position'] = i + 1;
+          item['name'] = data[i]['username'];
+          item['collocation'] = data[i]['title'];
+          item['num'] = data[i]['likes'];
+          item['pk'] = data[i]['id'];
+          item['avatar'] = data[i]['avatar'];
+          dataList.push(item);
+        }
 
+        var images = res.data.pushes;
+        let imgsList = that.data.imgs;
+        for (var i = 0, j = images.length - 1; i <= j; i++) {
+          let item = {};
+          item['url'] = images[i]['image'];
+          imgsList.push(item);
+        }
+
+        that.setData({
+          'formulas': dataList,
+          'imgs': imgsList,
+          mine: res.data.mine,
+          myRank: res.data.mine ? 'block' : 'none'
+        });
+      }
+    });
   },
+  setLike: function (e) {
+    let id = e.currentTarget.dataset.pk;
+    var that = this;
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
+    app.sendRequest({
+      url: 'index/like/' + id,
+      data: {},
+      success: function (res) {
+        if (res.code == 200) {
+          let formulas = that.data.formulas;
+          for (let i in formulas) {
+            if (formulas[i].pk == id) {
+              formulas[i].num = res.data.likes;
+            }
+          }
 
-  },
+          that.setData({
+            'formulas': formulas,
+          });
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+        } else if (res.code == 401) {
+          wx.showToast({
+            title: '成功',
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      }
+    });
   }
 })

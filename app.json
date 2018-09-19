@@ -1,14 +1,14 @@
 {
   "pages":[
+    "pages/arr/in",
+    "pages/index/index",
     "pages/user/user",
     "pages/make_formula/formula",
-    "pages/fabulous1/fabulous",
-    "pages/me5/me",
+    "pages/goods/goods",
     "pages/make_complete/complete",    
     "pages/logs/logs",
     "pages/make/make",
     "pages/login/login",
-    "pages/index/index",
     "pages/mobile/mobile",
     "pages/formula/formula"
   ],
@@ -26,19 +26,19 @@
       {
         "selectedIconPath": "images/index1.png",
         "iconPath": "/images/index2.png",
-        "pagePath": "pages/fabulous1/fabulous",
+        "pagePath": "pages/index/index",
         "text": "首页"
       },
       {
         "selectedIconPath": "images/point1.png",
         "iconPath": "images/point2.png",
-        "pagePath": "pages/make_formula/formula",
+        "pagePath": "pages/goods/goods",
         "text": "点单"
       },
       {
         "selectedIconPath": "images/order1.png",
         "iconPath": "images/order2.png",
-        "pagePath": "pages/make/make",
+        "pagePath": "pages/arr/in",
         "text": "订单"
       },
       {

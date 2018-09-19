@@ -3,8 +3,11 @@
     <view class='top_status'>
       <open-data type="userNickName"></open-data>
     </view>
+    <view class='circle'>
     <view class='top_img'>
       <open-data type="userAvatarUrl"></open-data>
+      
+    </view>
     </view>
     <view class='top_process'>
       <!-- <view class='top_process_border'>
@@ -16,10 +19,13 @@
     <view class='top_bor_text'>
       我的首推配方
     </view>
-    <view class='top_title_img'>
+    <button class='top_title_img' open-type="share" type="" hover-class="other-button-hover">
       <image src='/images/share.png'></image>
-    </view>
-    <text>{{title_formula}}</text>
+    </button>
+    <!-- <view class='top_title_img' open-type="share">
+      <image src='/images/share.png'></image>
+    </view> -->
+    <text>{{currentTaste}}</text>
   </view>
 
   <view class="navbar">
@@ -28,10 +34,10 @@
   <view hidden="{{currentIndex!==0}}" id='flavor'>
     <!-- 三角 -->
     <view class='triangle-flovar'></view>
-    <view class='con'>
+    <scroll-view scroll-y class='con' bindscrolltolower="getTastes">
       <block wx:for="{{con}}" wx:for-index="key">
         <view style='background:#FFF;display:flex;flex-direction:row;margin:20rpx 0;border-radius:30rpx;'>
-          <view class="con_list" bindtap='list' style='right:{{item.right}}px' data-id='{{item.id}}'>
+          <view class="con_list" bindtap='list' style='right:{{item.right}}px' data-pk='{{item.pk}}'>
             <view class='con_list_num' data-index="0">
               <image src='/images/vx.png' data-index="0"></image>
             </view>
@@ -42,12 +48,12 @@
               <image src='/images/vx.png'></image>
             </view>
             <view class='con_list_btn' data-index="0" >
-              <view class='con_list_btn_text' bindtap='setTo' data-id='{{item.id}}'>
+              <view class='con_list_btn_text {{item.selected}}' bindtap='{{item.setTo}}' data-pk='{{item.pk}}' data-text="{{item.text}}">
                 {{item.btn}}
               </view>
             </view>
           </view>
-          <view class='delete' >
+          <view class='delete' bindtap='deleteTaste' data-pk="{{item.pk}}">
             <image src='/images/close.png' data-index='{{key}}' hidden="{{hidImg}}"  bindtap='closeImg' class='close_img'></image>
             <button class='delete_block' hidden='{{!hidImg}}' type="primary" bindtap="modalcnt" style='width:100rpx;text-align:center;margin-right:3px;'>
             </button>
@@ -55,7 +61,7 @@
           </view>
         </view>
       </block>
-    </view>
+    </scroll-view>
 
     <view class='txt'>
       CLAB将从购买记录中简历您专属的口味库，可以直接购买您喜爱的口味配方，也可将已购买的口味配方设置为“我的首推配方”参与点赞排行,成为CLAB的配方合伙人。
@@ -64,9 +70,10 @@
       <image src='/images/logo.png'></image>
     </view>
   </view>
+   
   <view hidden="{{currentIndex!==1}}" id='record'>
     <view class='triangle-record'></view>
-    <view class='record'>
+    <scroll-view scroll-y class='record' bindscrolltolower="getOrders" >
       <block wx:for="{{record}}">
         <view class='record_list'>
           <view class='record_list_left'>
@@ -81,7 +88,7 @@
             </view>
             <view class='record_list_left_num' style=''>
               <view class='record_list_left_num_left'>订单编号：</view>
-              <text class='record_list_left_num_right'>{{item.numb}}</text>
+              <text class='record_list_left_num_right'>{{item.order_sn}}</text>
             </view>
             <view class='record_list_left_time'>
               <view>购买时间：</view>
@@ -89,8 +96,11 @@
             </view>
           </view>
           <view class='record_list_right'>
-            <view class='record_list_right_btn'>
+            <view class='record_list_right_btn' bindtap='joinTaste' data-pk="{{item.pk}}"  hidden='{{item.has_taste}}'>
               加入我的口味库
+            </view>
+            <view class='record_list_right_btn {{item.selected}}' hidden='{{! item.has_taste}}'>
+              已加入
             </view>
             <view class='record_list_right_money'>
               ￥
@@ -99,7 +109,7 @@
           </view>
         </view>
       </block>
-    </view>
+    </scroll-view>
     <view class='logo marginTop'>
       <image src='/images/logo.png'></image>
     </view>
@@ -113,7 +123,7 @@
             <image src='/images/couponbg.png'></image>
           </view>
           <view class='coupon_list_con'>
-            <view class='coupon_list_con_free'>免费茶底券</view>
+            <view class='coupon_list_con_free'>{{item.title}}</view>
             <view>有效期至:
               <text>{{item.time}}</text>
             </view>
@@ -132,6 +142,27 @@
     </view>
     <view class='logo'>
       <image src='/images/logo.png'></image>
+    </view>
+  </view>
+</view>
+
+<!-- 我的首推配方 -->
+<view class='set'  hidden='{{recommend}}'>
+  <view class="set_top">
+    <view class='set_top_formula'>
+      我的首推配方
+    </view>
+    <view class='set_top_img' bindtap='closePop' style='z-index:1221313123123123'>
+      <image src='/images/delete.png' style='z-index:1221313123123123'></image>
+    </view>
+    {{taste_name}}
+  </view>
+  <view class='set_bot'>
+    <view class='set_bot_left'>
+      是否将本配方设置为首推配方?
+    </view>
+    <view class='set_bot_right' bindtap='sures' data-pk="{{taste_id}}">
+      确定
     </view>
   </view>
 </view>
@@ -156,27 +187,6 @@
     </view>
     <view class='choice_btn_no'>
       <view>否</view>
-    </view>
-  </view>
-</view>
-
-<!-- 我的首推配方 -->
-<view class='set' hidden='{{recommend}}'>
-  <view class="set_top">
-    <view class='set_top_formula'>
-      我的首推配方
-    </view>
-    <view class='set_top_img' style='z-index:1221313123123123'>
-      <image src='/images/delete.png' style='z-index:1221313123123123'></image>
-    </view>
-    雨前龙井+蝶豆花+水蜜桃+糖浆少糖+黄金珍珠+芝士奶盖2
-  </view>
-  <view class='set_bot'>
-    <view class='set_bot_left'>
-      是否将本配方设置为首推配方?
-    </view>
-    <view class='set_bot_right' bindtap='sures' >
-      确定
     </view>
   </view>
 </view>
@@ -251,7 +261,7 @@
 <view class="tea" hidden='{{tea}}' >
   <view class='tea_top'>
     <image src='/images/mobile_logo.png' class='tea_top_logo'></image>
-    <image src='/images/close.png' class='tea_top_close'></image>
+    <image src='/images/close.png' class='tea_top_close'  bindtap='closeRight'></image>
   </view>
   <view class='tea_bot'>
     <view class='tea_title'>

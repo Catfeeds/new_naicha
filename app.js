@@ -7,10 +7,11 @@ App({
     wx.login({
       success: res => {
         let openid = wx.getStorageSync('openid');
-
+        console.log(openid);
         if (! openid.length) {
           wx.request({
             url: that.globalData.wx_query_openid + res.code + '&grant_type=authorization_code',
+            
             success: res => {
               if (res.data.openid) {
                 that.globalData.openid = res.data.openid;
@@ -119,6 +120,16 @@ App({
   // user auth callback
   userInfoReadyCallback: function(res) {
     this.queryUsreInfo();
+
+    // 队列，执行api接口【原因是 onlanuch 是异步的，有时候比onload晚，就找不到openid了】
+    var len = this.globalData.requests.length;
+    if (len) {
+      for (var i = 0; i < len; i++) {
+        this.sendRequest(this.globalData.requests[i]);
+      }
+    }
+
+    this.globalData.requests = [];
   },
 
   getSessionKey: function () {
@@ -142,9 +153,14 @@ App({
     // 店铺ID
     data.shopId = that.globalData.shopId;
     data.openid = that.globalData.openid;
-    //if(!this.globalData.notBindXcxAppId){
     data.session_key = this.getSessionKey();
-    //}
+
+    if (! data.openid) {
+      that.globalData.requests.push(param);
+      return;
+    }
+
+    console.log("请求参数:", data)
 
     if (customSiteUrl) {
       requestUrl = customSiteUrl + param.url;
@@ -326,6 +342,7 @@ App({
   globalData: {
     userInfo: null,
     shopId: 1,
+    requests: [], // 待请求队列
     sessionId:'',
     openid: '',
     wx_query_openid: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx31c29e4d7c15086a&secret=5fafeb1162405ee7ff235e5a0e9a92c3&js_code=',

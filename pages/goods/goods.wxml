@@ -1,0 +1,420 @@
+<!-- 左右滑动 -->
+<!-- 一级品类 -->
+<import src="../template/template.wxml" />
+<swiper display-multiple-items='{{ showLen }}' current='{{ current }}' bindchange='changeFun'>
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+  <block wx:for="{{imgInfoArr}}" wx:for-itme="item">
+    <template is="postItem" data="{{item}}"></template>
+  </block>  
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+</swiper>
+<!-- 指示 -->
+<view class='point'>
+  <view class='point_line'>
+
+  </view>
+  <view class='point_circular'>
+
+  </view>
+</view>
+<!-- 一级可选 -->
+<swiper display-multiple-items='{{ show }}' current='{{ cur }}' bindchange='change'>
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+  <block wx:for="{{firstOption}}">
+    <swiper-item>
+      <view class='optionBox' style='text-align:center' data-id=''>
+        <view class='mask' wx:if='{{ index != cur }}'></view>
+        <image src="{{item.src}}" mode='widthFix' style='width:80px;height:80px;' />
+        <view class='wineNameitemNameText'>{{ item.text }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ item.price }}</text>
+        </view>
+      </view> 
+    </swiper-item>
+  </block>  
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+</swiper>
+
+<view class='point'>
+  <view class='point_line'>
+
+  </view>
+  <view class='point_circular'>
+
+  </view>
+</view>
+<!-- 二级品类 -->
+<swiper display-multiple-items='{{ secondShow }}' current='{{ secondCur }}' bindchange='secondLevel'>
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+  <block wx:for="{{imgInfoArr}}">
+    <swiper-item>
+      <view class='optionBox' style='text-align:center'>
+        <view class='mask' wx:if='{{ index != secondCur }}'></view>
+        <image src="{{item.src}}" mode='widthFix' style='width:80px;height:80px;'/>
+        <view class='wineNameitemNameText'>{{ item.text }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ item.price }}</text>
+        </view>
+      </view> 
+    </swiper-item>
+  </block>  
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+</swiper>
+
+<view class='point'>
+  <view class='point_line'>
+
+  </view>
+  <view class='point_circular'>
+
+  </view>
+</view>
+<!-- 二级多选 -->
+
+<view class='select'>
+  <view>
+    薄荷叶
+  </view>
+  <view>
+    果醋
+  </view>
+   <view> 
+    配茶
+  </view>
+</view>
+
+<view class='point'>
+  <view class='point_line'>
+
+  </view>
+  <view class='point_circular'>
+
+  </view>
+</view>
+<!-- 指示 -->
+
+<swiper display-multiple-items='{{ option }}' current='{{ options }}' bindchange='optionChange'>
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+  <block wx:for="{{imgInfoArr}}">
+    <swiper-item>
+      <view class='optionBox' style='text-align:center'>
+        <view class='mask' wx:if='{{ index != options }}'></view>
+        <image src="{{item.src}}" mode='widthFix' style='width:80px;height:80px;' />
+        <view class='wineNameitemNameText'>{{ item.text }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ item.price }}</text>
+        </view>
+      </view> 
+    </swiper-item>
+  </block>  
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+</swiper>
+
+
+
+
+
+<!-- 进度1 -->
+ <view class='order_process'>
+  <view class='process_btn'>
+    糖浆
+  </view>
+  <view class='process_wrap' wx:for="{{processData}}" wx:key="">
+    <view class='process'>
+      <view class='process_line' style="background:{{item.start}}"></view>
+      <image class='process_icon' src="{{item.icon}}" data-index ='{{index}}' bindtap='changeprocess'></image>
+      <view class='process_line' style="background:{{item.end}}"></view>
+    </view>
+    <text class='process_name'>{{item.name}}</text>
+  </view>
+</view>
+
+<!-- 进度2 -->
+ <view class='order_process'>
+  <view class='process_btn'>
+    糖浆
+  </view>
+  <view class='process_wrap' wx:for="{{processData}}" wx:key="">
+    <view class='process'>
+      <view class='process_line' style="background:{{item.start}}"></view>
+      <image class='process_icon' src="{{item.icon}}" data-index ='{{index}}' bindtap='changeprocess'></image>
+      <view class='process_line' style="background:{{item.end}}"></view>
+    </view>
+    <text class='process_name'>{{item.name}}</text>
+  </view>
+</view>
+
+<!-- 进度3 -->
+ <view class='order_process'>
+  <view class='process_btn'>
+    糖浆
+  </view>
+  <view class='process_wrap' wx:for="{{processData}}" wx:key="">
+    <view class='process'>
+      <view class='process_line' style="background:{{item.start}}"></view>
+      <image class='process_icon' src="{{item.icon}}" data-index ='{{index}}' bindtap='changeprocess'></image>
+      <view class='process_line' style="background:{{item.end}}"></view>
+    </view>
+    <text class='process_name'>{{item.name}}</text>
+  </view>
+</view>
+
+<view class='temperature'>
+  <view class='temperature_con'>
+    <view class='temperature_con_btn' bindtap='iceShow'>
+      冷
+    </view>
+    <view class="temperature_con_point" hidden='{{cold}}'>
+      
+    </view>
+  </view>
+  <view class='temperature_con'>
+    <view class='temperature_con_btn' bindtap='iceHide'>
+      热
+    </view>
+    <view class='temperature_con_point' hidden='{{hot}}'>
+      
+    </view>
+  </view>
+</view>
+
+
+
+<!-- 冷/冰 -->
+<view class='choise' hidden='{{iceFlase}}'>
+  <view class='choise_con'>
+    <view class='choise_con_btn' >
+      正常冰
+    </view>
+  </view>
+  <view class='choise_con'>
+    <view class='choise_con_btn'>
+      少冰
+    </view>
+  </view>
+  <view class='choise_con'>
+    <view class='choise_con_btn'>
+      去冰
+    </view>
+  </view>
+</view>
+<view class='empty' hidden='{{!iceFlase}}'>
+</view>
+
+<view class='point'>
+  <view class='point_line'>
+
+  </view>
+  <view class='point_circular'>
+
+  </view>
+</view>
+
+<swiper display-multiple-items='{{ option }}' current='{{ options }}' bindchange='optionChange'>
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+  <block wx:for="{{imgInfoArr}}">
+    <swiper-item>
+      <view class='optionBox' style='text-align:center'>
+        <view class='mask' wx:if='{{ index != options }}'></view>
+        <image src="{{item.src}}" mode='widthFix' style='width:80px;height:80px;' />
+        <view class='wineNameitemNameText'>{{ item.text }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ item.price }}</text>
+        </view>
+      </view> 
+    </swiper-item>
+  </block>  
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+</swiper>
+
+<view class='point'>
+  <view class='point_line'>
+
+  </view>
+  <view class='point_circular'>
+
+  </view>
+</view>
+
+<swiper display-multiple-items='{{ option }}' class='lastSwiper' current='{{ options }}' bindchange='optionChange'>
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+  <block wx:for="{{imgInfoArr}}">
+    <swiper-item>
+      <view class='optionBox' style='text-align:center'>
+        <view class='mask' wx:if='{{ index != options }}'></view>
+        <image src="{{item.src}}" mode='widthFix' style='width:80px;height:80px;' />
+        <view class='wineNameitemNameText'>{{ item.text }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ item.price }}</text>
+        </view>
+      </view> 
+    </swiper-item>
+  </block>  
+  <swiper-item>
+    <view class='perch'></view>
+  </swiper-item>
+</swiper>
+<view class='order'>
+  <view class='order_img'>
+    <image src='/images/order.png'></image>
+  </view>
+  <view class='order_commodity' >
+    <view >
+      总价￥<text>26</text>
+    </view>
+    <view style=''>
+      茉莉绿茶等<text>11</text>件商品
+    </view>
+  </view>
+  <view class='order_check'>
+    去买单
+  </view>
+</view>
+ 
+
+ <!-- cup  -->
+<view class='cup' style='display:none'>
+  <view class='cup_top'>
+    <view class='cup_top_text'>
+      CUP-1
+    </view>
+    <view class='cup_top_img'>
+      <image src='/images/cup_tea.png'></image>
+    </view>
+  </view>
+  
+  <view class='cup_contain'>
+    <view class='cup_contain_top'>
+      <view>
+        商品名
+      </view>
+      <view>
+        数量
+      </view>
+      <view>
+        卡路里
+      </view>
+      <view>
+        价格
+      </view>
+    </view>
+    <scroll-view scroll-y="true" class='cup_scroll'>
+      <block wx:for='{{cup}}'>
+        <view class='cup_scroll_list'>
+          <view>
+            <text>{{item.list}}</text>、<text>{{item.name}}</text>
+          </view>
+          <view>
+            {{item.num}}
+          </view>
+          <view>
+            {{item.cal}}cal
+          </view>
+          <view>
+            ￥<text>{{item.price}}</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 提交订单 -->
+<view class='sub' style='display:none'>
+  <view class='sub_top'>
+    提交订单
+    <image src='/images/close.png'></image>
+  </view>
+  <view class='sub_con'>
+    <view class='sub_con_title'>
+      <view class='sub_con_title_list'>
+        <view>
+          自取门店：
+        </view>
+        <view>
+          日尝研究生三坊七巷
+        </view>
+      </view>
+      <view class='sub_con_title_edit'>
+        <view>
+          联系方式：
+        </view>
+        <view class='sub_con_title_edit_text'>
+          <text>九碗</text>  <text>先生</text> <text>18548564645</text>
+        </view>
+        <view class='sub_con_title_edit_btn'>
+          编辑
+        </view>
+      </view>
+      <view class='sub_con_title_list'>
+        <view>
+          取餐时间：
+        </view>
+        <view>
+          您前方排队书还有 <text>21</text>杯
+        </view>
+      </view>
+    </view>
+    <view class='sub_con_con'>
+      <view class='sub_con_con_title'>
+        商品详情:
+      </view>
+      <view class='sub_con_con_detail'>
+        <scroll-view scroll-y="true" class='order_scroll'>
+          <block wx:for="{{cup}}">
+            <view class='scroll_list'>
+              <view>
+                 {{item.list}}、{{item.name}}
+              </view>
+              <view>
+                {{item.num}}
+              </view>
+              <view>
+                {{item.cal}}cal
+              </view>
+              <view>
+                ￥{{item.price}}
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+    <view class='sub_con_bot'>
+      <view class='sub_con_bot_discount'>
+        <view class='sub_con_bot_discount_text'>优惠</view>
+        <view class='sub_con_bot_discount_num'>5张可用</view>
+        <view class='sub_con_bot_discount_img'>
+          <image src='/images/right.png'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
