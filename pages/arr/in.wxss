@@ -10,7 +10,7 @@ swiper{
 }
 .wineNameitemNameText {
   width: 100%;
-  height: 25px;
+  height: 40rpx;
   text-align: center;
   font-family: bariol_bold;
   font-size: 30rpx;
@@ -170,13 +170,14 @@ swiper{
   height: 50rpx;
   line-height: 50rpx;
   text-align: center;
-  color:#6D6E71;
+  color:#fff;
   border:2px #6D6E71 solid;
   border-radius: 90px;
   font-size: 1em;
   margin:0 auto;
   margin-top: 25rpx;
   font-weight: bloder;
+  z-index: 123123123123;
 }
 .choise_con_btn:hover{
    color:black;
@@ -231,7 +232,7 @@ swiper{
   box-shadow:0px 1px 6px black;
   position: fixed;
   left: 20px;
-  bottom: 70px;
+  bottom: 110rpx;
   border-radius: 10px;
 }
 .cup_top{
@@ -372,14 +373,14 @@ swiper{
 }
 .sub_con_con_detail{
   background: #F0F0F0;
-  height: 300px;
+  height: 360rpx;
 }
 .scroll_list{
   display: flex;
   flex-direction: row;
   font-size: 0.6em;
-  height: 40px;
-  line-height: 40px;
+  height: 32px;
+  line-height: 32px;
   margin: 5px 6px;
   background: #FCFBFB;
   border-radius: 60rpx;
@@ -393,7 +394,7 @@ swiper{
   flex:2;
 }
 .order_scroll{
-  height: 300px;
+  height: 360rpx;
 }
 .sub_con_bot{
   margin: 0 15rpx;
@@ -505,7 +506,7 @@ swiper{
  line-height: 30rpx;
  margin-top: 15rpx;
  background: #fff; 
- color:#8B8B8B;
+ color:black;
  font-size: 0.5em;
  text-align: center;
  border: 1px black solid;
@@ -588,27 +589,112 @@ swiper{
   display: flex;
   flex-direction: row;
   font-size: 0.7em;
-  font-weight: bold;
+  border-top: 1px black solid;
+  border-bottom: 1px black solid;
+  padding: 10rpx 40rpx 10rpx 20rpx;
 }
 .f_discount view:nth-child(1){
   flex: 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.f_total{
+  display: flex;
+  flex-direction: row;
+  font-size: 0.75em;
+  font-weight: bolder;
+  padding: 10rpx 40rpx 10rpx 20rpx;
+}
+.f_total view:nth-child(1){
+  flex: 1;
+}
+.f_text{
+  margin-top: 80rpx;
+  text-align: center;
+  border-bottom:1px black solid;
+}
+.f_text_pay{
+  font-size: 0.8em;
+  font-weight: bolder;
+}
+.f_text_mode{
+  font-size: 0.6em;
+  font-weight: 500;
+  margin: 5rpx 0 20rpx 0;
+}
+.f_vx{
+  display: flex;
+  flex-direction: row;
+  font-size: 0.75em;
+  font-weight: bolder;
+  padding: 10rpx 40rpx 10rpx 20rpx;
+}
+.f_vx_pay{
+  flex: 1;
+}
+.f_vx_img image{
+  width: 40rpx;
+  height: 40rpx;
+}
+.f_btn{
+  width: 500rpx;
+  height: 70rpx;
+  background: black;
+  color:#fff;
+  font-size: 0.7em;
+  border-radius: 90rpx;
+  line-height: 70rpx;
+  text-align: center;
+  margin: 30rpx auto 40rpx auto;
+}
 
 .optionBox image{
   width: 80px;
   height: 80px;
+  border-radius:20rpx;
+}
+
+.select_fourth{
+  margin:10rpx 0;
+  height: 280rpx;
+  overflow:hidden;
+  white-space:nowrap;
+
+}
+
+.select_fourth .optionBox{
+    width: 240rpx;
+    display: inline-block;
+    padding-top:10rpx;
+    border-radius:20rpx;
+    margin-left:10rpx;
+}
+
+.select_fourth .selected{
+    background: #aaa;
+}
+
+.selected .wineNameitemNameText{
+  color: #fff;
+}
+
+.select_second{
+  margin:10rpx 0;
+  height: 280rpx;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.select_second .optionBox{
+    width: 240rpx;
+    display: inline-block;
+    padding-top:10rpx;
+    border-radius:24rpx;
+    margin-left:10rpx;
+}
+
+.select_second .selected{
+    background: #aaa;
+}
+
+.selected .wineNameitemNameText{
+  color: #fff;
 }

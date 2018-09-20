@@ -83,17 +83,40 @@
   <view class='point_circular'></view>
 </view>
 <!-- 二级多选 -->
+<view class="select_second"> 
+<scroll-view class='' scroll-x="true">
+  <block wx:for="{{secondOption}}">
+    <view class='optionBox {{item.selected}}' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}" style='text-align:center;background:{{item.bg}};color:{{item.color}}' bindtap='selectSecond'>
+        <image src="{{item.image}}" mode='widthFix' />
+        <view class='wineNameitemNameText'>{{ item.name }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ item.price }}</text>
+        </view>
+      </view> 
+  </block>
+</scroll-view>
+</view>
 
-<view class='select'>
-  <view>
-    薄荷叶
-  </view>
-  <view>
-    果醋
-  </view>
-   <view> 
-    配茶
-  </view>
+<view class='point'>
+  <view class='point_line'></view>
+  <view class='point_circular'> </view>
+</view>
+
+<!-- 四级多选 -->
+<view class="select_fourth"> 
+<scroll-view class='' scroll-x="true">
+  <block wx:for="{{fourthGoods}}">
+    <view class='optionBox {{item.selected}}' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}" style='text-align:center;background:{{item.bg}};color:{{item.color}}' bindtap='selectFourth'>
+        <image src="{{item.image}}" mode='widthFix' />
+        <view class='wineNameitemNameText'>{{ item.name }}</view>
+        <view class='wineNameitemText'>
+          <text>¥</text>
+          <text>{{ item.price }}</text>
+        </view>
+      </view> 
+  </block>
+</scroll-view>
 </view>
 
 <view class='point'>
@@ -152,110 +175,69 @@
   </swiper-item>
 </swiper>
 
-<!-- 三级品类 -->
+<!-- 三级品类 糖 -->
 
 <view class='wrap'>
-    <!-- 1 -->
-  <view class='order_process'>
-    <view class='process_btn' bindtap='btn' style="background:{{bgProcess}}" data-id='1'>
-      糖浆
-    </view>
-    <view class='process_wrap' wx:for="{{processData}}" wx:key="">
-      <view class='process'>
-        <view class='process_line' style="background:{{item.start}}"></view>
-        <image class='process_icon' src="{{item.icon}}" data-index ='{{index}}' bindtap='changeprocess'></image>
-        <view class='process_line' style="background:{{item.end}}"></view>
+  <block wx:for="{{thirdGoods}}" wx:for-item="third">
+    <view class='order_process' data-id='{{third.pk}}' data-price="{{third.price}}" data-calorie="{{item.calorie}}" data-volume="0">
+      <view class='process_btn' bindtap='chooseSugar' style="background:{{third.bgProcess}}" data-id='{{third.pk}}' >
+        {{third.name}}
       </view>
-      <text class='process_name'>{{item.name}}</text>
-    </view>
-  </view>
-
-  <!-- 2 -->
-  <view class='order_process'>
-    <view class='process_btn' bindtap='btn' style="background:{{bgScon}}" data-id='2'>
-      糖浆
-    </view>
-    <view class='process_wrap' wx:for="{{sconData}}" wx:key="">
-      <view class='process'>
-        <view class='process_line' style="background:{{item.start}}"></view>
-        <image class='process_icon' src="{{item.icon}}" data-index ='{{index}}' bindtap='changeScon'></image>
-        <view class='process_line' style="background:{{item.end}}"></view>
+      <view class='process_wrap' wx:for="{{third.processData}}" wx:key="">
+        <view class='process'>
+          <view class='process_line' style="background:{{item.start}}"></view>
+          <image class='process_icon' src="{{item.icon}}" data-id ='{{third.pk}}' data-weight="{{item.name}}" bindtap='chooseWeight'></image>
+          <view class='process_line' style="background:{{item.end}}"></view>
+        </view>
+        <text class='process_name'>{{item.name}}</text>
       </view>
-      <text class='process_name'>{{item.name}}</text>
     </view>
-  </view>
-
-  <!-- 3 -->
-  <view class='order_process'>
-    <view class='process_btn' bindtap='btn' style="background:{{bgThird}}" data-id='3'>
-      糖浆
-    </view>
-    <view class='process_wrap' wx:for="{{thirdData}}" wx:key="">
-      <view class='process'>
-        <view class='process_line' style="background:{{item.start}}"></view>
-        <image class='process_icon' src="{{item.icon}}" data-index ='{{index}}' bindtap='changeThird'></image>
-        <view class='process_line' style="background:{{item.end}}"></view>
-      </view>
-      <text class='process_name'>{{item.name}}</text>
-    </view>
-  </view>
+  </block>
 </view>
 
 <!-- 温度选择 -->
 <view class='temperature'>
   <view class='temperature_con'>
-    <view class='temperature_con_btn' bindtap='iceShow'>
+    <view class='temperature_con_btn' style='background:{{bgCold}};color:{{colCold}}' bindtap='coldBtn'>
       冷
     </view>
-    <view class="temperature_con_point" hidden='{{cold}}'>
+    <view class="temperature_con_point" hidden='{{points}}'>
       
     </view>
   </view>
   <view class='temperature_con' >
-    <view class='temperature_con_btn' bindtap='iceHide'>
+    <view class='temperature_con_btn' style='background:{{bgHot}};color:{{colHot}}' bindtap='hotBtn'>
       热
     </view>
-    <view class='temperature_con_point' hidden='{{hot}}'>
+    <view class='temperature_con_point' hidden='{{!points}}'>
       
     </view>
   </view>
 </view>
 
 <!-- 冷/冰 -->
-<view class='choise' hidden='{{iceFlase}}' style='margin-bottom:50px;'>
-  <view class='choise_con'>
-    <view class='choise_con_btn' >
-      正常冰
+<view class='choise'  style='margin-bottom:50px;' hidden="{{choises}}">
+  <block wx:for="{{ices}}">
+    <view class='choise_con'  >
+      <view class='choise_con_btn' style='background:{{item.bgNol}};color:{{item.colNol}}' data-id='{{item.id}}' bindtap='iceBtn'>
+        {{item.name}}
+      </view>
     </view>
-  </view>
-  <view class='choise_con'>
-    <view class='choise_con_btn'>
-      少冰
-    </view>
-  </view>
-  <view class='choise_con'>
-    <view class='choise_con_btn'>
-      去冰
-    </view>
-  </view>
+  </block>
 </view>
-<view class='empty' hidden='{{!iceFlase}}' style='margin-bottom:50px;'>
+
+<view class='empty'  style='margin-bottom:50px;' hidden='{{!choises}}'>
 </view>
 
 <view class='point'>
-  <view class='point_line'>
-
-  </view>
-  <view class='point_circular'>
-
-  </view>
+  <view class='point_line'></view>
+  <view class='point_circular'></view>
 </view>
 
-
-
+<!--底部统计栏-->
 <view class='order'>
   <view class='order_img'>
-    <image src='/images/order.png'></image>
+    <image src='/images/order.png' bindtap='cupShow'></image>
   </view>
   <view class='order_commodity' >
     <view >
@@ -265,14 +247,13 @@
       茉莉绿茶等<text>11</text>件商品
     </view>
   </view>
-  <view class='order_check'>
+  <view class='order_check' bindtap='check' >
     去买单
   </view>
 </view>
- 
 
- <!-- cup  -->
-<view class='cup' style='display:none'>
+ <!-- 每杯配料  -->
+<view class='cup' hidden='{{cupMenu}}'>
   <view class='cup_top'>
     <view class='cup_top_text'>
       CUP-1
@@ -281,48 +262,42 @@
       <image src='/images/cup_tea.png'></image>
     </view>
   </view>
-  
-  <view class='cup_contain'>
-    <view class='cup_contain_top'>
-      <view>
-        商品名
-      </view>
-      <view>
-        数量
-      </view>
-      <view>
-        卡路里
-      </view>
-      <view>
-        价格
-      </view>
-    </view>
-    <scroll-view scroll-y="true" class='cup_scroll'>
-      <block wx:for='{{cup}}'>
-        <view class='cup_scroll_list'>
-          <view>
-            <text>{{item.list}}</text>、<text>{{item.name}}</text>
-          </view>
-          <view>
-            {{item.num}}
-          </view>
-          <view>
-            {{item.cal}}cal
-          </view>
-          <view>
-            ￥<text>{{item.price}}</text>
-          </view>
+
+  <swiper bindchange='changeCup'>
+  <!-- <block wx:for="{{cups}}" wx:for-itme="cup"> -->
+    <swiper-item data-item="{{cup.length}}">
+      <view class='cup_contain'>
+        <view class='cup_contain_top'>
+          <view>商品名</view>
+          <view> 数量</view>
+          <view>卡路里</view>
+          <view>价格</view>
         </view>
-      </block>
-    </scroll-view>
-  </view>
+        <scroll-view scroll-y="true" class='cup_scroll'>
+          <block wx:for='{{cup}}'>
+            <view class='cup_scroll_list'>
+              <view>
+                <text>{{index + 1}}</text>、<text>{{item.name}}</text>
+              </view>
+              <view>{{item.num}}</view>
+              <view>{{item.calorie}}cal</view>
+              <view>
+              ￥<text>{{item.price}}</text>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </swiper-item>
+    <!-- </block> -->
+  </swiper>
 </view>
 
 <!-- 提交订单 -->
-<view class='sub' style='display:none'>
+<view class='sub' hidden='{{sub}}'>
   <view class='sub_top'>
     提交订单
-    <image src='/images/close.png'></image>
+    <image src='/images/close.png' bindtap='closeSub'></image>
   </view>
   <view class='sub_con'>
     <view class='sub_con_title'>
@@ -363,7 +338,7 @@
           <block wx:for="{{cup}}">
             <view class='scroll_list'>
               <view>
-                 {{item.list}}、{{item.name}}
+                 {{index + 1}}、{{item.name}}
               </view>
               <view>
                 {{item.num}}
@@ -399,7 +374,7 @@
         <view>
           订单金额 ￥70
         </view>
-        <view>
+        <view bindtap='sureOrder'>
           确认下单
         </view>
       </view>
@@ -407,10 +382,11 @@
   </view>
 </view>
 
-<view class='payPage' style='display:none'>
+<!--确认支付-->
+<view class='payPage' hidden='{{payOrder}}'>
   <view class='payPage_top'>
     支付
-    <image src='/images/close.png'></image>
+    <image src='/images/close.png' bindtap='closePay'></image>
   </view>
   <view class='payPage_bot'>
     <view class='payPage_bot_title'>
@@ -483,9 +459,108 @@
           -￥10
         </view>
       </view>
+      <view class='f_total'>
+        <view>
+          总价
+        </view>
+        <view>
+          ￥10.00
+        </view>
+      </view>
+      <view class='f_text'>
+        <view class='f_text_pay'>还需支付60元</view>
+        <view class='f_text_mode'>请选择支付方式</view>
+      </view>
+      <view class='f_vx'>
+        <view class='f_vx_pay'>
+          微信支付
+        </view>
+        <view class='f_vx_img'>
+          <image src='/images/checkOut.png'></image>
+        </view>
+      </view>
+      <view class='f_btn'>
+        立即支付60元
+      </view>
     </view> 
     <view hidden="{{currentIndex!==1}}" id='record'> 
-      222222222
+      <view class='f_title'>
+        <view class='f_title_commodity'>
+          商品(7)
+        </view>
+        <view class='f_title_num'>
+          数量
+        </view>
+        <view class='f_title_price'>
+          总价
+        </view>
+      </view>
+      <view class='f_con'>
+        <view class='f_con_list'>
+          <view class='f_con_list_name'>
+            1、回甘普洱
+          </view>
+          <view class='f_con_list_num'>
+            1
+          </view>
+          <view class='f_con_list_price'>
+            $12.22
+          </view>
+        </view>
+        <view class='f_con_list'>
+          <view class='f_con_list_name'>
+            1、回甘普洱
+          </view>
+          <view class='f_con_list_num'>
+            1
+          </view>
+          <view class='f_con_list_price'>
+            $12.22
+          </view>
+        </view>
+        <view class='f_con_list'>
+          <view class='f_con_list_name'>
+            1、回甘普洱
+          </view>
+          <view class='f_con_list_num'>
+            1
+          </view>
+          <view class='f_con_list_price'>
+            $12.22
+          </view>
+        </view>
+      </view>
+      <view class='f_discount'>
+        <view>
+          优惠
+        </view>
+        <view>
+          -￥10
+        </view>
+      </view>
+      <view class='f_total'>
+        <view>
+          总价
+        </view>
+        <view>
+          ￥10.00
+        </view>
+      </view>
+      <view class='f_text'>
+        <view class='f_text_pay'>还需支付60元</view>
+        <view class='f_text_mode'>请选择支付方式</view>
+      </view>
+      <view class='f_vx'>
+        <view class='f_vx_pay'>
+          微信支付
+        </view>
+        <view class='f_vx_img'>
+          <image src='/images/checkOut.png'></image>
+        </view>
+      </view>
+      <view class='f_btn'>
+        立即支付66元
+      </view>
     </view>
   </view>
 </view>
