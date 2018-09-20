@@ -198,7 +198,7 @@
 <!-- 温度选择 -->
 <view class='temperature'>
   <view class='temperature_con'>
-    <view class='temperature_con_btn' style='background:{{bgCold}};color:{{colCold}}' bindtap='coldBtn'>
+    <view class='temperature_con_btn' data-type='cold' style='background:{{bgCold}};color:{{colCold}}' bindtap='chooseTemp'>
       冷
     </view>
     <view class="temperature_con_point" hidden='{{points}}'>
@@ -206,7 +206,7 @@
     </view>
   </view>
   <view class='temperature_con' >
-    <view class='temperature_con_btn' style='background:{{bgHot}};color:{{colHot}}' bindtap='hotBtn'>
+    <view class='temperature_con_btn' data-type='hot' style='background:{{bgHot}};color:{{colHot}}' bindtap='chooseTemp'>
       热
     </view>
     <view class='temperature_con_point' hidden='{{!points}}'>
@@ -219,7 +219,7 @@
 <view class='choise'  style='margin-bottom:50px;' hidden="{{choises}}">
   <block wx:for="{{ices}}">
     <view class='choise_con'  >
-      <view class='choise_con_btn' style='background:{{item.bgNol}};color:{{item.colNol}}' data-id='{{item.id}}' bindtap='iceBtn'>
+      <view class='choise_con_btn' style='background:{{item.bgColor}};color:{{item.color}}' data-id='{{item.id}}' bindtap='iceBtn'>
         {{item.name}}
       </view>
     </view>

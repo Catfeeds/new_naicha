@@ -277,8 +277,9 @@ swiper{
     text-align: center
 }
 .cup_scroll{
-  height: 160px;
+  height: 206rpx;
   margin-top: 8px;
+  overflow:scroll;
 }
 .cup_scroll_list{
   display: flex;
