@@ -64,7 +64,7 @@ Page({
         icon: '/images/process1.png'
       },
       {
-        name: '单糖',
+        name: '半糖',
         start: '#aaa',
         end: '#aaa',
         icon: '/images/process1.png'
@@ -83,7 +83,7 @@ Page({
       }
     ],
 
-// 购物车
+    // 购物车
     cups:[
       [
         {
@@ -124,20 +124,23 @@ Page({
     ices:[
       {
         name:"正常冰",
-        bgColor:"#fff",
-        color:"black",
+        bgColor:"#black",
+        color:"#fff",
+        type:'ice',
         id:1
       },
       {
         name:"少冰",
         bgColor: "#fff",
         color: "black",
+        type: 'less_ice',
         id:2
       },
       {
         name:"去冰",
         bgColor: "#fff",
         color: "black",
+        type: 'none_ice',
         id:3
       }
     ],
@@ -163,7 +166,16 @@ Page({
     bgThird:"#666",
     cupMenu:true,
     sub:true,
-    payOrder:true
+    payOrder:true,
+    totalPrice: 0.00,
+    totalNum: 0,
+    totalCup: 0,
+    totalCalorie: 0,
+    totalVolume: 0,
+    todos: 20, //排队杯数
+    temperature: '', //温度选择
+    baseItem: {}, // 第一品类选择
+    doubleId: 0, // 一级品类双倍
   },
   cupShow:function(){
     var cup = !this.data.cupMenu;
@@ -171,25 +183,89 @@ Page({
       cupMenu:cup
     })
   },
-  check:function(e){
+  // 去买单
+  checkOrder:function(e){
+    if (this.data.totalVolume > 500) {
+      wx.showModal({
+        content: '容量已超出500ml,请重新搭配',
+        showCancel: false,
+        confirmText: '重新搭配',
+      });
+      return false;
+    } 
+
+    // 检测必选
+    if (false) {
+
+    }
+
     if (this.data.payOrder == false){
       var sub = true;
     }else{
       var sub = false;
     }
+
     this.data.cupMenu = true;
     this.setData({
       sub:sub,
       cupMenu: this.data.cupMenu
     })
   },
+  // 确认订单
   sureOrder:function(){
-    var payOrder =!this.data.payOrder;
+    var that = this;
+    var payOrder = !that.data.payOrder;
     this.data.sub =true;
-    this.setData({
-      payOrder:payOrder,
-      sub: this.data.sub
-    })
+    var carts = that.data.carts;
+    var cartList = {
+      'price': '0',
+      'temperature': '', // 温度选择
+      'sugar': '', // 糖类选择
+      'weight': '',  // 糖分分量
+      'double': '', // 一级品类双倍 的id
+      'list': [], // 选中
+    };
+
+    cartList.sugar = that.data.sugarId;
+    cartList.weight = that.data.sugarWeight;
+    cartList.temperature = that.data.temperature;
+    cartList.double = that.data.doubleId;
+
+    for (var k in carts) {
+      // 多选
+      if (Array.isArray(carts[k])) {
+        for (let item of carts[k]) {
+          cartList.list.push(item['pk']);
+        }
+      } else { 
+        // 单选
+        if (JSON.stringify(carts[k]) != "{}") {
+          cartList.list.push(carts[k]['pk']);
+        }
+      }
+    }
+
+    console.log(cartList);
+
+    let array = [];
+    array.push(cartList);
+
+    // 创建订单
+    app.sendRequest({
+      url: 'order/create',
+      data: cartList,
+      mehtod: 'post',
+      success: function (res) {
+        console.log(res);
+
+        that.setData({
+          payOrder: payOrder,
+          sub: that.data.sub
+        })
+      }
+    });
+
+    
   },
   closeSub:function(){
     this.data.sub =true;
@@ -203,15 +279,18 @@ Page({
       payOrder:this.data.payOrder
     })
   },
+  // 冷选择
   iceBtn:function(e){
     var that =this;
     var iceId = e.currentTarget.dataset.id;
     var ices = that.data.ices;
+    var temperature = 'hot';
 
     for (var item of ices) {
       if (item['id'] == iceId) {
         item['bgColor'] = '#000';
         item['color'] = '#fff';
+        temperature = item['type'];
       } else {
         item['bgColor'] = '#fff';
         item['color'] = '#000';
@@ -219,7 +298,8 @@ Page({
     }
    
     this.setData({
-      ices: ices
+      ices: ices,
+      temperature: temperature
     })
   },
   // 冷热选择
@@ -233,7 +313,8 @@ Page({
       bgCold: cold ? '#000' : '#fff',
       colCold: cold ? '#fff' : '#000',
       points: ! cold,
-      choises: ! cold
+      choises: ! cold,
+      temperature: cold ? 'ice' : 'hot',
     })
   },
 
@@ -251,17 +332,83 @@ Page({
     var currentKey = 'currents.' + tab;
     var current = e.detail.current;
     var data = that.data;
+    var hasBaseGoods = that.hasBaseGoods();
 
     for (var i = 0, j = data[tab].length; i < j; i++) {
       
       // 当前选中的item
       if (current == i) {
         data[tab][i]['num'] = 1;
-        data.carts[tab] = data[tab][i];  
 
         if (data[tab][i]['pk'] == 0) {
           data.carts[tab] = {};
+          
+        } else {
+
+          data.carts[tab] = data[tab][i]; 
+
+          // 选择一级品类时，保存当前
+          if (tab == 'baseGoods') {
+            that.data.secondGoods.pop();
+            that.data.secondGoods.push({
+              name: '一级品类双倍',
+              price: data[tab][i].price,
+              image: 'https://www.layui.com/admin/std/dist/layuiadmin/style/res/template/portrait.png',
+              volume: 250,
+              calorie: data[tab][i].calorie,
+              pk: -1
+            });
+
+            that.setData({
+              baseItem: data[tab][i],
+              secondGoods: that.data.secondGoods
+            });
+
+            // 如果已经选了双倍，需要同时更新
+            if (that.data.doubleId) {
+              data.carts['baseGoods'].num = 2;
+            } else {
+              if (hasBaseGoods) {
+                data.carts['baseGoods'].num = 1;
+              }
+            }
+          }
+
+          // 只选择 一级品类双倍时，不计算
+          if (tab == 'secondGoods' ) {
+            if (data[tab][i]['pk'] == -1) {
+              data.carts[tab] = {};
+            }
+          }
         }
+
+        // 第一品类未选中，如果已经选中双倍的，需要清除
+        if (tab == 'baseGoods' && that.data.doubleId) {
+          data.carts['secondGoods'] = {};
+        }
+      }
+    }
+
+    // 选中一级品类双倍时
+    if (tab == 'secondGoods') {
+      if (current == data[tab].length - 1) {
+
+        if (hasBaseGoods) {
+          data.carts['baseGoods'].num = 2;
+          data.carts['secondGoods'] = {};
+        } 
+
+        that.setData({
+          doubleId: that.data.baseItem['pk']
+        })
+      } else {
+        if (hasBaseGoods) {
+          data.carts['baseGoods'].num = 1;
+        }
+
+        that.setData({
+          doubleId: 0
+        })
       }
     }
 
@@ -273,6 +420,19 @@ Page({
     that.setData(data);
 
     that.calculate(); // 购物车计算
+  },
+
+  // 是否有茶底商品
+  hasBaseGoods: function() {
+    var carts = this.data.carts;
+    
+    for (var key in carts) {
+      if (key == 'baseGoods' && JSON.stringify(carts[key] != "{}")) {
+        return true;
+      }
+    }
+
+    return false;
   },
   
   /**
@@ -345,6 +505,17 @@ Page({
             }
           }
         }
+
+        // 一级品类双倍
+        secondGoods.push({
+          name: '一级品类双倍',
+          price: '0.00',
+          image: 'https://www.layui.com/admin/std/dist/layuiadmin/style/res/template/portrait.png',
+          volume: 250,
+          calorie: 0,
+          pk: 999
+        });
+
         console.log(thirdGoods);
         that.setData({
           baseGoods: baseGoods,
@@ -461,6 +632,7 @@ Page({
 
     that.setData({
       sugarId: pk,
+      sugarWeight: '无糖',
       thirdGoods: thirdGoods
     }); 
   },
@@ -487,8 +659,8 @@ Page({
               item.icon = '/images/process2.png';
             } else {
               item.name = thirdGoods[i]['processData'][j]['name'];
-              item.start = j == 0 ? '#fff' : '#666';
-              item.end = j == 4 ? '#fff' : '#666';
+              item.start = j == 0 ? '#fff' : '#aaa';
+              item.end = j == 4 ? '#fff' : '#aaa';
               item.icon = '/images/process1.png';
             }
 
@@ -497,8 +669,8 @@ Page({
             }
           } else { // 非当前 糖类的，保持原样
             item.name = thirdGoods[i]['processData'][j]['name'];
-            item.start = j == 0 ? '#fff' : '#666';
-            item.end = j == 4 ? '#fff' :'#666';
+            item.start = j == 0 ? '#fff' : '#aaa';
+            item.end = j == 4 ? '#fff' :'#aaa';
             item.icon = '/images/process1.png';
           }
           parent.push(item);
@@ -556,20 +728,31 @@ Page({
           item['num'] = 1;
           cup.push(item);
           nums++;
+
+          price = this.floatAdd(price, item['price']);
+          volume += item['volume'];
+          calorie += item['calorie'];
         }
       } else { // 单选
-        price = this.floatAdd(price, carts[k]['price']);
-        volume += carts[k]['volume'];
-        calorie += carts[k]['calorie'];
-        nums++;
+        if (JSON.stringify(carts[k]) != "{}") {
+          price = this.floatAdd(price, carts[k]['price'] * carts[k]['num']);
+          volume += carts[k]['volume'];
+          calorie += carts[k]['calorie'];
+          nums++;
 
-        //carts[k]['num'] = 1;
-        cup.push(carts[k]);
+          //carts[k]['num'] = 1;
+          cup.push(carts[k]);
+        } 
       }
     }
 
     this.setData({
-      cup: cup
+      cup: cup,
+      totalPrice: price,
+      totalNum: nums,
+      totalCalorie: calorie,
+      totalVolume: volume,
+      totalCup: 1
     });
 
     console.log('price:' + price);

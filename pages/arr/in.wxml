@@ -73,6 +73,7 @@
       </view> 
     </swiper-item>
   </block>
+
   <swiper-item>
     <view class='perch'></view>
   </swiper-item>
@@ -189,7 +190,7 @@
           <image class='process_icon' src="{{item.icon}}" data-id ='{{third.pk}}' data-weight="{{item.name}}" bindtap='chooseWeight'></image>
           <view class='process_line' style="background:{{item.end}}"></view>
         </view>
-        <text class='process_name'>{{item.name}}</text>
+        <text class='process_name' style='opacity: {{item.opacity}}'>{{item.name}}</text>
       </view>
     </view>
   </block>
@@ -241,13 +242,19 @@
   </view>
   <view class='order_commodity' >
     <view >
-      总价￥<text>26</text>
+      总价￥<text>{{totalPrice}}</text>
     </view>
-    <view style=''>
-      茉莉绿茶等<text>11</text>件商品
+    <view style='display:inline-block;margin-right:8rpx;'>
+      共<text> {{totalCup}} </text>杯
+    </view>
+    <view style='display:inline-block;margin-right:10rpx;'>
+      <text>{{totalNum}} </text>件商品
+    </view>
+    <view style='display:inline-block'>
+      总卡路里：{{totalCalorie}} cal
     </view>
   </view>
-  <view class='order_check' bindtap='check' >
+  <view class='order_check' bindtap='checkOrder' >
     去买单
   </view>
 </view>
@@ -263,7 +270,7 @@
     </view>
   </view>
 
-  <swiper bindchange='changeCup'>
+  <swiper bindchange='changeCup' class='cup-swiper'>
   <!-- <block wx:for="{{cups}}" wx:for-itme="cup"> -->
     <swiper-item data-item="{{cup.length}}">
       <view class='cup_contain'>
@@ -316,16 +323,16 @@
         <view class='sub_con_title_edit_text'>
           <text>九碗</text>  <text>先生</text> <text>18548564645</text>
         </view>
-        <view class='sub_con_title_edit_btn'>
+        <!-- <view class='sub_con_title_edit_btn'>
           编辑
-        </view>
+        </view> -->
       </view>
       <view class='sub_con_title_list'>
         <view>
           取餐时间：
         </view>
         <view>
-          您前方排队书还有 <text>21</text>杯
+          您前方排队书还有 <text>{{todos}}</text>杯
         </view>
       </view>
     </view>
@@ -344,7 +351,7 @@
                 {{item.num}}
               </view>
               <view>
-                {{item.cal}}cal
+                {{item.calorie}}cal
               </view>
               <view>
                 ￥{{item.price}}
@@ -364,15 +371,15 @@
       </view>
       <view class='sub_con_bot_cou'>
         <view>
-          商品总量:7
+          商品总量:{{totalNum}}
         </view>
         <view >
-          卡路里:70cal
+          卡路里:{{totalCalorie}}cal
         </view>
       </view>
       <view class='sub_con_bot_order'>
         <view>
-          订单金额 ￥70
+          订单金额 ￥{{totalPrice}}
         </view>
         <view bindtap='sureOrder'>
           确认下单
@@ -416,7 +423,7 @@
           总价
         </view>
       </view>
-      <view class='f_con'>
+      <scroll-view scroll-y="true" class='f_con'>
         <view class='f_con_list'>
           <view class='f_con_list_name'>
             1、回甘普洱
@@ -425,7 +432,7 @@
             1
           </view>
           <view class='f_con_list_price'>
-            $12.22
+            12.22
           </view>
         </view>
         <view class='f_con_list'>
@@ -436,7 +443,7 @@
             1
           </view>
           <view class='f_con_list_price'>
-            $12.22
+            12.22
           </view>
         </view>
         <view class='f_con_list'>
@@ -447,10 +454,10 @@
             1
           </view>
           <view class='f_con_list_price'>
-            $12.22
+            12.22
           </view>
         </view>
-      </view>
+      </scroll-view>
       <view class='f_discount'>
         <view>
           优惠
@@ -504,7 +511,7 @@
             1
           </view>
           <view class='f_con_list_price'>
-            $12.22
+            12.22
           </view>
         </view>
         <view class='f_con_list'>
@@ -515,7 +522,7 @@
             1
           </view>
           <view class='f_con_list_price'>
-            $12.22
+          12.22
           </view>
         </view>
         <view class='f_con_list'>
@@ -526,7 +533,7 @@
             1
           </view>
           <view class='f_con_list_price'>
-            $12.22
+            12.22
           </view>
         </view>
       </view>

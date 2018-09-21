@@ -234,6 +234,10 @@ swiper{
   left: 20px;
   bottom: 110rpx;
   border-radius: 10px;
+  height: 460rpx;
+}
+swiper.cup-swiper{
+  height:  400rpx;
 }
 .cup_top{
   display: flex;
@@ -270,14 +274,15 @@ swiper{
   font-weight: bolder;
 }
 .cup_contain_top view:first-child{
-  flex: 3
+  flex: 3;
+  text-align:center;
 }
 .cup_contain_top view:not(:first-child){
-    flex: 2;
+    flex: 1;
     text-align: center
 }
 .cup_scroll{
-  height: 206rpx;
+  height: 340rpx;
   margin-top: 8px;
   overflow:scroll;
 }
@@ -294,7 +299,7 @@ swiper{
 }
 .cup_scroll_list view:not(:first-child){
   text-align: center;
-  flex:2;
+  flex:1;
 }
 .sub{
   width: 90%;
@@ -392,7 +397,7 @@ swiper{
 }
 .scroll_list view:not(:first-child){
   text-align: center;
-  flex:2;
+  flex:1;
 }
 .order_scroll{
   height: 360rpx;
@@ -460,7 +465,7 @@ swiper{
 .payPage{
   width: 90%;
   position: fixed;
-  top:15px;
+  top:20rpx;
   left: 50%;
   margin-left: -45%;
   background: #fff;
@@ -568,6 +573,7 @@ swiper{
   width: 100%;
   padding: 10rpx 40rpx 10rpx 20rpx;
   box-sizing: border-box;
+  height: 240rpx;
 }
 .f_con_list{
   display: flex;
@@ -608,7 +614,7 @@ swiper{
   flex: 1;
 }
 .f_text{
-  margin-top: 80rpx;
+  margin-top: 24rpx;
   text-align: center;
   border-bottom:1px black solid;
 }
