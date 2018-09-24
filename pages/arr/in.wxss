@@ -265,6 +265,7 @@ swiper.cup-swiper{
   background: #fff;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+  height: 100%;
 }
 .cup_contain_top{
   display: flex;

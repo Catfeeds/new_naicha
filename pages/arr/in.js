@@ -85,31 +85,6 @@ Page({
 
     // 购物车
     cups:[
-      [
-        {
-          list:1,
-          name:"回肝普洱",
-          num:12,
-          cal:100,
-          price:100.00
-        },
-        {
-          list: 2,
-          name: "回肝普洱",
-          num: 12,
-          cal: 100,
-          price: 100.00
-        }
-      ],
-      [
-        {
-          list: 1,
-          name: "回肝普洱",
-          num: 12,
-          cal: 100,
-          price: 100.00
-        }
-      ]
     ],
     cup: [
         {
@@ -176,6 +151,16 @@ Page({
     temperature: '', //温度选择
     baseItem: {}, // 第一品类选择
     doubleId: 0, // 一级品类双倍
+    currentCup: 1, // 当前杯
+    cupGroup: []
+  },
+  changeCup: function(e) {
+    var current = e.detail.current; // 当前索引，第一个0 
+    
+    this.setData({
+      currentCup: parseInt(current) + 1,
+      cupGroup: this.data.cupGroup
+    })
   },
   cupShow:function(){
     var cup = !this.data.cupMenu;
@@ -247,8 +232,8 @@ Page({
 
     console.log(cartList);
 
-    let array = [];
-    array.push(cartList);
+   // let array = [];
+   // array.push(cartList);
 
     // 创建订单
     app.sendRequest({
@@ -746,8 +731,12 @@ Page({
       }
     }
 
+    let cupGroup = [];
+    cupGroup[this.data.currentCup] = cup;
+
     this.setData({
       cup: cup,
+      cupGroup: cupGroup,
       totalPrice: price,
       totalNum: nums,
       totalCalorie: calorie,
@@ -759,6 +748,19 @@ Page({
     console.log('volume:' + volume);
     console.log('calorie:' + calorie);
     console.log('nums:' + nums);
+  },
+  // 增加一杯
+  addCup: function(e) {
+    let current = parseInt(this.data.currentCup) + 1;
+
+    let cupGroup = this.data.cupGroup;
+
+    cupGroup[current] = {};
+
+    this.setData({
+      currentCup: current,
+      cupGroup: cupGroup
+    });
   },
   
   /*

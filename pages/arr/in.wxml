@@ -263,15 +263,16 @@
 <view class='cup' hidden='{{cupMenu}}'>
   <view class='cup_top'>
     <view class='cup_top_text'>
-      CUP-1
+      CUP-{{currentCup}}
     </view>
-    <view class='cup_top_img'>
+    <view class='cup_top_img' bindtap='addCup'>
       <image src='/images/cup_tea.png'></image>
     </view>
   </view>
 
-  <swiper bindchange='changeCup' class='cup-swiper'>
+  <swiper bindchange='changeCup' class='cup-swiper' indicator-dots="true">
   <!-- <block wx:for="{{cups}}" wx:for-itme="cup"> -->
+    <block wx:for="{{cupGroup}}"  wx:for-item="cup">
     <swiper-item data-item="{{cup.length}}">
       <view class='cup_contain'>
         <view class='cup_contain_top'>
@@ -296,6 +297,7 @@
         </scroll-view>
       </view>
     </swiper-item>
+    </block>
     <!-- </block> -->
   </swiper>
 </view>
