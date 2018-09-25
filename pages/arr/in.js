@@ -135,6 +135,7 @@ Page({
     current: 0,//当前高亮的元素
     show: 3,//同时显示的数量
     cur: 0,//当前高亮的元素
+    iceId: 1, // 冷的第一个选择
     secondShow: 3,
     option: 3,
     iceFlase:false,
@@ -280,8 +281,10 @@ Page({
     // 设置冷选择
     cartGroup[current]['temperature'] = temperature;
     cartGroup[current]['ices'] = ices;
+    cartGroup[current]['iceId'] = iceId;
    
     this.setData({
+      iceId: iceId,
       ices: ices,
       temperature: temperature,
       cartGroup: cartGroup
@@ -411,9 +414,6 @@ Page({
       }
     }
 
-    console.log(data.carts);
-    console.log('406:' + that.data.currentCup);
-
     data.cartGroup[that.data.currentCup] = data.carts;
     data[currentKey] = current;
 
@@ -422,8 +422,6 @@ Page({
     //data['baseGoodsCurrent'] = that.data.baseGoodsCurrent
 
     that.setData(data);
-
-    console.log('436:' + current);
 
     that.calculate(); // 购物车计算
   },
@@ -547,15 +545,16 @@ Page({
     var carts = cartGroup[current];
 
     for (var i = 0, j = secondData.length; i < j; i++) {
-      if (secondData[i].pk == pk) {
+      if (secondData[i]['pk'] == pk) {
         
         if (secondData[i]['selected'] == 'selected') {
           secondData[i]['selected'] = '';
-          
+
           // 从购物车删除
           for (var j = 0, l = carts['secondData'].length; j < l; j++) {
-            if (carts['secondData'][j].pk == pk) {
+            if (carts['secondData'][j]['pk'] == pk) {
               carts['secondData'].splice(j, 1);
+              break;
             }
           }
 
@@ -593,15 +592,16 @@ Page({
     var carts = cartGroup[current];
 
     for (var i = 0, j = fourthGoods.length; i < j; i++) {
-      if (fourthGoods[i].pk == pk) {
+      if (fourthGoods[i]['pk'] == pk) {
 
         if (fourthGoods[i]['selected'] == 'selected') {
           fourthGoods[i]['selected'] = '';
 
           // 从购物车删除
           for (var j = 0, l = carts['fourthGoods'].length; j < l; j++) {
-            if (carts['fourthGoods'][j].pk == pk) {
+            if (carts['fourthGoods'][j]['pk'] == pk) {
               carts['fourthGoods'].splice(j, 1);
+              break;
             }
           }
 
@@ -754,10 +754,7 @@ Page({
       nums = 0;
 
     // 取当前杯
-    console.log('currentCup' + this.data.currentCup);
     carts = this.data.cartGroup[this.data.currentCup];
-    console.log('716');
-    console.log( carts);
 
     var cup = [];
 
@@ -790,8 +787,6 @@ Page({
 
     let cupGroup = this.data.cupGroup;
     cupGroup[this.data.currentCup] = cup;
-    
-    console.log('756:' + this.data.currentCup);
     
     this.setData({
       cup: cup,
@@ -897,10 +892,7 @@ Page({
       success: function (res) {
         var secondData = res.data.secondSelected;
         var fourthData = res.data.fourthSelected;
-        console.log('secondData');
-        console.log(secondData);
-        console.log('fourthData');
-        console.log(fourthData);
+
         for (var i = 0, len = secondOption.length; i < len; i++) {
           secondOption[i]['selected'] = '';
           for (var j = 0; j < secondData.length; j++) {
@@ -909,8 +901,7 @@ Page({
             }
           }
         }
-        console.log('secondOption');
-        console.log(secondOption);
+
         for (var i = 0, len = fourthGoods.length; i < len; i++) {
           fourthGoods[i]['selected'] = '';
           for (var j = 0; j < fourthData.length; j++) {
@@ -919,8 +910,7 @@ Page({
             }
           }
         }
-        console.log('fourthGoods:');
-        console.log(fourthGoods);
+
         that.setData({
           baseGoodsCurrent: res.data.baseGoodsCurrent,
           firstOptionCurrent: res.data.firstOptionCurrent,
@@ -964,12 +954,12 @@ Page({
     cartGroup[currentCup]['sugarId'] = that.data.sugarId;
     cartGroup[currentCup]['sugarWeight'] = that.data.weight;
 
-
     // 设置当前的温度选择
 
     // 保存上一温度选择
-    var cold = that.data.temperature == 'ice';
     var ices = that.data.ices;
+    var temperature = that.data.temperature;
+    var cold = temperature == 'ice';
 
     // 冷热选择
     cartGroup[currentCup]['temperature'] = cold ? 'ice' : 'hot';
@@ -979,12 +969,14 @@ Page({
     cartGroup[currentCup]['colCold'] = cold ? '#fff' : '#000';
     cartGroup[currentCup]['points'] = !cold;
     cartGroup[currentCup]['choises'] = !cold;
+    cartGroup[currentCup]['iceId'] = that.data.iceId;
+
+    var iceId = cart['iceId'] || 1;// 默认为1
 
     for (var item of ices) {
       if (item['id'] == iceId) {
         item['bgColor'] = '#000';
         item['color'] = '#fff';
-        temperature = item['type'];
       } else {
         item['bgColor'] = '#fff';
         item['color'] = '#000';
@@ -994,10 +986,18 @@ Page({
     that.setData({
       carts: that.data.cartGroup[current],  // 购物车
       currentCup: parseInt(current),        // 当前杯
-      cupGroup: cartGroup,
-
+      cartGroup: cartGroup,
+      ices: ices,
+      iceId: iceId,
+      temperature: temperature,
+      bgHot: cart['bgHot'] || '#fff',
+      colHot: cart['colHot'] || "#000",
+      bgCold: cart['bgCold'] || "#000",
+      colCold: cart['colCold'] || '#fff',
+      points: cart['points'] || false,
+      choises: cart['choises'] || false,
     });
-
+   
     // 计算当前杯配方
     that.calculate();
   },
@@ -1071,6 +1071,17 @@ Page({
     // 初始化糖类
     //var thirdGoods = this.data.thirdGoods;
     var thirdGoods = this.selectSugar(0, '');
+    var ices = this.data.ices;
+
+    for (var item of ices) {
+      if (item['id'] == 1) {
+        item['bgColor'] = '#000';
+        item['color'] = '#fff';
+      } else {
+        item['bgColor'] = '#fff';
+        item['color'] = '#000';
+      }
+    }
 
     this.setData({
       carts: {},
@@ -1090,7 +1101,8 @@ Page({
       bgCold: "#000",
       colCold: "#fff",
       points: false,
-      choises: false
+      choises: false,
+      ices: ices
     });
   },
   // 减去一杯
