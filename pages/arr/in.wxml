@@ -1,12 +1,12 @@
 <!-- 一级品类 -->
-<swiper display-multiple-items='{{ showLen }}' data-current='{{currents.currentBase}}' data-tab="baseGoods" bindchange='changeFun'>
+<swiper display-multiple-items='{{ showLen }}' current='{{baseGoodsCurrent}}' data-tab="baseGoods" bindchange='changeFun'>
   <swiper-item>
     <view class='perch'></view>
   </swiper-item>
   <block wx:for="{{baseGoods}}" wx:for-itme="item">
     <swiper-item item-id="{{item.pk}}">
       <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
-        <view class='mask' wx:if='{{ index != currents.baseGoods }}'></view>
+        <view class='mask' wx:if='{{ index != baseGoodsCurrent }}'></view>
         <image src="{{item.image}}" mode='widthFix' />
         <view class='wineNameitemNameText'>{{ item.name }}</view>
         <view class='wineNameitemText'>
@@ -28,14 +28,14 @@
 </view>
 
 <!-- 一级可选 -->
-<swiper display-multiple-items='{{ showLen }}' data-current='{{currents.currentBase}}' data-tab="firstOption" bindchange='changeFun'>
+<swiper display-multiple-items='{{ showLen }}' current='{{firstOptionCurrent}}' data-tab="firstOption" bindchange='changeFun'>
   <swiper-item>
     <view class='perch'></view>
   </swiper-item>
   <block wx:for="{{firstOption}}" wx:for-itme="item">
     <swiper-item item-id="{{item.pk}}">
       <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
-        <view class='mask' wx:if='{{ index != currents.firstOption }}'></view>
+        <view class='mask' wx:if='{{ index != firstOptionCurrent }}'></view>
         <image src="{{item.image}}" mode='widthFix' />
         <view class='wineNameitemNameText'>{{ item.name }}</view>
         <view class='wineNameitemText'>
@@ -56,14 +56,14 @@
 </view>
 
 <!-- 二级品类 -->
-<swiper display-multiple-items='{{ showLen }}' data-current='{{currents.secondGoods}}' data-tab="secondGoods" bindchange='changeFun'>
+<swiper display-multiple-items='{{ showLen }}' current='{{secondGoodsCurrent}}' data-tab="secondGoods" bindchange='changeFun'>
   <swiper-item>
     <view class='perch'></view>
   </swiper-item>
   <block wx:for="{{secondGoods}}" wx:for-itme="item">
     <swiper-item item-id="{{item.pk}}">
       <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
-        <view class='mask' wx:if='{{ index != currents.secondGoods }}'></view>
+        <view class='mask' wx:if='{{ index != secondGoodsCurrent }}'></view>
         <image src="{{item.image}}" mode='widthFix' />
         <view class='wineNameitemNameText'>{{ item.name }}</view>
         <view class='wineNameitemText'>
@@ -126,14 +126,14 @@
 </view>
 
 <!-- 五级品类 -->
-<swiper display-multiple-items='{{ showLen }}' data-current='{{currents.fifthGoods}}' data-tab="fifthGoods" bindchange='changeFun'>
+<swiper display-multiple-items='{{ showLen }}' current='{{fifthGoodsCurrent}}' data-tab="fifthGoods" bindchange='changeFun'>
   <swiper-item>
     <view class='perch'></view>
   </swiper-item>
   <block wx:for="{{fifthGoods}}" wx:for-itme="item">
     <swiper-item item-id="{{item.pk}}">
       <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
-        <view class='mask' wx:if='{{ index != currents.fifthGoods }}'></view>
+        <view class='mask' wx:if='{{ index != fifthGoodsCurrent }}'></view>
         <image src="{{item.image}}" mode='widthFix' />
         <view class='wineNameitemNameText'>{{ item.name }}</view>
         <view class='wineNameitemText'>
@@ -154,14 +154,14 @@
 </view>
 
 <!-- 奶盖撒料 -->
-<swiper display-multiple-items='{{ showLen }}' data-current='{{currents.otherGoods}}' data-tab="otherGoods" bindchange='changeFun'>
+<swiper display-multiple-items='{{ showLen }}' current='{{otherGoodsCurrent}}' data-tab="otherGoods" bindchange='changeFun'>
   <swiper-item>
     <view class='perch'></view>
   </swiper-item>
   <block wx:for="{{otherGoods}}" wx:for-itme="item">
     <swiper-item item-id="{{item.pk}}">
       <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
-        <view class='mask' wx:if='{{ index != currents.otherGoods }}'></view>
+        <view class='mask' wx:if='{{ index != otherGoodsCurrent }}'></view>
         <image src="{{item.image}}" mode='widthFix' />
         <view class='wineNameitemNameText'>{{ item.name }}</view>
         <view class='wineNameitemText'>
@@ -263,14 +263,14 @@
 <view class='cup' hidden='{{cupMenu}}'>
   <view class='cup_top'>
     <view class='cup_top_text'>
-      CUP-{{currentCup}}
+      CUP-{{currentCup + 1}}
     </view>
     <view class='cup_top_img' bindtap='addCup'>
       <image src='/images/cup_tea.png'></image>
     </view>
   </view>
 
-  <swiper bindchange='changeCup' class='cup-swiper' indicator-dots="true">
+  <swiper bindchange='changeCup' class='cup-swiper' indicator-dots="true" current="{{currentCup}}">
   <!-- <block wx:for="{{cups}}" wx:for-itme="cup"> -->
     <block wx:for="{{cupGroup}}"  wx:for-item="cup">
     <swiper-item data-item="{{cup.length}}">

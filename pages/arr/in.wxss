@@ -235,6 +235,7 @@ swiper{
   bottom: 110rpx;
   border-radius: 10px;
   height: 460rpx;
+  background:#fff;
 }
 swiper.cup-swiper{
   height:  400rpx;
