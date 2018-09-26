@@ -60,7 +60,7 @@
   <swiper-item>
     <view class='perch'></view>
   </swiper-item>
-  <block wx:for="{{secondGoods}}" wx:for-itme="item">
+  <block wx:for="{{secondGoods}}" wx:for-itme="item" wx:if="{{item.show}}">
     <swiper-item item-id="{{item.pk}}">
       <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
         <view class='mask' wx:if='{{ index != secondGoodsCurrent }}'></view>
