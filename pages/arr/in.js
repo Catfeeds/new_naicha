@@ -191,50 +191,93 @@ Page({
     var payOrder = !that.data.payOrder;
     this.data.sub =true;
     var carts = that.data.carts;
-    var cartList = {
-      'price': '0',
-      'temperature': '', // 温度选择
-      'sugar': '', // 糖类选择
-      'weight': '',  // 糖分分量
-      'double': '', // 一级品类双倍 的id
-      'list': [], // 选中
-    };
+    var cartList = {};
+    var postData = [];
 
-    cartList.sugar = that.data.sugarId;
-    cartList.weight = that.data.sugarWeight;
-    cartList.temperature = that.data.temperature;
-    cartList.double = that.data.doubleId;
+    carts = that.data.cartGroup;
 
-    for (var k in carts) {
-      // 多选
-      if (Array.isArray(carts[k])) {
-        for (let item of carts[k]) {
-          cartList.list.push(item['pk']);
-        }
-      } else { 
-        // 单选
-        if (JSON.stringify(carts[k]) != "{}") {
-          cartList.list.push(carts[k]['pk']);
+    for (var i = 0, len = carts.length; i < len; i ++) {
+      cartList = {
+        'price': '0',
+        'temperature': '', // 温度选择
+        'sugar': '', // 糖类选择
+        'weight': '',  // 糖分分量
+        'double': '', // 一级品类双倍 的id
+        'list': [], // 选中
+      };
+
+      if ('sugarData' in carts[i]) {
+        cartList.sugar = carts[i]['sugarData']['sugarId'];
+        cartList.weight = carts[i]['sugarData']['sugarWeight'];
+      }
+
+      if ('temperData' in carts[i]) {
+        cartList.temperature = carts[i]['temperData']['temperature'];
+      } else {
+        cartList.temperature = 'ice';
+      }
+
+      if ('baseGoods' in carts[i]) {
+        if (2 == carts[i]['baseGoods']['num']) {
+          cartList.double = carts[i]['baseGoods']['pk'];
         }
       }
+
+      for (var k in carts[i]) {
+        if (k == 'sugarData' || k == 'temperData') {
+          continue;
+        }
+
+        // 多选
+        if (Array.isArray(carts[i][k])) {
+          for (let item of carts[i][k]) {
+            cartList.list.push(item['pk']);
+          }
+        } else {
+          // 单选
+          if (JSON.stringify(carts[i][k]) != "{}") {
+            cartList.list.push(carts[i][k]['pk']);
+          }
+        }
+      }
+
+      postData.push(cartList);
     }
 
-    console.log(cartList);
+    // cartList.sugar = that.data.sugarId;
+    // cartList.weight = that.data.sugarWeight;
+    // cartList.temperature = that.data.temperature;
+    // cartList.double = that.data.doubleId;
 
+    // for (var k in carts) {
+    //   // 多选
+    //   if (Array.isArray(carts[k])) {
+    //     for (let item of carts[k]) {
+    //       cartList.list.push(item['pk']);
+    //     }
+    //   } else { 
+    //     // 单选
+    //     if (JSON.stringify(carts[k]) != "{}") {
+    //       cartList.list.push(carts[k]['pk']);
+    //     }
+    //   }
+    // }
+
+    console.log(postData);
+    console.log(JSON.stringify(postData));
    // let array = [];
    // array.push(cartList);
 
     // 创建订单
     app.sendRequest({
       url: 'order/create',
-      data: cartList,
+      data: {data: JSON.stringify(postData)},
       mehtod: 'post',
       success: function (res) {
-        console.log(res);
 
         that.setData({
           payOrder: payOrder,
-          sub: that.data.sub
+          sub: that.data.sub,
         })
       }
     });
@@ -347,6 +390,10 @@ Page({
 
   // 左右滑动
   changeFun(e) {
+    if (e.detail.source != 'touch') {
+      return false; // 在新增杯时，触发 changeFun 
+    }
+
     var that = this;
     var tab = e.target.dataset.tab;
     //var currentKey = 'currents.' + tab;
@@ -395,13 +442,6 @@ Page({
               show: true
             });
 
-            // 选择奶制品类时，排斥柑橘类
-            if (-1 != milkCategory.indexOf(data[tab][i]['pk'])) {
-              that.toggleCitrus();
-            } else {
-              that.toggleCitrus('show');
-            }
-
             that.setData({
               baseItem: data[tab][i],
               secondGoods: that.data.secondGoods,
@@ -425,14 +465,14 @@ Page({
             }
           }
 
-          // 一级可选
-          if (tab == 'firstOption') {
             // 选择奶制品类时，排斥柑橘类
+          if (tab == 'baseGoods' || tab == 'firstOption') {
             if (-1 != milkCategory.indexOf(data[tab][i]['pk'])) {
               that.toggleCitrus();
             } else {
               that.toggleCitrus('show');
             }
+            // 购物车删除
           }
         }
 
@@ -470,7 +510,7 @@ Page({
     if ('temperData' in data.carts) {
 
     } else {
-      data.carts['temperData'] = { name: '正常冰', num: 1, price: 0, calorie: 0, volume: 0 };
+      data.carts['temperData'] = { name: '正常冰', num: 1, price: 0, calorie: 0, volume: 0, temperature: 'ice' };
     }
 
     data.cartGroup[that.data.currentCup] = data.carts;
@@ -489,25 +529,25 @@ Page({
     var secondData = this.data.secondGoods;
     var citrusCategory = this.data.citrusCategory;
     
-    for (var i = 0, len = secondData.length; i < len; i++) {
+    for (var i = 0; i < secondData.length; i++) {
       //console.log(secondData[i]);
       var pk = secondData[i]['pk'];
 
       if (action == 'hide') {
         if (-1 != citrusCategory.indexOf(pk)) {
-          //secondData[i]['show'] = false;
+          secondData[i]['show'] = false;
           //delete secondData[i];
           //this.data.citrusHide.push(secondData[i]);
 
-          secondData.splice(i, 1);
+          //secondData.splice(i, 1);
         }
-      }     
+      }    
+
+      if (action != 'hide') {
+        secondData[i]['show'] = true;
+        // secondData.splice(7, 1, this.data.citrusHide)
+      } 
     }
-    if (action != 'hide') {
-     // secondData.splice(7, 1, this.data.citrusHide)
-    }
-    
-    //console.log(secondData);
 
     this.setData({
       secondGoods: secondData,
@@ -795,7 +835,11 @@ Page({
 
     // 取当前杯
     carts = this.data.cartGroup[this.data.currentCup];
+    
+    console.log(this.data.currentCup);
+    console.log(this.data.cartGroup);
     console.log(carts);
+
     var cup = [];
     var keys = ['baseGoods', 'firstOption', 'secondGoods', 'secondData', 'fourthGoods', 'fifthGoods', 'otherGoods', 'sugarData'];
 //, 'temperData'
@@ -828,8 +872,6 @@ Page({
         } 
       }
     }
-
-    console.log(cup);
 
     // 把温度放在最后
     if ('temperData' in carts) {
@@ -965,7 +1007,7 @@ Page({
         var cold = temperature != 'hot';
 
         // 冷热选择
-        carts['temperData']['temperature'] = cold ? 'ice' : 'hot';
+        carts['temperData']['temperature'] = cold ? temperature : 'hot';
         carts['temperData']['bgHot'] = cold ? '#fff' : '#000';
         carts['temperData']['colHot'] = cold ? '#000' : '#fff';
         carts['temperData']['bgCold'] = cold ? '#000' : '#fff';
@@ -1078,7 +1120,7 @@ Page({
         choises: cart['temperData']['choises'] || false,
       });
     }
-   
+
     // 计算当前杯配方
     that.calculate();
   },
@@ -1165,6 +1207,10 @@ Page({
         item['color'] = '#000';
       }
     }
+
+    console.log('cupGroup');
+    console.log(cupGroup);
+    console.log(cartGroup);
 
     this.setData({
       carts: {},
