@@ -71,6 +71,7 @@ Page({
             item['pk'] = data[i]['id'];
             item['img'] = '/images/me1.png';
             item['text'] = data[i]['title'];
+            item['delBtn'] = true;
 
             if (that.data.formulaId == data[i]['id']) {
               item['btn'] = "已是首推";
@@ -188,17 +189,22 @@ Page({
     let id = e.currentTarget.dataset.pk;
     var that = this;
 
-    wx.showModal({
-      cancelText: '放弃',
-      confirmText: '确定',
-      content: '确定删除该口味吗',
-      success: function (res) {
-        if (res.confirm) {
+    // wx.showModal({
+    //   cancelText: '放弃',
+    //   confirmText: '确定',
+    //   content: '确定删除该口味吗',
+    //   success: function (res) {
+    //     if (res.confirm) {
           app.sendRequest({
             url: 'user/deleteTaste/' + id,
             data: {},
             success: function (res) {
               if (res.code == 200) {
+                app.showToast({
+                  title: '删除成功',
+                  icon: 'success'
+                });
+
                 let tastes = that.data.con;
                 for (let i in tastes) {
                   console.log(tastes[i]);
@@ -220,9 +226,9 @@ Page({
               }
             }
           });
-        }
-      }
-    });
+    //     }
+    //   }
+    // });
     
   },
 
@@ -310,17 +316,33 @@ Page({
   // 点击取消左移
   closeImg:function(e){
     var that = this;
-    var index =e.currentTarget.dataset.index;
+    var index = e.currentTarget.dataset.index;
 
-    that.data.con[index].right=18;
+    that.data.con[index].right = 50;
     that.data.con[index].hidImg = !that.data.con[index].hidImg;
-
+    that.data.con[index].delBtn = false;
     console.log(that.data.con[index].hidImg)
     that.setData({
-      con:that.data.con,
+      con: that.data.con,
     })
   },
+  // 点击取消，列表右移
+  closeBtn: function (e) {
+    var that = this;
+    console.log(e)
+    var id = e.currentTarget.dataset.num;
+    for (var i = 0; i < that.data.con.length; i++) {
+      if (that.data.con[i].id == id) {
+        console.log(that.data.con[i].id);
+        that.data.con[i].right = 0;
+        that.data.con[i].delBtn = true;
+      }
+    };
 
+    that.setData({
+      con: that.data.con,
+    })
+  },
   // 点击列表右移
   list: function (e) {
     var that = this;

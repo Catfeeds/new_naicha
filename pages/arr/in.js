@@ -5,7 +5,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    // 选项卡 数据
+    // 商品详情 选项卡 数据
+    commodity:["CUP-1","CUP-2"],
+    commodityIndex:0,
+
+    //支付页 选项卡 数据
     navbar: ["CUP-1", "CUP-2"],
     currentIndex: 0,//tabbar索引
     currents: { // 当前选中
@@ -116,6 +120,8 @@ Page({
         id:3
       }
     ],
+    coupons:[
+    ],
     bgHot:"#fff",
     colHot: "#000",
     bgCold:"#000",
@@ -137,6 +143,7 @@ Page({
     bgProcess:"#666",
     bgScon:"#666",
     bgThird:"#666",
+    shade:true,
     cupMenu:true,
     sub:true,
     payOrder:true,
@@ -155,35 +162,122 @@ Page({
     citrusCategory: [], // 柑橘类
     milkCategory: [],
     citrusHide: [], // 二级 柑橘类隐藏
+    couponHide: true,
+    couponCon: false,
+    couponShow: false,
+    couponText: "5张可用",
+    shopName: '',  // 店铺名
+    telephone: '', // 手机号
+    datetime: '', // 日期时间
+    todoCup: 0, // 前面还有多少杯
+    gender: '',
+  },
+  // 商品详情选项卡
+  commodityTab: function (e) {
+    this.setData({
+      commodityIndex: e.currentTarget.dataset.index
+    });
   },
 
+  cupShow: function () {
+    var cup = !this.data.cupMenu;
+    this.setData({
+      cupMenu: cup
+    })
+  },
+  couponImg: function () {
+    this.setData({
+      couponHide: true,
+      shade: true
+    })
+  },
+  couponBtn: function () {
+    this.setData({
+      couponHide: false,
+      //sub: true
+    })
+  },
+  // 使用优惠券
+  couponId: function (e) {
+    var couponId = e.currentTarget.dataset.id;
+
+    for (var i = 0; i < this.data.coupons.length; i++) {
+      if (couponId == this.data.coupons[i].id) {
+
+        this.setData({
+          couponText: this.data.coupons[i].text,
+          couponCon: true,
+          couponHide: true,
+          sub: false
+        })
+      }
+      
+    };
+  },
   // 去买单
   checkOrder:function(e){
-    if (this.data.totalVolume > 500) {
+    var that = this;
+
+    if (that.data.cupGroup.length < 1) {
+      app.showToast({
+        title: '购物车是空的',
+        icon: 'none'
+      });
+
+      return;
+    }
+
+    if (that.data.totalVolume > 500) {
       wx.showModal({
         content: '容量已超出500ml,请重新搭配',
         showCancel: false,
         confirmText: '重新搭配',
       });
-      return false;
+      return;
     } 
+
+    app.sendRequest({
+      url: 'order/check',
+      data: { orderPrice: 30},
+      success: function (res) {
+        var coupons = res.data.coupons;
+        var couponList = [];
+
+        for (var i = 0, len = coupons.length; i < len; i++) {
+          couponList.push({
+            text: coupons[i].title,
+            day: coupons[i].deadline,
+            btn: "使用",
+            id: coupons[i].id
+          });
+        }
+
+        if (that.data.payOrder == false) {
+          var sub = true;
+        } else {
+          var sub = false;
+        }
+
+        that.setData({
+          sub: sub,
+          cupMenu: true,
+          shade: false,
+          shopName: res.data.shopName,
+          telephone: res.data.telephone,
+          datetime: res.data.datetime,
+          coupons: couponList,
+          couponText: couponList.length + '张可用',
+          gender: res.data.gender
+        });
+      }
+    });
+    return;
 
     // 检测必选
     if (false) {
 
     }
 
-    if (this.data.payOrder == false){
-      var sub = true;
-    }else{
-      var sub = false;
-    }
-
-    this.data.cupMenu = true;
-    this.setData({
-      sub:sub,
-      cupMenu: this.data.cupMenu
-    })
   },
   // 确认订单
   sureOrder:function(){
@@ -263,11 +357,14 @@ Page({
     //   }
     // }
 
-    console.log(postData);
     console.log(JSON.stringify(postData));
    // let array = [];
    // array.push(cartList);
-
+    that.setData({
+      payOrder: payOrder,
+      sub: that.data.sub,
+    });
+    return;
     // 创建订单
     app.sendRequest({
       url: 'order/create',
@@ -285,15 +382,15 @@ Page({
     
   },
   closeSub:function(){
-    this.data.sub =true;
     this.setData({
-      sub: this.data.sub
+      sub: true,
+      shade: true
     })
   },
   closePay:function(){
-    this.data.payOrder = true;
     this.setData({
-      payOrder:this.data.payOrder
+      payOrder: true,
+      shade: true,
     })
   },
   // 冷选择
@@ -385,6 +482,13 @@ Page({
   navbarTab: function (e) {
     this.setData({
       currentIndex: e.currentTarget.dataset.index
+    });
+  },
+
+  // 隐藏购物车
+  gotoDiy: function() {
+    this.setData({
+      cupMenu: true
     });
   },
 

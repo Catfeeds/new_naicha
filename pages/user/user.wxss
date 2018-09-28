@@ -829,5 +829,46 @@ page{
   border-radius:180rpx;
   overflow:hidden;
   box-shadow:0 0 10px #eec;
+}
+.del_btn{
+  font-size: 0.6em;
+  display: flex;
+  position: absolute;
+  right: 10px;
+  color:#fff;
+}
+.del_btn_close{
+  width: 60rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: left;
+  background: #333;
+  border-top-right-radius: 90rpx;
+  border-bottom-right-radius: 90rpx;
+  border-right: 1px #BBBCBD solid;
+  padding-left: 5rpx;
+}
+.del_btn_sure{
+  display: flex;
+  flex-direction: column;
+  width: 60rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: right;
+  background: #666;
+  border-top-left-radius: 90rpx;
+  border-bottom-left-radius: 90rpx;
+  padding-right: 5rpx;
+}
 
+.con_list_text{
+width:300rpx;
+font-size: 0.6em;
+height:100%;
+display: table-cell;
+vertical-align: middle;
+}
+.disTable{
+height:100%;
+display:table;
 }

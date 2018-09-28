@@ -41,9 +41,14 @@
             <view class='con_list_num' data-index="0">
               <image src='/images/vx.png' data-index="0"></image>
             </view>
-            <view class='con_list_text' data-index="0">
+            <view class="disTable">
+              <view class='con_list_text' data-index="0">
               {{item.text}}
+              </view>
             </view>
+            <!-- <view class='con_list_text' data-index="0">
+              {{item.text}}
+            </view> -->
             <view class='con_list_del' data-index="0" bindtap='carts'>
               <image src='/images/vx.png'></image>
             </view>
@@ -53,11 +58,16 @@
               </view>
             </view>
           </view>
-          <view class='delete' bindtap='deleteTaste' data-pk="{{item.pk}}">
+          <view class='delete'>
             <image src='/images/close.png' data-index='{{key}}' hidden="{{hidImg}}"  bindtap='closeImg' class='close_img'></image>
+            <view class="del_btn" hidden='{{item.delBtn}}'>
+              <view class='del_btn_sure' data-num="{{item.num}}" bindtap='closeBtn'>取消</view>
+              <view class='del_btn_close' bindtap='deleteTaste' data-pk="{{item.pk}}">确定</view>
+            </view>
+            <!-- <image src='/images/close.png' data-index='{{key}}' hidden="{{hidImg}}"  bindtap='closeImg' class='close_img'></image>
             <button class='delete_block' hidden='{{!hidImg}}' type="primary" bindtap="modalcnt" style='width:100rpx;text-align:center;margin-right:3px;'>
             </button>
-            <view hidden='{{!hidImg}}' style='font-size:0.6em;transition:all 0.6s;width:50px;text-align:center;padding-right:15px;box-sizing:border-box'>删除</view>
+            <view hidden='{{!hidImg}}' style='font-size:0.6em;transition:all 0.6s;width:50px;text-align:center;padding-right:15px;box-sizing:border-box'>删除</view> -->
           </view>
         </view>
       </block>
