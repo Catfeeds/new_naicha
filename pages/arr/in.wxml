@@ -252,9 +252,9 @@
       <view style='display:inline-block;margin-right:10rpx;'>
         <text>{{totalNum}} </text>件商品
       </view>
-      <view style='display:inline-block'>
+      <!-- <view style='display:inline-block'>
         总卡路里：{{totalCalorie}} cal
-      </view>
+      </view> -->
     </view>
     <view class='order_check' bindtap='checkOrder' >
       去买单
@@ -428,7 +428,7 @@
     </view>
     <view class='payPage_bot'>
       <view class='payPage_bot_title'>
-        日尝研究生三坊七巷店
+        {{shopName}}
       </view>
       <view class="navbar"> 
         <view class='navbar_option'>
@@ -438,16 +438,18 @@
             CUP-{{index + 1}}
           </view> 
           <view class='navbar_right'>
-            2018-10-11 11:11
+            {{datetime}}
           </view>
         </view>
       </view> 
 
 
       <view id='flavor'> 
+        
+      <block wx:for='{{cupGroup}}' wx:for-item="cup" wx:key="indx">
         <view class='f_title'>
           <view class='f_title_commodity'>
-            商品(7)
+            商品({{cup.length}})
           </view>
           <view class='f_title_num'>
             数量
@@ -457,8 +459,6 @@
           </view>
         </view>
 
-      <block wx:for='{{cupGroup}}' wx:for-item="cup" wx:key="indx">
-        
           <view hidden="{{currentIndex!=index}}"> 
             <scroll-view scroll-y="true" class='cupScroll'>
               <view  class='f_con'>
@@ -488,7 +488,7 @@
         </view>
         <view class='f_total'>
           <view>总价</view>
-          <view>￥10.00</view>
+          <view>￥{{totalPrice}}</view>
         </view>
         <view class='f_text'>
           <view class='f_text_pay'>还需支付60元</view>

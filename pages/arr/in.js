@@ -227,18 +227,18 @@ Page({
       return;
     }
 
-    if (that.data.totalVolume > 500) {
-      wx.showModal({
-        content: '容量已超出500ml,请重新搭配',
-        showCancel: false,
-        confirmText: '重新搭配',
-      });
-      return;
-    } 
+    // if (that.data.totalVolume > 500) {
+    //   wx.showModal({
+    //     content: '容量已超出500ml,请重新搭配',
+    //     showCancel: false,
+    //     confirmText: '重新搭配',
+    //   });
+    //   return;
+    // } 
 
     app.sendRequest({
       url: 'order/check',
-      data: { orderPrice: 30},
+      data: { orderPrice: that.data.totalPrice},
       success: function (res) {
         var coupons = res.data.coupons;
         var couponList = [];
@@ -360,16 +360,16 @@ Page({
     console.log(JSON.stringify(postData));
    // let array = [];
    // array.push(cartList);
-    that.setData({
-      payOrder: payOrder,
-      sub: that.data.sub,
-    });
-    return;
+    // that.setData({
+    //   payOrder: payOrder,
+    //   sub: that.data.sub,
+    // });
+    // return;
     // 创建订单
     app.sendRequest({
       url: 'order/create',
       data: {data: JSON.stringify(postData)},
-      mehtod: 'post',
+      method: 'POST',
       success: function (res) {
 
         that.setData({
@@ -939,10 +939,6 @@ Page({
 
     // 取当前杯
     carts = this.data.cartGroup[this.data.currentCup];
-    
-    console.log(this.data.currentCup);
-    console.log(this.data.cartGroup);
-    console.log(carts);
 
     var cup = [];
     var keys = ['baseGoods', 'firstOption', 'secondGoods', 'secondData', 'fourthGoods', 'fifthGoods', 'otherGoods', 'sugarData'];
@@ -957,20 +953,17 @@ Page({
         for (let item of carts[k]) {
           item['num'] = 1;
           cup.push(item);
-          nums++;
-
-          price = this.floatFormat(price + item['price'] * 1, 2);
-
-          volume += item['volume'];
-          calorie += item['calorie'];
+          // nums++;
+          // price = this.floatFormat(price + item['price'] * 1, 2);
+          // volume += item['volume'];
+          // calorie += item['calorie'];
         }
       } else { // 单选
         if (JSON.stringify(carts[k]) != "{}") {
-          price = this.floatFormat(price + carts[k]['price'] * carts[k]['num'], 2);
-          volume += carts[k]['volume'];
-          calorie += carts[k]['calorie'];
-          nums++;
-
+          // price = this.floatFormat(price + carts[k]['price'] * carts[k]['num'], 2);
+          // volume += carts[k]['volume'];
+          // calorie += carts[k]['calorie'];
+          // nums++;
           //carts[k]['num'] = 1;
           cup.push(carts[k]);
         } 
@@ -984,10 +977,37 @@ Page({
       cup.push({name: '正常冰', num: 1, price: 0, calorie: 0, volume: 0 });
     }
 
-    console.log(cup);
-
     let cupGroup = this.data.cupGroup;
     cupGroup[this.data.currentCup] = cup;
+    console.log(cupGroup);
+    // 计算总价
+    for (var i = 0, len = cupGroup.length; i < len; i++) {
+      var cartItem = cupGroup[i];
+      console.log(cartItem);
+      for (var k = 0; k < cartItem.length; k++) {
+        // 多选
+        if (Array.isArray(cartItem[k])) {
+          for (let item of cartItem[k]) {
+            nums++;
+
+            price = this.floatFormat(price + item['price'] * 1, 2);
+
+            volume += item['volume'];
+            calorie += item['calorie'];
+          }
+        } else { // 单选
+          if (JSON.stringify(cartItem[k]) != "{}") {
+            console.log(cartItem[k]);
+            console.log(price);
+            price = this.floatFormat(price + cartItem[k]['price'] * cartItem[k]['num'], 2);
+            console.log(price);
+            volume += cartItem[k]['volume'];
+            calorie += cartItem[k]['calorie'];
+            nums++;
+          }
+        }
+      }
+    }
     
     this.setData({
       cup: cup,
@@ -996,7 +1016,7 @@ Page({
       totalNum: nums,
       totalCalorie: calorie,
       totalVolume: volume,
-      totalCup: 1
+      totalCup: cupGroup.length
     });
 
     console.log('price:' + price);
