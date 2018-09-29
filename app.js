@@ -138,7 +138,7 @@ App({
     if (sessionKey) {
       return sessionKey;
     } else {
-      this.queryUsreInfo();
+      //this.queryUsreInfo();
       return wx.getStorageSync('session_key');
     }
   },

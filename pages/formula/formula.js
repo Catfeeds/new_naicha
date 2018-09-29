@@ -1,11 +1,26 @@
-// pages/formula/formula.js
+// pages/make_complete/complete.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    swiper:[
+      {num:"1"},
+      { num: "2" },
+      { num: "3" },
+      { num: "11" }, 
+      { num: "21" },
+      { num: "31" }
+    ],
+    foot: [
+      { name: "芝士奶盖", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/zhen.png')" },
+      { name: "芝士奶盖", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/yu.png')" },
+      { name: "芝士奶盖", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/tang.png')" },
+      { name: "珍珠", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/shui.png')" },
+      { name: "茉莉", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/shui.png')" },
+      { name: "桂花", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/die.png')" },
+    ]
   },
 
   /**

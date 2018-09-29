@@ -10,7 +10,7 @@ swiper{
 }
 .wineNameitemNameText {
   width: 100%;
-  height: 25px;
+  height: 40rpx;
   text-align: center;
   font-family: bariol_bold;
   font-size: 30rpx;
@@ -170,13 +170,14 @@ swiper{
   height: 50rpx;
   line-height: 50rpx;
   text-align: center;
-  color:#6D6E71;
+  color:#fff;
   border:2px #6D6E71 solid;
   border-radius: 90px;
   font-size: 1em;
   margin:0 auto;
   margin-top: 25rpx;
   font-weight: bloder;
+  z-index: 123123123123;
 }
 .choise_con_btn:hover{
    color:black;
@@ -196,7 +197,7 @@ swiper{
   background: black;
   position: fixed;
   bottom: 0;
-  z-index: 123123123123;
+  z-index: 120;
 }
 .order_img image{
   width: 50rpx;
@@ -231,8 +232,13 @@ swiper{
   box-shadow:0px 1px 6px black;
   position: fixed;
   left: 20px;
-  bottom: 70px;
+  bottom: 110rpx;
   border-radius: 10px;
+  height: 460rpx;
+  background:#fff;
+}
+swiper.cup-swiper{
+  height:  400rpx;
 }
 .cup_top{
   display: flex;
@@ -250,6 +256,18 @@ swiper{
   flex: 1;
   color:#fff;
 }
+.cup_top_plus image{
+  width: 40rpx;
+  height: 40rpx;
+  margin-top: 8rpx;
+  margin-right: 10rpx;
+}
+.cup_top_reduce image{
+  width: 40rpx;
+  height: 40rpx;
+  margin-top: 8rpx;
+  margin-right: 10rpx
+}
 .cup_top_img image{
   width: 40rpx;
   height: 50rpx;
@@ -260,6 +278,7 @@ swiper{
   background: #fff;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+  height: 100%;
 }
 .cup_contain_top{
   display: flex;
@@ -269,15 +288,17 @@ swiper{
   font-weight: bolder;
 }
 .cup_contain_top view:first-child{
-  flex: 3
+  flex: 3;
+  text-align:center;
 }
 .cup_contain_top view:not(:first-child){
-    flex: 2;
+    flex: 1;
     text-align: center
 }
 .cup_scroll{
-  height: 160px;
+  height: 340rpx;
   margin-top: 8px;
+  overflow:scroll;
 }
 .cup_scroll_list{
   display: flex;
@@ -292,7 +313,7 @@ swiper{
 }
 .cup_scroll_list view:not(:first-child){
   text-align: center;
-  flex:2;
+  flex:1;
 }
 .sub{
   width: 90%;
@@ -303,6 +324,7 @@ swiper{
   background: #fff;
   box-shadow: 1px 1px 10px black;
   border-radius: 15px;
+  z-index: 133
 }
 .sub_top{
   width: 100%;
@@ -335,6 +357,7 @@ swiper{
   display: flex;
   flex-direction: row;
   height: 50rpx;
+  line-height: 50rpx;
   font-size: 0.7em;
   border-bottom: 1px black solid;
 }
@@ -343,6 +366,7 @@ swiper{
 }
 .sub_con_title_edit{
   height: 50rpx;
+  line-height: 50rpx;
   display: flex;
   flex-direction: row;
   font-size: 0.7em;
@@ -372,14 +396,14 @@ swiper{
 }
 .sub_con_con_detail{
   background: #F0F0F0;
-  height: 300px;
+  height: 360rpx;
 }
 .scroll_list{
   display: flex;
   flex-direction: row;
   font-size: 0.6em;
-  height: 40px;
-  line-height: 40px;
+  height: 32px;
+  line-height: 32px;
   margin: 5px 6px;
   background: #FCFBFB;
   border-radius: 60rpx;
@@ -390,10 +414,10 @@ swiper{
 }
 .scroll_list view:not(:first-child){
   text-align: center;
-  flex:2;
+  flex:1;
 }
 .order_scroll{
-  height: 300px;
+  height: 360rpx;
 }
 .sub_con_bot{
   margin: 0 15rpx;
@@ -458,12 +482,13 @@ swiper{
 .payPage{
   width: 90%;
   position: fixed;
-  top:15px;
+  top:20rpx;
   left: 50%;
   margin-left: -45%;
   background: #fff;
   box-shadow: 1px 1px 10px black;
   border-radius: 10px;
+  z-index: 155;
 }
 .payPage_top{
   width: 100%;
@@ -484,7 +509,7 @@ swiper{
   right: 5px;
 }
 .payPage_bot{
-  margin: 0 3%;
+  margin: 50rpx 3%;
 }
 .payPage_bot_title{
   text-align: center;
@@ -505,15 +530,14 @@ swiper{
  line-height: 30rpx;
  margin-top: 15rpx;
  background: #fff; 
- color:#8B8B8B;
+ color:black;
  font-size: 0.5em;
  text-align: center;
  border: 1px black solid;
  border-radius: 90px;
+ margin-right: 10rpx;
 } 
-.navbar .item:nth-child(2){
-  margin-left: 20rpx;
-}
+
 .navbar_option{
   display:flex;
   flex-direction:row;
@@ -528,7 +552,8 @@ swiper{
   font-size: 0.6em;
 }
 .navbar .item.active{ 
- color:black; 
+ color:#fff; 
+ background: black;
  position: relative; 
 } 
 .navbar .item.active::after{ 
@@ -562,10 +587,14 @@ swiper{
   width: 120rpx;
   text-align: right;
 }
+.cupScroll{
+  height: 230rpx;
+}
 .f_con{
   width: 100%;
   padding: 10rpx 40rpx 10rpx 20rpx;
   box-sizing: border-box;
+  height: 240rpx;
 }
 .f_con_list{
   display: flex;
@@ -588,27 +617,254 @@ swiper{
   display: flex;
   flex-direction: row;
   font-size: 0.7em;
-  font-weight: bold;
+  border-top: 1px black solid;
+  border-bottom: 1px black solid;
+  padding: 10rpx 40rpx 10rpx 20rpx;
 }
 .f_discount view:nth-child(1){
   flex: 1;
 }
+.f_total{
+  display: flex;
+  flex-direction: row;
+  font-size: 0.75em;
+  font-weight: bolder;
+  padding: 10rpx 40rpx 10rpx 20rpx;
+}
+.f_total view:nth-child(1){
+  flex: 1;
+}
+.f_text{
+  margin-top: 10rpx;
+  text-align: center;
+  border-bottom:1px black solid;
+}
+.f_text_pay{
+  font-size: 0.8em;
+  font-weight: bolder;
+}
+.f_text_mode{
+  font-size: 0.6em;
+  font-weight: 500;
+  margin: 5rpx 0 20rpx 0;
+}
+.f_vx{
+  display: flex;
+  flex-direction: row;
+  font-size: 0.75em;
+  font-weight: bolder;
+  padding: 10rpx 40rpx 10rpx 20rpx;
+}
+.f_vx_pay{
+  flex: 1;
+}
+.f_vx_img image{
+  width: 40rpx;
+  height: 40rpx;
+}
+.f_btn{
+  width: 500rpx;
+  height: 70rpx;
+  background: black;
+  color:#fff;
+  font-size: 0.7em;
+  border-radius: 90rpx;
+  line-height: 70rpx;
+  text-align: center;
+  margin: 30rpx auto 40rpx auto;
+}
 
+.optionBox image{
+  width: 80px;
+  height: 80px;
+  border-radius:20rpx;
+}
 
+.select_fourth{
+  margin:10rpx 0;
+  height: 280rpx;
+  overflow:hidden;
+  white-space:nowrap;
 
+}
 
+.select_fourth .optionBox{
+    width: 240rpx;
+    display: inline-block;
+    padding-top:10rpx;
+    border-radius:20rpx;
+    margin-left:10rpx;
+}
 
+.select_fourth .selected{
+    background: #aaa;
+}
 
+.selected .wineNameitemNameText{
+  color: #fff;
+}
 
+.select_second{
+  margin:10rpx 0;
+  height: 280rpx;
+  overflow:hidden;
+  white-space:nowrap;
+}
 
+.select_second .optionBox{
+    width: 240rpx;
+    display: inline-block;
+    padding-top:10rpx;
+    border-radius:24rpx;
+    margin-left:10rpx;
+}
 
+.select_second .selected{
+    background: #aaa;
+}
 
+.selected .wineNameitemNameText{
+  color: #fff;
+}
 
+/* 优惠券 */
+.coupon{
+  position: fixed;
+  width: 80%;
+  left: 50%;
+  margin-left: -40%;
+  border: 1px black solid;
+  top: 15%;
+  background: #fff;
+  border-radius: 12rpx;
+  z-index: 155;
+}
+.coupon_title{
+  position:relative;
+  padding-left:20rpx;
+  box-sizing:border-box;
+  font-size:0.8em;
+  font-weight:bold;
+  color:#fff;
+  background:black;
+  height:70rpx;
+  line-height:70rpx;
+  border-top-left-radius: 10rpx;
+  border-top-right-radius: 10rpx;
+}
+.coupon_title image{
+  width:40rpx;
+  height:40rpx;
+  position:absolute;
+  top:5px;
+  right:5px;
+}
+.coupon_list{
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  display: flex;
+  flex-direction: row;
+  font-size: 0.65em;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  border-bottom: 1px #D8D8D8 solid;
+}
+.coupon_list:last-child{
+  margin-bottom: 20px;
+}
+.coupon_list_text{
+  font-size: 1.2em;
+  flex: 1;
+}
+.coupon_list_btn{
+  background: #000;
+  color:#fff;
+  text-align: center;
+  height: 50rpx;
+  width: 120rpx;
+  margin-top: 15rpx;
+  line-height: 50rpx;
+  border-radius: 10rpx;
+}
+.coupon_list_text_day{
+  font-size: 0.7em;
+  font-weight: bold
+}
 
-
-
+.shade{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#E8E8E8;
+  z-index:123;
+  opacity: 0.4;
+}
 
 .optionBox image{
   width: 80px;
   height: 80px;
 }
+
+
+/* 商品详情选项卡 */
+/* 选项卡 */
+.commodity{ 
+  display:flex;
+  width:100%;
+  flex-direction:row;
+  height:30rpx;
+  line-height:30rpx;
+  font-size:1.6em
+} 
+.commodity .detail{ 
+  width: 90rpx;
+  height: 30rpx;
+  text-align: center; 
+  background: #fff; 
+  font-weight: bold; 
+  color:black;
+  font-size: 0.6em;
+  border: 1px black solid;
+  border-radius: 90px;
+  margin-right: 10rpx;
+} 
+
+.commodity .detail.active{ 
+ color:#fff; 
+ background: black;
+ position: relative; 
+} 
+
+.commodity .detail.active::after{ 
+ content: ""; 
+ display: block; 
+ position: absolute; 
+ height: 4rpx; 
+ bottom: 0; 
+ left: 0; 
+ right: 0; 
+} 
+.commodityDetail{
+  width: 140rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+}
+
+/* 点击添加配方 */
+.cup_scroll_btn{
+  width: 240rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  margin: 0 auto;
+  background: black;
+  color:#fff;
+  font-weight: bold;
+  font-size: 0.7em;
+  border-radius: 90px;
+  margin-top: 30%;
+}
+

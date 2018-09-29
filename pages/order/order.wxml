@@ -1,0 +1,143 @@
+
+<view hidden='{{hasOrder}}'>
+
+  <view class='contain'>
+    <view id='top'> </view>
+    <view id='right'></view>
+    <view id="left"></view>
+    <view id='bottom'></view>
+    <view class='top' style='position:relative'>
+      <view class='top_process'>
+        <view class='top_process_border'>
+          正在制作中
+        </view>
+      </view>
+      <view class='top_img'>
+      <!-- <open-data type="userAvatarUrl"></open-data> -->
+        <image src='/images/hamburger.png'></image>
+      </view>
+      <view class='top_status'>
+        排队状态：<text>0</text>杯
+      </view>
+    </view>
+
+    <view hidden='{{recommend.length}}'>
+      <view class='text'>
+        <view class='text_top'>
+          您今日还没有尽心配方尝试
+        </view>
+        <view class='text_bot'>
+          快去研究一份你喜欢的配方吧
+        </view>
+      </view>
+      <view class='btn' bindtap='goBuy'>
+        快去下单吧
+      </view>
+    </view>
+
+    <view class='bot'  hidden='{{! recommend.length}}'>
+      <block wx:for="{{recommend}}">
+        <view class='bot_foot' style="color:{{item.color}};background:{{item.background}}" wx:if="{{index < 8}}">
+          {{item.goods_name}}
+        </view>
+      </block>
+      <view class='bot_foot' wx:if='{{recommend.length > 8}}'>
+        ......
+      </view>
+    </view>
+
+  </view>
+  <view class='recommend'>
+    <view class='re_left'></view>
+    <view class='re_center'>推荐配方</view>
+    <view class='re_right'></view>
+  </view>
+
+  <swiper id='wrap' display-multiple-items='{{ showLen }}' current='{{ current }}' bindchange='changeFun'>
+    <swiper-item>
+      <view class='perch'></view>
+    </swiper-item>
+    <block wx:for="{{recommends}}" wx:for-item="recommend">
+      <swiper-item data-id="{{index}}" bindtap="getRecommend">
+        <view class='wrap_contain' style='position:relative'>
+          <view id='wrap_top'>
+          </view>
+          <view id='wrap_right'>
+
+          </view>
+          <view id="wrap_left">
+          </view>
+          <view class='wrap_top'>
+            <view class='wrap_top_img'>
+              <image src='/images/hamburger.png'></image>
+            </view>
+          </view>
+          <view class='wrap-position'>
+            <block wx:for="{{recommend}}">
+              <view class='wrap_bot' style="color:{{item.color}};background:{{item.background}}" wx:if="{{index < 5}}">
+                {{item.goods_name}}
+              </view>
+            </block>
+            <view class='wrap_bot' wx:if="{{recommend.length > 5}}" style="background:#fff">
+              ......
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+    </block>  
+
+    <swiper-item>
+      <view class='perch'></view>
+    </swiper-item>
+  </swiper>
+
+  <view class='mask' hidden='{{maskShow}}'>
+    <view bindtap='goPay'>去支付</view>
+    <view bindtap='closeBtn'>取消</view>
+  </view>
+</view>
+
+<swiper indicator-dots hidden='{{! hasOrder}}'>
+  <block wx:for="{{orders}}" wx:for-item="order">
+    <swiper-item>
+      <view class='contain'>
+        <view id='top'>
+
+        </view>
+        <view id='right'>
+
+        </view>
+        <view id="left">
+        </view>
+        <view class='top'>
+          <view class='top_process'>
+            <view class='top_process_border'>
+              正在制作中
+            </view>
+          </view>
+          <view class='top_img'>
+            <open-data type="userAvatarUrl"></open-data>
+          </view>
+          <view class='top_status'>
+            排队状态：<text>{{position}}</text>杯
+          </view>
+        </view>
+
+        <view class="words">
+          您的配方
+        </view>
+        <view class='bot'>
+          <block wx:for="{{order}}">
+            <view class='bot_foot' style="color:{{item.color}};background:{{item.background}}" wx:if="{{index < 8}}">
+              {{item.goods_name}}
+            </view>
+          </block>
+
+          <view class='bot_foot' wx:if='{{order.length > 8}}'>
+            ......
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+  </block>
+</swiper>
