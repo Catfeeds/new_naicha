@@ -6,87 +6,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imgInfoArr: [
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/16.png',
-        text: '回甘普洱',
-        price: 66,
-        id:"0"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '茉莉绿茶',
-        price: 85,
-        id: "1"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/18.png',
-        text: '雨前龙井',
-        price: 32,
-        id: "2"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/16.png',
-        text: '正山小种',
-        price: 66,
-        id: "3"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '金凤茶王',
-        price: 85,
-        id: "4"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '脱脂奶',
-        price: 85,
-        id: "5"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '全脂奶',
-        price: 85,
-        id: "6"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '气泡水',
-        price: 85,
-        id: "7"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '乳酸菌',
-        price: 85,
-        id: "8"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '冰块',
-        price: 85,
-        id: "9"
-      },
-      {
-        src: 'https://www.myratio.com//StoreApi/Content/img2/17.png',
-        text: '直饮水',
-        price: 85,
-        id: "10"
-      },
-    ],
     orderFoot:[],
     orders: [ ],
     recommends: [], // 推荐列表
     recommend: [], // 选中推荐
-    foot: [
-      { name: "芝士奶盖", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/zhen.png')" },
-      { name: "芝士奶盖", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/yu.png')" },
-      { name: "芝士奶盖", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/tang.png')" },
-      { name: "珍珠", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/shui.png')" },
-      { name: "茉莉", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/shui.png')" },
-      { name: "桂花", txtStyle: "background:url('http://alpha-jc.pinyer.com/demo/images/die.png')" },
-    ],
-
     // 颜色系
     colors: [ 
       { color: '#000', background: '#4682B4'},

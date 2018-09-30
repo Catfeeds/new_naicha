@@ -59,7 +59,7 @@
     </swiper-item>
     <block wx:for="{{recommends}}" wx:for-item="recommend">
       <swiper-item data-id="{{index}}" bindtap="getRecommend">
-        <view class='wrap_contain' style='position:relative'>
+        <view class='wrap_contain' style='position:relative;opacity:{{current == index ? 1 : 0.6}}'>
           <view id='wrap_top'>
           </view>
           <view id='wrap_right'>
