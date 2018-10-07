@@ -8,7 +8,6 @@ Page({
     // 商品详情 选项卡 数据
     commodity:[],
     commodityIndex:0,
-
     //支付页 选项卡 数据
     navbar: [],
     currentIndex: 0,//tabbar索引
@@ -161,7 +160,7 @@ Page({
     cupGroup: [],
     cartGroup: [], // 购物车
     citrusCategory: [], // 柑橘类
-    milkCategory: [],
+    milkCategory: [], // 奶制品
     citrusHide: [], // 二级 柑橘类隐藏
     couponHide: true,
     couponCon: false,
@@ -619,7 +618,81 @@ Page({
           
         } else {
 
-          data.carts[tab] = data[tab][i]; 
+          console.log(data.carts);
+          // 奶类排斥柑橘类
+          if (tab == 'secondGoods') {
+            if (data.carts['baseGoods'] != undefined) {
+              if (-1 != milkCategory.indexOf(data.carts['baseGoods']['pk'])) {
+                if (current >= 7 && current <= 8) {
+                  current = 11;
+                  that.setData({
+                    secondGoodsCurrent: 11
+                  })
+                } else if (current <= 10 && current >= 9) {
+                  current = 6;
+                  that.setData({
+                    secondGoodsCurrent: 6
+                  })
+                }
+              }
+            }
+
+            if (data.carts['firstOption'] != undefined) {
+              if (-1 != milkCategory.indexOf(data.carts['firstOption']['pk'])) {
+                if (current >= 7 && current <= 8) {
+                  current = 11;
+                  that.setData({
+                    secondGoodsCurrent: 11
+                  })
+                } else if (current <= 10 && current >= 9) {
+                  current = 6;
+                  that.setData({
+                    secondGoodsCurrent: 6
+                  })
+                }
+              }
+            }
+          }
+
+          if (tab == 'baseGoods') {
+            if (data.carts['secondGoods'] != undefined) {
+              if (-1 != data.citrusCategory.indexOf(data.carts['secondGoods']['pk'])) {
+                if (current >= 6 && current <= 7) {
+                  current = 8;
+                  that.setData({
+                    baseGoodsCurrent: 8
+                  })
+                } else if (current <= 7 && current >= 6) {
+                  current = 6;
+                  that.setData({
+                    baseGoodsCurrent: 5
+                  })
+                }
+              }
+            }
+          }
+
+          if (tab == 'firstOption') {
+            if (data.carts['secondGoods'] != undefined) {
+              if (-1 != data.citrusCategory.indexOf(data.carts['secondGoods']['pk'])) {
+                if (current >= 1 && current <= 3) {
+                  current = 6;
+                  that.setData({
+                    firstOptionCurrent: 8
+                  })
+                } else if (current <= 5 && current >= 3) {
+                  current = 0;
+                  that.setData({
+                    firstOptionCurrent: 0
+                  });
+                  data.carts['firstOption'] = {};
+                }
+              }
+            }
+
+          }
+
+          data.carts[tab] = data[tab][current]; 
 
           // 选择一级品类时，保存当前
           if (tab == 'baseGoods') {
@@ -639,6 +712,7 @@ Page({
               secondGoods: that.data.secondGoods,
               secondGoodsCurrent:0
             });
+            data.carts['secondGoods'] = {};
 
             // 如果已经选了双倍，需要同时更新
             if (that.data.doubleId) {
@@ -666,11 +740,12 @@ Page({
             // }
             // 购物车删除
           }
+
         }
 
         // 第一品类未选中，如果已经选中双倍的，需要清除
-        if (tab == 'baseGoods' && that.data.doubleId) {
-          data.carts['secondGoods'] = {};
+        if (tab == 'baseGoods' && that.data.doubleId>0) {
+         // data.carts['secondGoods'] = {};
         }
       }
     }
