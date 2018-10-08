@@ -226,6 +226,7 @@ Page({
   // 去买单
   checkOrder:function(e){
     var that = this;
+    that.calculate();
 
     if (that.data.cupGroup.length < 1) {
       app.showToast({
@@ -594,18 +595,17 @@ Page({
     var currentKey = tab + 'Current';
     var milkCategory = that.data.milkCategory;
 
-    //console.log('hasBaseGoods:' + hasBaseGoods);
-    // if (tab == 'secondGoods' && false == hasBaseGoods) {
-    //   app.showModal({
-    //     content: '一级品类必选',
-    //     showCancel: false,
-    //     confirmText: '确定',
-    //   });
-    //   that.setData({
-    //     secondGoodsCurrent:0,
-    //   });
-    //   return false;
-    // }
+    if (tab == 'secondGoods' && false == hasBaseGoods) {
+      app.showModal({
+        content: '一级品类必选',
+        showCancel: false,
+        confirmText: '确定',
+      });
+      that.setData({
+        secondGoodsCurrent:0,
+      });
+      return false;
+    }
 
     for (var i = 0, j = data[tab].length; i < j; i++) {
       
@@ -952,10 +952,10 @@ Page({
                 sugarId = item['pk'];
                 
                 if (sugarWeight) {
-                  item['name'] = item['name'] + "(" + sugarWeight + ")";
+                  item['sugarId'] = sugarId;
+                  item['sugarWeight'] = sugarWeight;
                 }   
-
-                cart['sugarData'] = item;                             
+                cart['sugarData'] = { name: item['name'] + '(' + sugarWeight + ')', num: 1, price: 0, calorie: 0, volume: 0, sugarId: sugarId, sugarWeight: sugarWeight };                    
               }
 
               thirdGoods.push(item);              
@@ -1003,8 +1003,6 @@ Page({
             // }
           }
         }
-
-        console.log(cart);
 
         var cartGroup = [];
         if (cart) {
@@ -1312,7 +1310,7 @@ Page({
 
     // 取当前杯
     carts = this.data.cartGroup[this.data.currentCup];
-
+console.log(carts);
     var cup = [];
     var keys = ['baseGoods', 'firstOption', 'secondGoods', 'secondData', 'fourthGoods', 'fifthGoods', 'otherGoods', 'sugarData'];
 //, 'temperData'

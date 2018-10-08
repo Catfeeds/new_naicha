@@ -8,13 +8,13 @@
     <view id='bottom'></view>
     <view class='top' style='position:relative'>
       <view class='top_process'>
-        <view class='top_process_border'>
+        <view class='top_process_border' style='opacity:0'>
           正在制作中
         </view>
       </view>
-      <view class='top_img'>
-      <!-- <open-data type="userAvatarUrl"></open-data> -->
-        <image src='/images/hamburger.png'></image>
+      <view class='top_img' style='position:absolute;left:41%;top:-100%;width:134rpx;z-index:200;'>
+      <open-data type="userAvatarUrl"></open-data>
+        <!-- <image src='/images/hamburger.png'></image> -->
       </view>
       <view class='top_status'>
         排队状态：<text>0</text>杯
@@ -115,7 +115,7 @@
               正在制作中
             </view>
           </view>
-          <view class='top_img'>
+          <view class='top_img' style='position:absolute;left:41%;top:-12%;width:134rpx;z-index:200;'>
             <open-data type="userAvatarUrl"></open-data>
           </view>
           <view class='top_status'>

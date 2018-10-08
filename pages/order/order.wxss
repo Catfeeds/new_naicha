@@ -92,6 +92,7 @@ swiper{
   line-height: 57rpx;
   z-index: 124;
   font-weight: bloder;
+  padding-left: 100rpx;
 }
 .top_img image{
   width:120rpx;
