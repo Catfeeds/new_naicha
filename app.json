@@ -1,11 +1,10 @@
 {
   "pages":[
-    "pages/order/order",
     "pages/index/index",
+    "pages/order/order",
     "pages/user/user",
     "pages/formula/formula",
     "pages/goods/goods",
-    "pages/make_complete/complete",
     "pages/logs/logs",
     "pages/login/login",
     "pages/mobile/mobile"

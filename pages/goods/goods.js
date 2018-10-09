@@ -237,6 +237,21 @@ Page({
       return;
     }
 
+    var cartGroup = that.data.cartGroup;
+    for (var i = 0, len = cartGroup.length; i < len; i++) {
+      console.log(cartGroup[i]);
+      console.log(JSON.stringify(cartGroup[i]['baseGoods']));
+      if (!('baseGoods' in cartGroup[i]) || JSON.stringify(cartGroup[i]['baseGoods']) == "{}") {
+        console.log('不存在' + i); 
+        console.log(cartGroup[i]);
+      }
+    }
+
+    // 检测必选
+    if (false) {
+
+    }
+
     // if (that.data.totalVolume > 500) {
     //   wx.showModal({
     //     content: '容量已超出500ml,请重新搭配',
@@ -284,12 +299,6 @@ Page({
         });
       }
     });
-    return;
-
-    // 检测必选
-    if (false) {
-
-    }
 
   },
   // 确认订单
@@ -594,7 +603,7 @@ Page({
     var hasBaseGoods = that.hasBaseGoods();
     var currentKey = tab + 'Current';
     var milkCategory = that.data.milkCategory;
-
+console.log(hasBaseGoods);
     if (tab == 'secondGoods' && false == hasBaseGoods) {
       app.showModal({
         content: '一级品类必选',
@@ -618,7 +627,6 @@ Page({
           
         } else {
 
-          console.log(data.carts);
           // 奶类排斥柑橘类
           if (tab == 'secondGoods') {
             if (data.carts['baseGoods'] != undefined) {
@@ -692,7 +700,11 @@ Page({
 
           }
 
-          data.carts[tab] = data[tab][current]; 
+          if (data[tab][current]['pk'] > 0 && data[tab][current]['pk'] < 999) {
+            data.carts[tab] = data[tab][current]; 
+          } else {
+            data.carts[tab] = {}; 
+          }
 
           // 选择一级品类时，保存当前
           if (tab == 'baseGoods') {
@@ -730,17 +742,6 @@ Page({
               data.carts[tab] = {};
             }
           }
-
-            // 选择奶制品类时，排斥柑橘类
-          if (tab == 'baseGoods' || tab == 'firstOption') {
-            // if (-1 != milkCategory.indexOf(data[tab][i]['pk'])) {
-            //   that.toggleCitrus();
-            // } else {
-            //   that.toggleCitrus('show');
-            // }
-            // 购物车删除
-          }
-
         }
 
         // 第一品类未选中，如果已经选中双倍的，需要清除
@@ -825,7 +826,7 @@ Page({
   // 是否有茶底商品
   hasBaseGoods: function() {
     var carts = this.data.carts;
-    
+    console.log(carts);
     for (var key in carts) {
       if (key == 'baseGoods' && JSON.stringify(carts[key] != "{}")) {
         return true;

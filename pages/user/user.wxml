@@ -59,7 +59,7 @@
             </view>
           </view>
           <view class='delete'>
-            <image src='/images/close.png' data-index='{{key}}' hidden="{{hidImg}}"  bindtap='closeImg' class='close_img'></image>
+            <image src='/images/close2.png' data-index='{{key}}' hidden="{{hidImg}}"  bindtap='closeImg' class='close_img'></image>
             <view class="del_btn" hidden='{{item.delBtn}}'>
               <view class='del_btn_sure' data-num="{{item.num}}" bindtap='closeBtn'>取消</view>
               <view class='del_btn_close' bindtap='deleteTaste' data-pk="{{item.pk}}">确定</view>

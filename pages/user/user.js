@@ -360,6 +360,13 @@ Page({
   
   // 优惠券
   uses:function(){
+    console.log('aaaa');
+    wx.switchTab({
+      url: '/pages/goods/goods'
+    });
+    return false;
+
+
     var that = this;
     that.data.tea = false;
     that.data.mask = false;

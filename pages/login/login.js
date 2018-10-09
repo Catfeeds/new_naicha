@@ -16,7 +16,7 @@ Page({
               //从数据库获取用户信息
               that.queryUsreInfo();
               //用户已经授权过
-              wx.navigateTo({
+              wx.switchTab({
                 url: '/pages/index/index'
               })
             }
@@ -49,8 +49,8 @@ Page({
           console.log("插入小程序登录用户信息成功！");
 
           //授权成功后，跳转进入小程序首页
-          wx.redirectTo({
-            url: 'pages/fabulous1/fabulous'
+          wx.switchTab({
+            url: '/pages/index/index'
           })
         }
       });
