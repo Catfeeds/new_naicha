@@ -85,6 +85,8 @@
     <view class='point_circular'></view>
   </view>
 
+  <view class='show_text'>(点击选择)</view>
+
   <!-- 二级多选 -->
   <view class="select_second"> 
     <scroll-view class='' scroll-x="true">
@@ -105,6 +107,8 @@
     <view class='point_line'></view>
     <view class='point_circular'> </view>
   </view>
+
+ <view class='show_text'>(点击选择)</view>
 
   <!-- 四级多选 -->
   <view class="select_fourth"> 
@@ -267,7 +271,7 @@
       <view class='cup_top_text'>
         CUP-{{currentCup + 1}}
       </view>
-      <view class='cup_top_reduce'>
+      <view class='cup_top_reduce' bindtap='delCup'>
         <image src='/images/reduce.png' ></image>
       </view>
       

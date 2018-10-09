@@ -868,3 +868,10 @@ swiper.cup-swiper{
   margin-top: 30%;
 }
 
+.show_text{
+  width:100%;
+  text-align:center;
+  margin:6rpx;
+  font-size:26rpx;
+  color:#aaa;
+}

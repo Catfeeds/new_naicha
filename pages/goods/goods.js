@@ -86,15 +86,7 @@ Page({
     // 购物车
     cups:[
     ],
-    cup: [
-        {
-          list: 1,
-          name: "回肝普洱",
-          num: 12,
-          calorie: 100,
-          price: 100.00
-        }
-      ],
+    cup: [],
     //  冰量 选择
     ices:[
       {
@@ -119,8 +111,7 @@ Page({
         id:3
       }
     ],
-    coupons:[
-    ],
+    coupons:[ ],
     bgHot:"#fff",
     colHot: "#000",
     bgCold:"#000",
@@ -239,11 +230,22 @@ Page({
 
     var cartGroup = that.data.cartGroup;
     for (var i = 0, len = cartGroup.length; i < len; i++) {
-      console.log(cartGroup[i]);
-      console.log(JSON.stringify(cartGroup[i]['baseGoods']));
       if (!('baseGoods' in cartGroup[i]) || JSON.stringify(cartGroup[i]['baseGoods']) == "{}") {
-        console.log('不存在' + i); 
-        console.log(cartGroup[i]);
+        app.showToast({
+          title: '一级品类必选',
+          icon: 'none'
+        });
+
+        return;
+      }
+
+      if (!('secondGoods' in cartGroup[i]) || JSON.stringify(cartGroup[i]['secondGoods']) == "{}") {
+        app.showToast({
+          title: '二级品类必选',
+          icon: 'none'
+        });
+
+        return;
       }
     }
 
@@ -591,6 +593,7 @@ Page({
 
   // 左右滑动
   changeFun(e) {
+    console.log(this.data.carts);
     if (e.detail.source != 'touch') {
       return false; // 在新增杯时，触发 changeFun 
     }
@@ -731,7 +734,7 @@ console.log(hasBaseGoods);
               data.carts['baseGoods'].num = 2;
             } else {
               if (hasBaseGoods) {
-                data.carts['baseGoods'].num = 1;
+               // data.carts['baseGoods'].num = 1;
               }
             }
           }
@@ -765,7 +768,7 @@ console.log(hasBaseGoods);
         })
       } else {
         if (hasBaseGoods) {
-          data.carts['baseGoods'].num = 1;
+         // data.carts['baseGoods'].num = 1;
         }
 
         that.setData({
@@ -784,7 +787,7 @@ console.log(hasBaseGoods);
     data.cartGroup[that.data.currentCup] = data.carts;
     data[currentKey] = current;
 
-    data[tab] = data[tab];
+    //data[tab] = data[tab];
 
     //data['baseGoodsCurrent'] = that.data.baseGoodsCurrent
 
@@ -828,7 +831,7 @@ console.log(hasBaseGoods);
     var carts = this.data.carts;
     console.log(carts);
     for (var key in carts) {
-      if (key == 'baseGoods' && JSON.stringify(carts[key] != "{}")) {
+      if (key == 'baseGoods' && JSON.stringify(carts[key]) != "{}") {
         return true;
       }
     }
@@ -1727,8 +1730,26 @@ console.log(carts);
     });
   },
   // 减去一杯
-  subCup: function(e) {
+  delCup: function(e) {
+    if (JSON.stringify(this.data.carts) == '{}') {
+      wx.showToast({
+        title:'不能删除此杯',
+        icon: 'none'
+      });
 
+      return;
+    }
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除这杯吗',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   },
   /*
    * 生命周期函数--监听页面初次渲染完成
