@@ -1,6 +1,15 @@
 swiper{
-  height: 140px;
+  height: 200rpx;
 
+}
+.goods-deleted{
+  width:100rpx;
+  height:100rpx;
+  border:1px solid #333;
+  border-radius:100rpx;
+  display:inline-block;
+  line-height:100rpx;
+  font-size:26rpx;
 }
 .optionBox {
   width: 100%;
@@ -675,25 +684,25 @@ swiper.cup-swiper{
 }
 
 .optionBox image{
-  width: 80px;
-  height: 80px;
+  width: 100rpx;
+  height: 100rpx;
   border-radius:20rpx;
 }
 
 .select_fourth{
-  margin:10rpx 0;
-  height: 280rpx;
+  margin:10rpx;
+  height: 220rpx;
   overflow:hidden;
   white-space:nowrap;
 
 }
 
 .select_fourth .optionBox{
-    width: 240rpx;
+    width: 220rpx;
     display: inline-block;
     padding-top:10rpx;
     border-radius:20rpx;
-    margin-left:10rpx;
+    margin-left:20rpx;
 }
 
 .select_fourth .selected{
@@ -705,18 +714,18 @@ swiper.cup-swiper{
 }
 
 .select_second{
-  margin:10rpx 0;
-  height: 280rpx;
+  margin:10rpx;
+  height: 220rpx;
   overflow:hidden;
   white-space:nowrap;
 }
 
 .select_second .optionBox{
-    width: 240rpx;
+    width: 220rpx;
     display: inline-block;
     padding-top:10rpx;
     border-radius:24rpx;
-    margin-left:10rpx;
+    margin-left:20rpx;
 }
 
 .select_second .selected{
@@ -804,8 +813,8 @@ swiper.cup-swiper{
 }
 
 .optionBox image{
-  width: 80px;
-  height: 80px;
+  width: 100rpx;
+  height: 100rpx;
 }
 
 
@@ -873,5 +882,5 @@ swiper.cup-swiper{
   text-align:center;
   margin:6rpx;
   font-size:26rpx;
-  color:#aaa;
+  color:#0D0507;
 }

@@ -137,6 +137,7 @@ Page({
     cupMenu:true,
     sub:true,
     payOrder:true,
+    hiddenReduce: true, // 隐藏删除此杯
     payPrice: 0.00, // 实际支付
     totalPrice: 0.00, // 订单总额
     totalNum: 0,
@@ -471,7 +472,8 @@ Page({
             ices: ices,
             totalPrice:0,
             payPrice:0,
-            totalNum:0
+            totalNum:0,
+            
           });
 
           // 恢复优惠券
@@ -480,6 +482,9 @@ Page({
               url: 'order/cancel',
               data: {couponId: that.data.couponId, orderId: that.data.orderId},
               success: function (res){
+                that.setData({
+                  couponId: 0
+                })
                 that.onLoad();
               }
             })
@@ -593,7 +598,7 @@ Page({
 
   // 左右滑动
   changeFun(e) {
-    console.log(this.data.carts);
+    console.log(e);
     if (e.detail.source != 'touch') {
       return false; // 在新增杯时，触发 changeFun 
     }
@@ -606,7 +611,7 @@ Page({
     var hasBaseGoods = that.hasBaseGoods();
     var currentKey = tab + 'Current';
     var milkCategory = that.data.milkCategory;
-console.log(hasBaseGoods);
+
     if (tab == 'secondGoods' && false == hasBaseGoods) {
       app.showModal({
         content: '一级品类必选',
@@ -623,6 +628,15 @@ console.log(hasBaseGoods);
       
       // 当前选中的item
       if (current == i) {
+        // 下架的
+        if (data[tab][i]['soldOut']) {
+          if (current > data[currentKey]) {
+            current = current + 1;
+          } else {
+            current = current - 1;
+          }
+        }
+
         data[tab][i]['num'] = 1;
 
         if (data[tab][i]['pk'] == 0) {
@@ -636,14 +650,14 @@ console.log(hasBaseGoods);
               if (-1 != milkCategory.indexOf(data.carts['baseGoods']['pk'])) {
                 if (current >= 7 && current <= 8) {
                   current = 11;
-                  that.setData({
-                    secondGoodsCurrent: 11
-                  })
+                  // that.setData({
+                  //   secondGoodsCurrent: 11
+                  // })
                 } else if (current <= 10 && current >= 9) {
                   current = 6;
-                  that.setData({
-                    secondGoodsCurrent: 6
-                  })
+                  // that.setData({
+                  //   secondGoodsCurrent: 6
+                  // })
                 }
               }
             }
@@ -851,8 +865,6 @@ console.log(hasBaseGoods);
     if (recommend) {
       recommend = JSON.parse(recommend);
       wx.setStorageSync('recommend', null);
-
-      console.log(recommend);
     }
 
     app.sendRequest({
@@ -898,6 +910,7 @@ console.log(hasBaseGoods);
             item['calorie'] = items[j]['calorie'];
             item['volume'] = volume;
             item['num'] = 1;
+            item['soldOut'] = items[j]['soldOut'];
 
             if (i == 1 || i == 2 || i ==3 ) { // 一级分类
               baseGoods.push(item);
@@ -1099,9 +1112,16 @@ console.log(hasBaseGoods);
               thirdGoods: that.selectSugar(sugarId, sugarWeight)
             });
           }
-
           
           that.calculate();
+
+          that.setData({
+            payOrder: true,
+            couponHide: true,
+            shade: true,
+            sub: true,
+            cupMenu: false
+          })
         }
       }
     });
@@ -1151,9 +1171,15 @@ console.log(hasBaseGoods);
     var current = that.data.currentCup;
     var cartGroup = that.data.cartGroup;
     var carts = cartGroup[current];
+    var forbidden = false;
 
     for (var i = 0, j = secondData.length; i < j; i++) {
+      
       if (secondData[i]['pk'] == pk) {
+        // if (secondData[i]['soldOut']) {
+        //   forbidden = true;
+        //   break;
+        // }
         
         if (secondData[i]['selected'] == 'selected') {
           secondData[i]['selected'] = '';
@@ -1178,6 +1204,10 @@ console.log(hasBaseGoods);
         }
       }
     }
+
+    // if (forbidden) {
+    //   return;
+    // }
 
     cartGroup[current] = carts;
 
@@ -1642,6 +1672,15 @@ console.log(carts);
       })
       return false;
     }
+    console.log(this.data.cartGroup);
+    // if (this.data.cartGroup.length == 1 && JSON.stringify(this.data.carts) == '{}') {
+    //   wx.showToast({
+    //     title: '请添加当前杯配料',
+    //     icon: 'none'
+    //   });
+
+    //   return;
+    // }
 
     let cupGroup = this.data.cupGroup;
     let cartGroup = this.data.cartGroup;
@@ -1709,6 +1748,7 @@ console.log(carts);
 
     this.setData({
       carts: {},
+      hiddenReduce: false,
       currentCup: current,
       cupGroup: cupGroup,
       cartGroup: cartGroup,
@@ -1731,7 +1771,9 @@ console.log(carts);
   },
   // 减去一杯
   delCup: function(e) {
-    if (JSON.stringify(this.data.carts) == '{}') {
+    var that = this;
+
+    if (that.data.cartGroup.length == 1 && JSON.stringify(that.data.carts) == '{}') {
       wx.showToast({
         title:'不能删除此杯',
         icon: 'none'
@@ -1739,14 +1781,19 @@ console.log(carts);
 
       return;
     }
+
     wx.showModal({
       title: '提示',
       content: '确定要删除这杯吗',
       success: function (res) {
         if (res.confirm) {
-          console.log('用户点击确定')
+          // 删除当前杯：
+
+          that.setData({
+            carts: {}
+          });
         } else if (res.cancel) {
-          console.log('用户点击取消')
+
         }
       }
     })

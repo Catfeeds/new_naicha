@@ -14,7 +14,7 @@ Page({
           wx.getUserInfo({
             success: function (res) {
               //从数据库获取用户信息
-              that.queryUsreInfo();
+              app.queryUsreInfo();
               //用户已经授权过
               wx.switchTab({
                 url: '/pages/index/index'

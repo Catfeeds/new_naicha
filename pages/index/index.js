@@ -87,6 +87,7 @@ Page({
       url: 'index/like/' + id,
       data: {},
       success: function (res) {
+        console.log(res);
         if (res.code == 200) {
           let formulas = that.data.formulas;
           for (let i in formulas) {
@@ -99,10 +100,10 @@ Page({
             'formulas': formulas,
           });
 
-        } else if (res.code == 401) {
+        } else if (res.code == 411) {
           wx.showToast({
-            title: '成功',
-            icon: 'success',
+            title: res.msg,
+            icon: 'none',
             duration: 2000
           })
         }

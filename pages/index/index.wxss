@@ -12,7 +12,7 @@ page{
   height: 30rpx;
 }
 .avatar{
-  margin:-2rpx 2rpx;
+  margin:-2rpx 8rpx;
   border-radius:30rpx;
   vertical-align:middle;
   margin-top:45rpx;
@@ -86,6 +86,7 @@ page{
   padding:0 0.1em; 
   vertical-align:middle;
   display: table;
+  margin-left:6rpx;
 }
 .faContain_bottom_list_collocation .formula{
   display:table-cell; 
@@ -381,7 +382,7 @@ swiper-item{
   position:absolute;
   border:1px solid #fff;
   right:-1rpx;
-  top:-2rpx;
+  top:-4rpx;
   border-radius:4rpx;
   background:#fff;
 }

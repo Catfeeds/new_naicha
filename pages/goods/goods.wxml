@@ -8,7 +8,8 @@
       <swiper-item item-id="{{item.pk}}">
         <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
           <view class='mask' wx:if='{{ index != baseGoodsCurrent }}'></view>
-          <image src="{{item.image}}" mode='widthFix' />
+          <image src="{{item.image}}" mode='widthFix' wx:if="{{! item.soldOut }}" />
+          <span class="goods-deleted" wx:if="{{item.soldOut }}">已下架</span>
           <view class='wineNameitemNameText'>{{ item.name }}</view>
           <view class='wineNameitemText'>
             <text>¥</text>
@@ -37,7 +38,8 @@
       <swiper-item item-id="{{item.pk}}">
         <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
           <view class='mask' wx:if='{{ index != firstOptionCurrent }}'></view>
-          <image src="{{item.image}}" mode='widthFix' />
+          <image src="{{item.image}}" mode='widthFix' wx:if="{{! item.soldOut }}" />
+          <span class="goods-deleted" wx:if="{{item.soldOut }}">已下架</span>
           <view class='wineNameitemNameText'>{{ item.name }}</view>
           <view class='wineNameitemText'>
             <text>¥</text>
@@ -65,7 +67,8 @@
       <swiper-item item-id="{{item.pk}}">
         <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
           <view class='mask' wx:if='{{ index != secondGoodsCurrent }}'></view>
-          <image src="{{item.image}}" mode='widthFix' />
+          <image src="{{item.image}}" mode='widthFix' wx:if="{{! item.soldOut }}" />
+          <span class="goods-deleted" wx:if="{{item.soldOut }}">已下架</span>
           <view class='wineNameitemNameText'>{{ item.name }}</view>
           <view class='wineNameitemText'>
             <text>¥</text>
@@ -85,14 +88,15 @@
     <view class='point_circular'></view>
   </view>
 
-  <view class='show_text'>(点击选择)</view>
+  <view class='show_text'>点击选择</view>
 
   <!-- 二级多选 -->
   <view class="select_second"> 
     <scroll-view class='' scroll-x="true">
       <block wx:for="{{secondOption}}">
         <view class='optionBox {{item.selected}}' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}" style='text-align:center;background:{{item.bg}};color:{{item.color}}' bindtap='selectSecond'>
-            <image src="{{item.image}}" mode='widthFix' />
+            <image src="{{item.image}}" mode='widthFix' wx:if="{{! item.soldOut }}" />
+            <span class="goods-deleted" wx:if="{{item.soldOut }}">已下架</span>
             <view class='wineNameitemNameText'>{{ item.name }}</view>
             <view class='wineNameitemText'>
               <text>¥</text>
@@ -108,14 +112,16 @@
     <view class='point_circular'> </view>
   </view>
 
- <view class='show_text'>(点击选择)</view>
+ <view class='show_text'>点击选择</view>
 
   <!-- 四级多选 -->
   <view class="select_fourth"> 
     <scroll-view class='' scroll-x="true">
       <block wx:for="{{fourthGoods}}">
         <view class='optionBox {{item.selected}}' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}" style='text-align:center;background:{{item.bg}};color:{{item.color}}' bindtap='selectFourth'>
-            <image src="{{item.image}}" mode='widthFix' />
+            <!-- <image src="{{item.image}}" mode='widthFix' /> -->
+            <image src="{{item.image}}" mode='widthFix' wx:if="{{! item.soldOut }}" />
+            <span class="goods-deleted" wx:if="{{item.soldOut }}">已下架</span>
             <view class='wineNameitemNameText'>{{ item.name }}</view>
             <view class='wineNameitemText'>
               <text>¥</text>
@@ -140,7 +146,8 @@
       <swiper-item item-id="{{item.pk}}">
         <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
           <view class='mask' wx:if='{{ index != fifthGoodsCurrent }}'></view>
-          <image src="{{item.image}}" mode='widthFix' />
+          <image src="{{item.image}}" mode='widthFix' wx:if="{{! item.soldOut }}" />
+          <span class="goods-deleted" wx:if="{{item.soldOut }}">已下架</span>
           <view class='wineNameitemNameText'>{{ item.name }}</view>
           <view class='wineNameitemText'>
             <text>¥</text>
@@ -168,7 +175,8 @@
       <swiper-item item-id="{{item.pk}}">
         <view class='optionBox' style='text-align:center' data-id='{{item.pk}}' data-calorie="{{item.calorie}}" data-volume="{{item.volume}}">
           <view class='mask' wx:if='{{ index != otherGoodsCurrent }}'></view>
-          <image src="{{item.image}}" mode='widthFix' />
+          <image src="{{item.image}}" mode='widthFix' wx:if="{{! item.soldOut }}" />
+          <span class="goods-deleted" wx:if="{{item.soldOut }}">已下架</span>
           <view class='wineNameitemNameText'>{{ item.name }}</view>
           <view class='wineNameitemText'>
             <text>¥</text>
@@ -271,7 +279,7 @@
       <view class='cup_top_text'>
         CUP-{{currentCup + 1}}
       </view>
-      <view class='cup_top_reduce' bindtap='delCup'>
+      <view class='cup_top_reduce' bindtap='delCup' hidden='hiddenReduce'>
         <image src='/images/reduce.png' ></image>
       </view>
       
