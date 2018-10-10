@@ -279,7 +279,7 @@
       <view class='cup_top_text'>
         CUP-{{currentCup + 1}}
       </view>
-      <view class='cup_top_reduce' bindtap='delCup' hidden='hiddenReduce'>
+      <view class='cup_top_reduce' bindtap='delCup' wx:if="{{showReduce}}">
         <image src='/images/reduce.png' ></image>
       </view>
       

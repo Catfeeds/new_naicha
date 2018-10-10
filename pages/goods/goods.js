@@ -137,7 +137,7 @@ Page({
     cupMenu:true,
     sub:true,
     payOrder:true,
-    hiddenReduce: true, // 隐藏删除此杯
+    showReduce: false, // 隐藏删除此杯
     payPrice: 0.00, // 实际支付
     totalPrice: 0.00, // 订单总额
     totalNum: 0,
@@ -1176,10 +1176,10 @@ Page({
     for (var i = 0, j = secondData.length; i < j; i++) {
       
       if (secondData[i]['pk'] == pk) {
-        // if (secondData[i]['soldOut']) {
-        //   forbidden = true;
-        //   break;
-        // }
+        if (secondData[i]['soldOut']) {
+          forbidden = true;
+          break;
+        }
         
         if (secondData[i]['selected'] == 'selected') {
           secondData[i]['selected'] = '';
@@ -1205,9 +1205,9 @@ Page({
       }
     }
 
-    // if (forbidden) {
-    //   return;
-    // }
+    if (forbidden) {
+      return;
+    }
 
     cartGroup[current] = carts;
 
@@ -1228,9 +1228,14 @@ Page({
     var current = that.data.currentCup;
     var cartGroup = that.data.cartGroup;
     var carts = cartGroup[current];
+    var forbidden = false;
 
     for (var i = 0, j = fourthGoods.length; i < j; i++) {
       if (fourthGoods[i]['pk'] == pk) {
+        if (fourthGoods[i]['soldOut']) {
+          forbidden = true;
+          break;
+        }
 
         if (fourthGoods[i]['selected'] == 'selected') {
           fourthGoods[i]['selected'] = '';
@@ -1254,6 +1259,10 @@ Page({
           }
         }
       }
+    }
+
+    if (forbidden) {
+      return;
     }
 
     cartGroup[current] = carts;
@@ -1471,18 +1480,17 @@ console.log(carts);
 
   // 切换杯
   changeCup: function (e) {
+    console.log(this.data.cartGroup);
     var that = this;
     var current = e.detail.current; // 当前索引，第一个0 
     var currentCup = that.data.currentCup; // 切换前 杯
     var carts = that.data.cartGroup[currentCup]; // 切换前的杯子
-    var cart = that.data.cartGroup[current];     // 切换后的杯子
-
-    console.log(that.data.cartGroup.length);
+    var cart = that.data.cartGroup[current];     // 切换后的杯
 
     if (that.data.cartGroup.length == 0) {
       return;
     }
-
+    console.log(JSON.stringify(carts))
     // 当前杯 
     if (JSON.stringify(carts) != "{}") {
       // 存储上一个选中的多选
@@ -1545,6 +1553,8 @@ console.log(carts);
         carts['temperData']['choises'] = !cold;
         carts['temperData']['iceId'] = that.data.iceId;
       }
+    } else {
+
     }
 
     var secondOption = that.data.secondOption;
@@ -1627,7 +1637,7 @@ console.log(carts);
     if ('temperData' in cart) {
       var iceId = cart['temperData']['iceId'] || 1;// 默认为1
 
-      for (var item of ices) {
+      for (var item of that.data.ices) {
         if (item['id'] == iceId) {
           item['bgColor'] = '#000';
           item['color'] = '#fff';
@@ -1639,7 +1649,7 @@ console.log(carts);
 
       that.setData({
         iceId: iceId,
-        ices: ices,
+        ices: that.data.ices,
         temperature: cart['temperData']['temperature'] || 'ice',
         bgHot: cart['temperData']['bgHot'] || '#fff',
         colHot: cart['temperData']['colHot'] || '#000',
@@ -1672,15 +1682,15 @@ console.log(carts);
       })
       return false;
     }
-    console.log(this.data.cartGroup);
-    // if (this.data.cartGroup.length == 1 && JSON.stringify(this.data.carts) == '{}') {
-    //   wx.showToast({
-    //     title: '请添加当前杯配料',
-    //     icon: 'none'
-    //   });
+//    console.log(this.data.cartGroup);
+    if (this.data.cartGroup.length == 1 && JSON.stringify(this.data.carts) == '{}') {
+      wx.showToast({
+        title: '请添加当前杯配料',
+        icon: 'none'
+      });
 
-    //   return;
-    // }
+      return;
+    }
 
     let cupGroup = this.data.cupGroup;
     let cartGroup = this.data.cartGroup;
@@ -1748,7 +1758,7 @@ console.log(carts);
 
     this.setData({
       carts: {},
-      hiddenReduce: false,
+      showReduce: true,
       currentCup: current,
       cupGroup: cupGroup,
       cartGroup: cartGroup,
@@ -1788,9 +1798,26 @@ console.log(carts);
       success: function (res) {
         if (res.confirm) {
           // 删除当前杯：
+          var cartGroup = that.data.cartGroup;
+          var cupGroup = that.data.cupGroup;
+
+          for (var i = 0, l = cartGroup.length; i < l; i++) {
+            if (that.data.currentCup == i) {
+              cartGroup[i] = {}
+            }
+          }
+
+          for (var i = 0, l = cupGroup.length; i < l; i++) {
+            if (that.data.currentCup == i) {
+              cupGroup[i] = {}
+            }
+          }
 
           that.setData({
-            carts: {}
+            //currentCup: that.data.currentCup - 1,
+            carts: {},
+            cartGroup:cartGroup,
+            cupGroup: cupGroup
           });
         } else if (res.cancel) {
 
