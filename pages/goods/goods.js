@@ -797,13 +797,9 @@ Page({
     } else {
       data.carts['temperData'] = { name: '正常冰', num: 1, price: 0, calorie: 0, volume: 0, temperature: 'ice' };
     }
-
+    
     data.cartGroup[that.data.currentCup] = data.carts;
     data[currentKey] = current;
-
-    //data[tab] = data[tab];
-
-    //data['baseGoodsCurrent'] = that.data.baseGoodsCurrent
 
     that.setData(data);
 
@@ -1480,17 +1476,21 @@ console.log(carts);
 
   // 切换杯
   changeCup: function (e) {
-    console.log(this.data.cartGroup);
+    console.log('changeCup');
     var that = this;
     var current = e.detail.current; // 当前索引，第一个0 
     var currentCup = that.data.currentCup; // 切换前 杯
     var carts = that.data.cartGroup[currentCup]; // 切换前的杯子
     var cart = that.data.cartGroup[current];     // 切换后的杯
-
-    if (that.data.cartGroup.length == 0) {
+    var cartGroup = that.data.cartGroup;
+    var ices = that.data.ices;
+    console.log(current);
+    console.log(currentCup);
+    if (cartGroup.length == 0) {
       return;
     }
-    console.log(JSON.stringify(carts))
+    console.log(carts);
+    console.log(cart);
     // 当前杯 
     if (JSON.stringify(carts) != "{}") {
       // 存储上一个选中的多选
@@ -1523,9 +1523,6 @@ console.log(carts);
         }
       });
 
-      // 保存上一个页面糖类选择
-      var cartGroup = that.data.cartGroup;
-
       if ('sugarData' in carts) {
         // that.setData({
         //   sugarId: carts['sugarData']['sugarId'],
@@ -1536,7 +1533,6 @@ console.log(carts);
       }
 
       // 保存上一温度选择
-      var ices = that.data.ices;
       var temperature = '';
 
       if ('temperData' in carts) {
@@ -1554,16 +1550,40 @@ console.log(carts);
         carts['temperData']['iceId'] = that.data.iceId;
       }
     } else {
+      
+    }
 
+    if (JSON.stringify(cart) == "{}") {
+      var secondOption = that.data.secondOption;
+      var fourthGoods = that.data.fourthGoods;
+
+      for (var i = 0, len = secondOption.length; i < len; i++) {
+        secondOption[i]['selected'] = '';
+      }
+
+      for (var i = 0, len = fourthGoods.length; i < len; i++) {
+        fourthGoods[i]['selected'] = '';
+      }
+
+      that.setData({
+        baseGoodsCurrent: 0,
+        firstOptionCurrent: 0,
+        secondGoodsCurrent: 0,
+        fifthGoodsCurrent: 0,
+        otherGoodsCurrent: 0,
+        secondOption: secondOption,
+        fourthGoods: fourthGoods
+      });
     }
 
     var secondOption = that.data.secondOption;
     var fourthGoods = that.data.fourthGoods;
-   
+
     // 界面恢复选中状态
     var selected = wx.getStorage({
       key: 'cup-' + current,
       success: function (res) {
+        console.log(res.data);
         var secondData = res.data.secondSelected;
         var fourthData = res.data.fourthSelected;
 
@@ -1600,7 +1620,6 @@ console.log(carts);
     var sugarId = 0;
     var sugarWeight = '';
 
-
     if ('sugarData' in cart) {
       sugarId = cart.sugarData.sugarId;
       sugarWeight = cart.sugarData.sugarWeight;
@@ -1620,6 +1639,7 @@ console.log(carts);
     }
 
     that.setData({
+      thirdGoods: thirdGoods,
       carts: that.data.cartGroup[current],  // 购物车
       currentCup: parseInt(current),        // 当前杯
       cartGroup: cartGroup,
@@ -1664,6 +1684,130 @@ console.log(carts);
     that.calculate();
   },
 
+  // 切换杯,改变currentCup 不会触发changeCup
+  changeCupNew: function () {
+    console.log('changeCup2');
+    var that = this;
+    var current = that.data.currentCup; // 当前索引，第一个0 
+    var currentCup = that.data.currentCup; // 切换前 杯
+    var carts = that.data.cartGroup[currentCup]; // 切换前的杯子
+    var cart = that.data.cartGroup[current];     // 切换后的杯
+    var cartGroup = that.data.cartGroup;
+    var ices = that.data.ices;
+
+    if (cartGroup.length == 0) {
+      return;
+    }
+
+    console.log(current);
+
+    var secondOption = that.data.secondOption;
+    var fourthGoods = that.data.fourthGoods;
+
+    // 界面恢复选中状态
+    var selected = wx.getStorage({
+      key: 'cup-' + current,
+      success: function (res) {
+        console.log(res.data);
+        var secondData = res.data.secondSelected;
+        var fourthData = res.data.fourthSelected;
+
+        for (var i = 0, len = secondOption.length; i < len; i++) {
+          secondOption[i]['selected'] = '';
+          for (var j = 0; j < secondData.length; j++) {
+            if (secondOption[i]['pk'] == secondData[j]) {
+              secondOption[i]['selected'] = 'selected';
+            }
+          }
+        }
+
+        for (var i = 0, len = fourthGoods.length; i < len; i++) {
+          fourthGoods[i]['selected'] = '';
+          for (var j = 0; j < fourthData.length; j++) {
+            if (fourthGoods[i]['pk'] == fourthData[j]) {
+              fourthGoods[i]['selected'] = 'selected';
+            }
+          }
+        }
+
+        that.setData({
+          baseGoodsCurrent: res.data.baseGoodsCurrent,
+          firstOptionCurrent: res.data.firstOptionCurrent,
+          secondGoodsCurrent: res.data.secondGoodsCurrent,
+          fifthGoodsCurrent: res.data.fifthGoodsCurrent,
+          otherGoodsCurrent: res.data.otherGoodsCurrent,
+          secondOption: secondOption,
+          fourthGoods: fourthGoods
+        });
+      },
+    })
+
+    var sugarId = 0;
+    var sugarWeight = '';
+
+    if ('sugarData' in cart) {
+      sugarId = cart.sugarData.sugarId;
+      sugarWeight = cart.sugarData.sugarWeight;
+    }
+
+    var thirdGoods = that.selectSugar(sugarId, sugarWeight);
+
+    // 选中糖类
+    for (var item of thirdGoods) {
+
+      if (item['pk'] == sugarId) {
+        item['bgProcess'] = '#000';
+
+      } else {
+        item['bgProcess'] = '#666';
+      }
+    }
+
+    that.setData({
+      thirdGoods: thirdGoods,
+      carts: that.data.cartGroup[current],  // 购物车
+      currentCup: parseInt(current),        // 当前杯
+      cartGroup: cartGroup,
+      ices: ices,
+      iceId: 1,
+      //temperature: temperature,
+      bgHot: '#fff',
+      colHot: "#000",
+      bgCold: "#000",
+      colCold: '#fff',
+      points: false,
+      choises: false,
+    });
+
+    if ('temperData' in cart) {
+      var iceId = cart['temperData']['iceId'] || 1;// 默认为1
+
+      for (var item of that.data.ices) {
+        if (item['id'] == iceId) {
+          item['bgColor'] = '#000';
+          item['color'] = '#fff';
+        } else {
+          item['bgColor'] = '#fff';
+          item['color'] = '#000';
+        }
+      }
+
+      that.setData({
+        iceId: iceId,
+        ices: that.data.ices,
+        temperature: cart['temperData']['temperature'] || 'ice',
+        bgHot: cart['temperData']['bgHot'] || '#fff',
+        colHot: cart['temperData']['colHot'] || '#000',
+        bgCold: cart['temperData']['bgCold'] || '#000',
+        colCold: cart['temperData']['colCold'] || '#fff',
+        points: cart['temperData']['points'] || false,
+        choises: cart['temperData']['choises'] || false,
+      });
+    }
+
+    // 计算当前杯配方
+    that.calculate();
+  },
   cupShow: function () {
     var cup = !this.data.cupMenu;
     this.setData({
@@ -1682,7 +1826,7 @@ console.log(carts);
       })
       return false;
     }
-//    console.log(this.data.cartGroup);
+
     if (this.data.cartGroup.length == 1 && JSON.stringify(this.data.carts) == '{}') {
       wx.showToast({
         title: '请添加当前杯配料',
@@ -1741,6 +1885,12 @@ console.log(carts);
       }
     });
 
+    // 清除旧数据
+    wx.setStorage({
+      key: 'cup-' + (parseInt(currentCup) + 1),
+      data: null,
+    });
+
     // 初始化糖类
     //var thirdGoods = this.data.thirdGoods;
     var thirdGoods = this.selectSugar(0, '');
@@ -1778,6 +1928,11 @@ console.log(carts);
       choises: false,
       ices: ices
     });
+
+    // 滑动顶部
+    wx.pageScrollTo({
+      scrollTop: 0
+    })
   },
   // 减去一杯
   delCup: function(e) {
@@ -1792,36 +1947,102 @@ console.log(carts);
       return;
     }
 
+    var currentCup = that.data.currentCup;
+
     wx.showModal({
       title: '提示',
-      content: '确定要删除这杯吗',
+      content: '确定要删除第' + (currentCup + 1) +'杯吗',
       success: function (res) {
         if (res.confirm) {
+
+          for (var i = 0; i < 5; i++) {
+            if (currentCup == i) {
+              var data;
+              var index = i + 1;
+
+              data = wx.getStorageSync('cup-' + index);
+
+              console.log(data);
+
+              wx.setStorage({
+                key: 'cup-' + i,
+                data: data,
+              });              
+            }            
+          }
+          // 清除缓存
+          // wx.setStorage({
+          //   key: 'cup-' + that.data.currentCup,
+          //   data: null,
+          // })
+
           // 删除当前杯：
           var cartGroup = that.data.cartGroup;
           var cupGroup = that.data.cupGroup;
+          var secondOption = that.data.secondOption;
+          var fourthGoods = that.data.fourthGoods;
 
           for (var i = 0, l = cartGroup.length; i < l; i++) {
             if (that.data.currentCup == i) {
-              cartGroup[i] = {}
+              cartGroup.splice(i, 1);
             }
           }
 
           for (var i = 0, l = cupGroup.length; i < l; i++) {
             if (that.data.currentCup == i) {
-              cupGroup[i] = {}
+              cupGroup.splice(i, 1);
             }
           }
 
           that.setData({
+            cartGroup: cartGroup,
+            cupGroup: cupGroup,
             //currentCup: that.data.currentCup - 1,
             carts: {},
-            cartGroup:cartGroup,
-            cupGroup: cupGroup
           });
-        } else if (res.cancel) {
 
+          for (var i = 0, len = secondOption.length; i < len; i++) {
+            secondOption[i]['selected'] = '';
+          }
+
+          for (var i = 0, len = fourthGoods.length; i < len; i++) {
+            fourthGoods[i]['selected'] = '';
+          }
+
+          that.setData({
+            baseGoodsCurrent: 0,
+            firstOptionCurrent: 0,
+            secondGoodsCurrent: 0,
+            fifthGoodsCurrent: 0,
+            otherGoodsCurrent: 0,
+            secondOption: secondOption,
+            fourthGoods: fourthGoods,
+          });
+
+          if (currentCup > 0) {
+            that.setData({
+              currentCup: currentCup - 1,
+              carts: that.data.cupGroup[currentCup - 1]
+            });
+          } else {
+            that.setData({
+              currentCup: currentCup,
+              carts: that.data.cupGroup[currentCup]
+            });
+          }
+
+          that.changeCupNew();
+
+          if (that.data.cartGroup.length == 1) {
+            that.setData({
+              showReduce: false
+            });
+          }
+
+        } else if (res.cancel) {
+          // 取消
         }
+        
       }
     })
   },

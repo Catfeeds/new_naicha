@@ -293,7 +293,7 @@
     </view>
 
 
-    <swiper bindchange='changeCup' class='cup-swiper' indicator-dots="true" current="{{currentCup}}">
+    <swiper display-multiple-items='1' class='cup-swiper' indicator-dots="true" current="{{currentCup}}" bindchange='changeCup' >
     <!-- <block wx:for="{{cups}}" wx:for-itme="cup"> -->
       <block wx:for="{{cupGroup}}"  wx:for-item="cup" >
       <swiper-item data-item="{{cup.length}}">
