@@ -19,7 +19,7 @@ swiper{
 }
 #right{
 width: 100rpx;
-background: url("http://alpha-jc.pinyer.com/demo/images/cup-right.png");
+background: url("http://osg1aqywx.bkt.clouddn.com/cup-right2.png");
 background-size: 100% 100%;
 z-index: 123;
 position: absolute;
@@ -28,7 +28,7 @@ height: 700rpx;
 }
 #left{
 width: 100rpx;
-background: url("http://alpha-jc.pinyer.com/demo/images/cup-left.png");
+background: url("http://osg1aqywx.bkt.clouddn.com/cup-left2.png");
 background-size: 100% 100%;
 z-index: 123;
 position: absolute;
@@ -44,6 +44,7 @@ box-shadow:0px 2px 3px #ccc;
 z-index:12;
 left:50%;
 margin-left:-48%;
+top:-1px;
 }
 #bottom{
 width:68%;
@@ -186,7 +187,7 @@ margin-left:-34%;
 }
 #wrap_right{
   width: 100rpx;
-  background: url("http://osg1aqywx.bkt.clouddn.com/cup-right.png");
+  background: url("http://osg1aqywx.bkt.clouddn.com/cup-right2.png");
   background-size: 100% 100%;
   z-index: 123;
   position: absolute;
@@ -195,7 +196,7 @@ margin-left:-34%;
 }
 #wrap_left{
   width: 100rpx;
-  background: url("http://osg1aqywx.bkt.clouddn.com/cup-left.png");
+  background: url("http://osg1aqywx.bkt.clouddn.com/cup-left2.png");
   background-size: 100% 100%;
   z-index: 123;
   position: absolute;
@@ -210,6 +211,8 @@ margin-left:-34%;
   z-index:12;
   left:50%;
   margin-left:-48%;  
+  top:-3px;
+
 }
 .wrap_top{
   width: 100%;
