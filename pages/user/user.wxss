@@ -1,6 +1,5 @@
-coupon_list_btn_usecoupon_list_btn_usecoupon_list_btn_usecoupon_list_btn_usecoupon_list_btn_usecoupon_list_btn_usecoupon_list_btn_usecoupon_list_btn_use/* pages/my/my.wxss *//* pages/make/make.wxss */
 page{
-  background: #f2f2f2;
+  background-color: #f2f2f2;
 }
 .contain{
   box-shadow: 3px -3px 20px #c7c7c7;
@@ -37,12 +36,23 @@ page{
 .top_status{
   display: flex;
   justify-content: center;
-  font-size: 0.7em;
-  margin-top: 40rpx;
-  line-height: 57rpx;
+  font-size: 0.8em;
+  margin-top: 30rpx;
+  /* line-height: 57rpx; */
+  width:30%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-align: center;
+  padding:10px;
 }
 .top_img{
-  height: 200rpx;
+  height:160rpx;
+  width:160rpx;
+  padding:0rpx;
+  border:1px solid #aaa;
+  border-radius:160rpx;
+  overflow:hidden;
+  box-shadow:0 0 10px #aaa;
 }
 .top_title{
   width: 90%;
@@ -129,7 +139,7 @@ page{
 .con{
   width: 94%;
   margin: 0 auto;
-  height: 430rpx;
+  height: 380rpx;
   overflow: scroll;
   background:#EAEAEA;
   border-radius: 20rpx;
@@ -269,7 +279,7 @@ page{
   display:flex;
   font-size: 0.5em;
   color:#6F6F73;
-  margin-top: 20rpx;
+  margin-top: 10rpx;
 }
 .record_list_left_time{
   display:flex;
@@ -278,7 +288,7 @@ page{
 }
 .record_list_right{
   flex: 1;
-  margin: 0 25rpx;
+  margin: 0 20rpx;
   display:flex;
   flex-direction:column;
 
@@ -795,6 +805,7 @@ page{
 .close_img{
   width: 30rpx;
   height: 30rpx;
+  margin-left:16rpx;
 }
 .delete{
   width:40px;
@@ -818,17 +829,22 @@ page{
 .selected{
   background: #999;
 }
-
+.nickname{
+  width:86%;
+  margin:16rpx;
+  text-overflow:ellipsis
+}
 .circle{
   display:block;
-  width:180px;
-  height:230rpx;
-  border:1px solid #dfdfdf;
+  /* width:220rpx; */
+  height:180rpx;
+  /* border:1px solid #dfdfdf; */
   position:relative;
-  top:-94rpx;
-  border-radius:180rpx;
+  top:-98rpx;
+  /* border-radius:220rpx; */
   overflow:hidden;
-  box-shadow:0 0 10px #eec;
+  padding:10rpx;
+  /* box-shadow:0 0 10px #eec; */
 }
 .del_btn{
   font-size: 0.6em;

@@ -231,7 +231,7 @@
   </view>
 
   <!-- 冷/冰 -->
-  <view class='choise'  style='margin-bottom:50px;' hidden="{{choises}}">
+  <view class='choise'  style='margin-bottom:180px;' hidden="{{choises}}">
     <block wx:for="{{ices}}">
       <view class='choise_con'  >
         <view class='choise_con_btn' style='background:{{item.bgColor}};color:{{item.color}}' data-id='{{item.id}}' bindtap='iceBtn'>
@@ -244,10 +244,10 @@
   <view class='empty'  style='margin-bottom:50px;' hidden='{{!choises}}'>
   </view>
 
-  <view class='point'>
+  <!-- <view class='point'>
     <view class='point_line'></view>
     <view class='point_circular'></view>
-  </view>
+  </view> -->
 
   <!--底部统计栏-->
   <view class='order'>

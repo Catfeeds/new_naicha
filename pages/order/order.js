@@ -18,7 +18,7 @@ Page({
       { color: '#000', background: '#8B658B' },
       { color: '#000', background: '#B8860B' },
       { color: '#000', background: '#FF6A6A' },
-      { color: '#000', background: '#FF0000' },
+      { color: '#000', background: '#FFcc00' },
       { color: '#000', background: '#DA70D6' },
       { color: '#000', background: '#FF1493' },
       { color: '#000', background: '#E0EEE0' },

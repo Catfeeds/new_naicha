@@ -295,7 +295,7 @@ swiper-item{
   flex-direction: row;
   position: absolute;
   left: 300rpx;
-  bottom: 20rpx;
+  bottom: 80rpx;
 }  
 /*未选中时的小圆点样式 */
 .dot{  

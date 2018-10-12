@@ -345,8 +345,9 @@ App({
     requests: [], // 待请求队列
     sessionId:'',
     openid: '',
-    wx_query_openid: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx31c29e4d7c15086a&secret=5fafeb1162405ee7ff235e5a0e9a92c3&js_code=',
-    siteBaseUrl: 'http://nc.laravel.com/api/',
+    wx_query_openid: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx0844817c7a6d15cc&secret=fe4b64e1f96f38463033927e038e97a1&js_code=',
+    //siteBaseUrl: 'http://api.laravel.com/',
+    siteBaseUrl: 'https://api.collocationlab.com/',
     sessionKey: '',
     authSetting: 0
   }
