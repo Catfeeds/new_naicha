@@ -2076,9 +2076,9 @@ Page({
   // 去支付
   toPay: function() {
     var that = this;
-    
+
     app.sendRequest({
-      url: 'order/toPay',
+      url: 'order/weixinPay',
       data: {
         orderId: that.data.orderId
       },
@@ -2106,7 +2106,7 @@ Page({
       }
 
     });
-  }
+  },
   /**
    * 生命周期函数--监听页面卸载
    */
