@@ -811,7 +811,6 @@ Page({
     var citrusCategory = this.data.citrusCategory;
     
     for (var i = 0; i < secondData.length; i++) {
-      //console.log(secondData[i]);
       var pk = secondData[i]['pk'];
 
       if (action == 'hide') {
@@ -839,7 +838,7 @@ Page({
   // 是否有茶底商品
   hasBaseGoods: function() {
     var carts = this.data.carts;
-    console.log(carts);
+
     for (var key in carts) {
       if (key == 'baseGoods' && JSON.stringify(carts[key]) != "{}") {
         return true;
@@ -890,6 +889,7 @@ Page({
 
         var sugarWeight = '';
         var sugarId = 0;
+        var firstInx = 0;
 
         for (var i in result) {
           var volume = result[i]['volume'];
@@ -910,11 +910,12 @@ Page({
 
             if (i == 1 || i == 2 || i ==3 ) { // 一级分类
               baseGoods.push(item);
+              firstInx++;
 
               // 从推荐中获取
               if (that.inRecommend(recommend, item['pk'])) {
                 cart['baseGoods'] = item;
-                baseGoodsCurrent = ++j;                
+                baseGoodsCurrent = firstInx;                
               }
             }
 
@@ -1071,9 +1072,11 @@ Page({
           }
 
           cartGroup[that.data.currentCup] = cart;
-        }
-        
 
+          that.setData({
+            carts: cart
+          })
+        }
 
         // 一级品类双倍
         secondGoods.push(res.data.doubleItem);
@@ -1349,7 +1352,7 @@ Page({
 
     // 取当前杯
     carts = this.data.cartGroup[this.data.currentCup];
-console.log(carts);
+
     var cup = [];
     var keys = ['baseGoods', 'firstOption', 'secondGoods', 'secondData', 'fourthGoods', 'fifthGoods', 'otherGoods', 'sugarData'];
 //, 'temperData'
@@ -1476,7 +1479,6 @@ console.log(carts);
 
   // 切换杯
   changeCup: function (e) {
-    console.log('changeCup');
     var that = this;
     var current = e.detail.current; // 当前索引，第一个0 
     var currentCup = that.data.currentCup; // 切换前 杯
@@ -1484,13 +1486,11 @@ console.log(carts);
     var cart = that.data.cartGroup[current];     // 切换后的杯
     var cartGroup = that.data.cartGroup;
     var ices = that.data.ices;
-    console.log(current);
-    console.log(currentCup);
+
     if (cartGroup.length == 0) {
       return;
     }
-    console.log(carts);
-    console.log(cart);
+
     // 当前杯 
     if (JSON.stringify(carts) != "{}") {
       // 存储上一个选中的多选
@@ -1686,7 +1686,6 @@ console.log(carts);
 
   // 切换杯,改变currentCup 不会触发changeCup
   changeCupNew: function () {
-    console.log('changeCup2');
     var that = this;
     var current = that.data.currentCup; // 当前索引，第一个0 
     var currentCup = that.data.currentCup; // 切换前 杯
@@ -2074,7 +2073,40 @@ console.log(carts);
   onHide: function () {
 
   },
+  // 去支付
+  toPay: function() {
+    var that = this;
+    
+    app.sendRequest({
+      url: 'order/toPay',
+      data: {
+        orderId: that.data.orderId
+      },
+      success: function(result) {
+        if (result.code != 200) {
+          wx.showToast({
+            title: '发起支付失败，请稍后再试',
+            icon: 'none'
+          });
 
+          return false;
+        }
+        wx.requestPayment({
+            'timeStamp': result.data.timeStamp,
+            'nonceStr': result.data.nonceStr,
+            'package': result.data.package,
+            'signType': result.data.signType,
+            'paySign': result.data.paySign,
+            'success': function (res) { 
+              console.log('success');
+            },
+            'fail': function (res) { },
+            'complete': function (res) { }
+          } )
+      }
+
+    });
+  }
   /**
    * 生命周期函数--监听页面卸载
    */

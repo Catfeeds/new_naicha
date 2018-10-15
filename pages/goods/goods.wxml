@@ -1,5 +1,5 @@
 <!-- 一级品类 -->
-  <view catchtouchmove="{{preventTouchMove}}">
+  <view catchtouchmove="{{preventTouchMove}}" style='width:100%;overflow-x:hidden;'>
   <swiper display-multiple-items='{{ showLen }}' current='{{baseGoodsCurrent}}' data-tab="baseGoods" bindchange='changeFun'>
     <swiper-item>
       <view class='perch'></view>
@@ -199,9 +199,9 @@
           {{third.name}}
         </view>
         <view class='process_wrap' wx:for="{{third.processData}}" wx:key="">
-          <view class='process'>
+          <view class='process' data-id ='{{third.pk}}' data-weight="{{item.name}}" bindtap='chooseWeight'>
             <view class='process_line' style="background:{{item.start}}"></view>
-            <image class='process_icon' src="{{item.icon}}" data-id ='{{third.pk}}' data-weight="{{item.name}}" bindtap='chooseWeight'></image>
+            <image class='process_icon' src="{{item.icon}}" ></image>
             <view class='process_line' style="background:{{item.end}}"></view>
           </view>
           <text class='process_name' style='opacity: {{item.opacity}}'>{{item.name}}</text>
@@ -231,7 +231,7 @@
   </view>
 
   <!-- 冷/冰 -->
-  <view class='choise'  style='margin-bottom:180px;' hidden="{{choises}}">
+  <view class='choise'  style='margin-bottom:50px;' hidden="{{choises}}">
     <block wx:for="{{ices}}">
       <view class='choise_con'  >
         <view class='choise_con_btn' style='background:{{item.bgColor}};color:{{item.color}}' data-id='{{item.id}}' bindtap='iceBtn'>
@@ -244,10 +244,10 @@
   <view class='empty'  style='margin-bottom:50px;' hidden='{{!choises}}'>
   </view>
 
-  <!-- <view class='point'>
+  <view class='point' style='opacity:0'>
     <view class='point_line'></view>
     <view class='point_circular'></view>
-  </view> -->
+  </view>
 
   <!--底部统计栏-->
   <view class='order'>
@@ -511,7 +511,7 @@
             <image src='/images/checkOut.png'></image>
           </view>
         </view>
-        <view class='f_btn'>
+        <view class='f_btn' bindtap='toPay'>
           立即支付{{payPrice}}元
         </view>
       </view> 
