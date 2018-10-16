@@ -790,9 +790,9 @@ Page({
         })
       }
     }
-
+    console.log(data.carts);
     // 默认选择正常冰
-    if ('temperData' in data.carts) {
+    if ('temperData' in data.carts && JSON.stringify(data.carts['temperData']) != '{}') {
 
     } else {
       data.carts['temperData'] = { name: '正常冰', num: 1, price: 0, calorie: 0, volume: 0, temperature: 'ice' };
@@ -2078,7 +2078,7 @@ Page({
     var that = this;
 
     app.sendRequest({
-      url: 'order/weixinPay',
+      url: 'business/weixinPay',
       data: {
         orderId: that.data.orderId
       },
