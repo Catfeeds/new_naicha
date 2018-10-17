@@ -472,8 +472,7 @@ Page({
             ices: ices,
             totalPrice:0,
             payPrice:0,
-            totalNum:0,
-            
+            totalNum:0,            
           });
 
           // 恢复优惠券
@@ -2098,14 +2097,86 @@ Page({
             'signType': result.data.signType,
             'paySign': result.data.paySign,
             'success': function (res) { 
+              // todo 查询订单状态
+              that.orderStatus(that.data.orderId);
+
               console.log('success');
             },
             'fail': function (res) { },
             'complete': function (res) { }
-          } )
+        })
       }
 
     });
+  },
+
+  // 订单状态查询
+  orderStatus: function(orderId) {
+    app.sendRequest({
+      url: 'business/orderQuery',
+      data: {orderId: orderId},
+      success: function (result) {
+        if (result.code != 200) {
+          return false;
+        }
+
+        wx.showToast({
+          title: '支付成功，订单即刻安排制作',
+          icon: 'success'
+        });
+
+        // 复位
+        var secondOption = that.data.secondOption;
+        var fourthGoods = that.data.fourthGoods;
+        var thirdGoods = that.selectSugar(0, '');
+        var ices = that.data.ices;
+
+        for (var item of ices) {
+          if (item['id'] == 1) {
+            item['bgColor'] = '#000';
+            item['color'] = '#fff';
+          } else {
+            item['bgColor'] = '#fff';
+            item['color'] = '#000';
+          }
+        }
+
+        for (var i = 0, len = secondOption.length; i < len; i++) {
+          secondOption[i]['selected'] = '';
+        }
+
+        for (var i = 0, len = fourthGoods.length; i < len; i++) {
+          fourthGoods[i]['selected'] = '';
+        }
+
+        that.setData({
+          cupGroup: [],
+          payOrder: true,
+          shade: true,
+          carts: {},
+          currentCup: 0,
+          cartGroup: [],
+          baseGoodsCurrent: 0,
+          firstOptionCurrent: 0,
+          secondGoodsCurrent: 0,
+          fifthGoodsCurrent: 0,
+          otherGoodsCurrent: 0,
+          secondOption: secondOption,
+          fourthGoods: fourthGoods,
+          thirdGoods: thirdGoods,
+          bgHot: "#fff",
+          colHot: "#000",
+          bgCold: "#000",
+          colCold: "#fff",
+          points: false,
+          choises: false,
+          ices: ices,
+          totalPrice: 0,
+          payPrice: 0,
+          totalNum: 0,
+        });
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面卸载
