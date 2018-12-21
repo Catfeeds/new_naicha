@@ -1,5 +1,5 @@
 <!-- 一级品类 -->
-  <view catchtouchmove="{{preventTouchMove}}" style='width:100%;overflow-x:hidden;'>
+  <view catchtouchmove="{{preventTouchMove}}" style='width:100%;overflow-x:hidden;opacity:0;margin-top:50px;' animation='{{showPage}}'>
   <swiper display-multiple-items='{{ showLen }}' current='{{baseGoodsCurrent}}' data-tab="baseGoods" bindchange='changeFun'>
     <swiper-item>
       <view class='perch'></view>

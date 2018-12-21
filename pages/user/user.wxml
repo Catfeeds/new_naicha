@@ -1,4 +1,4 @@
-<view class='contain'>
+<view class='contain' animation='{{userPage}}' style='opacity:0;margin-top:110px;'>
   <view class='top'>
     <view class='top_status'>
       <open-data class="nickname" type="userNickName"></open-data>

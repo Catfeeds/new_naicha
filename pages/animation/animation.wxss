@@ -1,0 +1,53 @@
+page{
+  background: #ccc;
+  width:100%;
+  overflow-x:hidden;
+}
+.container{
+  width:100%;
+  margin: 0 auto;
+}
+.animation{
+  position: relative;
+  width:80%;
+  margin:20rpx auto;
+}
+
+.animation image{
+  width:600rpx;
+}
+
+.animation text{
+  width:600rpx;
+  text-align: center;
+}
+
+.animation .top{
+  position: absolute;
+  top: 20rpx;
+  border: 8px solid #fff;
+  text-align: center;
+  z-index: 200;
+  
+  background: #ccc;
+}
+
+.animation .center{
+  position: absolute;
+  top: 20rpx;
+  border: 8px solid #fff;
+  text-align: center;
+  /* transform:rotate(5deg); */
+  z-index: 100;
+   background: #ccc;
+}
+
+.animation .bottom{
+  position: absolute;
+  top: 20rpx;
+  border: 8px solid #fff;
+  text-align: center;
+  /* transform:rotate(-7deg); */
+  z-index: 99;
+   background: #ccc;
+}

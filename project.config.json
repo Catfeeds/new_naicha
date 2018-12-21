@@ -13,7 +13,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.0.4",
 	"appid": "wx0844817c7a6d15cc",
-	"projectname": "naicha-wechat2",
+	"projectname": "new_naicha",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -32,12 +32,18 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
 					"id": -1,
 					"name": "index",
-					"pathName": "pages/index/index"
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "动画",
+					"pathName": "pages/animation/animation"
 				}
 			]
 		}

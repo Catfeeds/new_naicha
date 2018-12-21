@@ -1,0 +1,85 @@
+
+<view hidden='{{hasDone}}' style='opacity:0;margin-top:160rpx;position:relative' animation='{{orderPage}}'>
+  <image class='todo' src='/images/cup-todo.png'></image>
+  <view class='status'>
+    <view class='txt' hidden='{{! hasOrder}}'>正在制作中</view>
+    <view class='' hidden='{{hasOrder}}'>等待下单中</view>
+  </view>
+
+  <view class='waiting'>
+    排队状态：0杯
+  </view>
+
+    <view class='messsage' hidden='{{hasOrder}}'>
+      <view>您今日还没有进行配方尝试</view>
+      <view>快去研究一份你喜欢的配方吧</view>
+    </view>
+
+    <view class='toBuy' hidden='{{hasOrder}}'>
+    <button>快去下单吧</button>
+    </view>
+
+    <view  hidden='{{ orders.length < 1 }}' class='wrap-todo' bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend' style='z-index:1000'></view>
+
+    <swiper hidden='{{ orders.length < 1 }}' class='wrap-todo' bindchange="changeItem" current='{{swiperCurrent}}'>
+      <block wx:for="{{orders}}" wx:for-item='order' wx:for-key='idx'>
+        <swiper-item>
+          <view class='orders'>
+            <view class='order-item'>
+              <block wx:for="{{order}}">
+                <view class='order_goods' style="color:{{item.color}};background:{{item.background}}" wx:if="{{index < 5}}">
+                  {{item.goods_name}}
+                </view>
+              </block>
+              <view class='order_goods' wx:if='{{order.length > 5}}'>
+                ......
+              </view>
+            </view>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+
+    <view class="dots"> 
+        <block wx:for="{{orders}}" wx:key="unique"> 
+          <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view> 
+        </block> 
+      </view>
+
+</view>
+
+<view hidden='{{!hasDone}}' style='opacity:0;margin-top:160rpx;position:relative' animation='{{orderPage}}' class='done'>
+  <image class='success' src='/images/cup-success.png' ></image>
+  <view class='status'>
+    <view class='txt'>制作完成</view>
+  </view>
+
+  <view class='waiting'>
+    请至取货台取餐
+  </view>
+  <view class='wrap' bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend' style='z-index:1000'></view>
+  <swiper hidden='{{ orders.length < 1 }}' class='wrap' bindchange="changeItem" current='{{swiperCurrent}}'>
+    <block wx:for="{{orders}}" wx:for-item='order' wx:for-key='idx'>
+      <swiper-item>
+        <view class='orders' >
+          <view class='order-item'>
+            <block wx:for="{{order}}" wx:for-item='item'>
+              <view class='order_goods' style="color:{{item.color}};background:{{item.background}}" wx:if="{{index < 5}}">
+                {{item.goods_name}}
+              </view>
+            </block>
+            <view class='order_goods' wx:if='{{order.length > 5}}'>
+              ......
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+    <view class="dots"> 
+        <block wx:for="{{orders}}" wx:key="unique"> 
+          <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view> 
+        </block> 
+      </view>
+</view>

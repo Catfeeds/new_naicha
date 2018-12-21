@@ -2058,19 +2058,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log('onShow');
     var recommend = wx.getStorageSync('recommend');
 
     if (recommend) {
       this.onLoad();
     }
+
+    setTimeout(function () {
+      app.slideupshow(this, 'showPage', -50, 1)
+    }.bind(this), 300);
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    setTimeout(function () {
+      //app.slideupshow(this, 'showPage', 50, 0)
+    }.bind(this), 200);
   },
   // 去支付
   toPay: function() {

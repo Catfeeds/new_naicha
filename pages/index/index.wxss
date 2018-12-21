@@ -34,7 +34,7 @@ page{
   margin-top: 20rpx;
 }
 .faContain_bottom{
-  height: 600rpx;
+  height: 850rpx;
   background: #fff;
   border-bottom-right-radius: 40rpx;
   border-bottom-left-radius: 40rpx;
@@ -278,7 +278,7 @@ page{
 .wrap{
   height: auto;
   position: relative;  
-  margin-top: 40rpx;
+  /* margin-top: 40rpx; */
 }
 
 swipers{  
@@ -314,24 +314,27 @@ swiper-item{
   background-color: coral;
 }
 .mine{
-  position:absolute;
-  bottom:34%;
+  position:fixed;
+  bottom:50rpx;
   background:#ccc;
   opacity:0.8;
   border-radius:26rpx;
   box-shadow:100rpx 100rpx 100rpx 80rpx #000 inset;
   color:#fff;
   padding:10rpx;
-  height:180rpx;
+  height:190rpx;
   font-size:0.6em;
+  padding-bottom:25rpx;
+  right: -50%;
 }
 .mine .mine_line{
   border-top:1px solid #fff;
-  width:82%;
+  width:460rpx;
   text-align:center;
   margin:0 auto;
   position:relative;
-
+  left:30rpx;
+  top:-30rpx;
 }
 .mine_avatar {
   width:50rpx;
@@ -358,11 +361,11 @@ swiper-item{
 }
 .mine_likes{
   display:inline-block;
-  width:125rpx;
+  width:114rpx;
   text-align:center;
 }
 .mine_formula{
-  width:380rpx;
+  width:260rpx;
   padding-left:10rpx;
   display:table-cell;
   vertical-align:middle;
@@ -406,4 +409,55 @@ swiper-item{
   position:absolute;
   right:20%;
   top:12rpx;
+}
+.floating{
+  position:fixed;
+  right:0;
+  /* top:880rpx; */
+  bottom:50rpx;
+  width:60rpx;
+  height:160rpx;
+  background:#101010;
+  border-top-left-radius:34rpx;
+  border-bottom-left-radius:34rpx;
+}
+.floating .rank{
+  height:80rpx;
+  color:#fff;
+  width:100%;
+  text-align:center;
+  line-height:80rpx;
+  font-size:30rpx;
+}
+.floating .show-image image{
+  width:50rpx;
+  height:37rpx;
+  margin-left:6rpx;
+}
+.hide-image{
+  width:60rpx;
+  margin-left:6rpx;
+}
+
+.zan-image{
+  width:90rpx;
+  margin-left:6rpx;
+  position:relative;
+  top:30rpx;
+}
+.zan-image image {
+  width:70rpx;
+  height:70rpx;
+}
+
+.share-image{
+  width:60rpx;
+  margin-left:6rpx;
+  position:relative;
+  top:16rpx;
+}
+
+.share-image image{
+  width:40rpx;
+  height:40rpx;
 }

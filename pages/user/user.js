@@ -431,6 +431,12 @@ Page({
     })
   },
 
+  onShow: function(){
+    setTimeout(function () {
+      app.slideupshow(this, 'userPage', -50, 1)
+    }.bind(this), 200);
+  }
+
 });
 // 删除数组元素
 Array.prototype.remove = function (dx) {

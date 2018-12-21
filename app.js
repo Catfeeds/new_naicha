@@ -4,10 +4,12 @@ App({
   // 小程序启动时触发
   onLaunch: function (options) {
     var that = this;
+    console.log('onLaunch:');
     wx.login({
       success: res => {
         let openid = wx.getStorageSync('openid');
-        console.log(openid);
+        let sessionKey = wx.getStorageSync('session_key');
+
         if (! openid.length) {
           wx.request({
             url: that.globalData.wx_query_openid + res.code + '&grant_type=authorization_code',
@@ -16,10 +18,6 @@ App({
               if (res.data.openid) {
                 that.globalData.openid = res.data.openid;
                 wx.setStorageSync('openid', res.data.openid);
-
-                if (! wx.getStorageSync('session_key')) {
-                  that.queryUsreInfo();
-                }
               }
             }
           })
@@ -27,7 +25,11 @@ App({
           that.globalData.openid = openid;
         }
 
-        console.log(that.globalData);
+        if (!that.globalData.sessionKey.length && !sessionKey) {
+          that.queryUsreInfo();
+        } else {
+          that.globalData.sessionKey = sessionKey; 
+        }
       }
     });
 
@@ -36,7 +38,7 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs);
     console.log("[onLaunch] 场景值:", options.scene)
-
+    
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -46,7 +48,7 @@ App({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
               this.globalData.userInfo = res.userInfo
-
+              
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {
@@ -119,7 +121,9 @@ App({
   },
   // user auth callback
   userInfoReadyCallback: function(res) {
-    this.queryUsreInfo();
+    if (!this.globalData.sessionKey.length || !wx.getStorageSync('session_key')) {
+      this.queryUsreInfo();
+    }
 
     // 队列，执行api接口【原因是 onlanuch 是异步的，有时候比onload晚，就找不到openid了】
     var len = this.globalData.requests.length;
@@ -129,7 +133,7 @@ App({
       }
     }
 
-    this.globalData.requests = [];
+    this.globalddddata.requests = [];
   },
 
   getSessionKey: function () {
@@ -199,7 +203,7 @@ App({
           that._login(); // session 过期 失效 需要重新登录
           return false;
         }
-
+        console.log(res);
         if (res.data.code && res.data.code != 200) {
           that.hideToast();
           that.showModal({
@@ -338,6 +342,52 @@ App({
     })
   },
 
+  show: function (that, param, opacity) {
+    var animation = wx.createAnimation({
+      //持续时间800ms
+      duration: 800,
+      timingFunction: 'ease',
+    });
+    //var animation = this.animation
+    animation.opacity(opacity).step()
+    //将param转换为key
+    var json = '{"' + param + '":""}'
+    json = JSON.parse(json);
+    json[param] = animation.export()
+    //设置动画
+    that.setData(json)
+  },
+
+  //滑动渐入渐出
+  slideupshow: function (that, param, px, opacity) {
+    var animation = wx.createAnimation({
+      duration: 800,
+      timingFunction: 'ease',
+    });
+    animation.translateY(px).opacity(opacity).step()
+    //将param转换为key
+    var json = '{"' + param + '":""}'
+    json = JSON.parse(json);
+    json[param] = animation.export()
+    //设置动画
+    that.setData(json)
+  },
+
+  //向右滑动渐入渐出
+  sliderightshow: function (that, param, px, opacity) {
+    var animation = wx.createAnimation({
+      duration: 800,
+      timingFunction: 'ease',
+    });
+    animation.translateX(px).opacity(opacity).step()
+    //将param转换为key
+    var json = '{"' + param + '":""}'
+    json = JSON.parse(json);
+    json[param] = animation.export()
+    //设置动画
+    that.setData(json)
+  },
+
   // 全局设置
   globalData: {
     userInfo: null,
@@ -345,7 +395,7 @@ App({
     requests: [], // 待请求队列
     sessionId:'',
     openid: '',
-    wx_query_openid: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx0844817c7a6d15cc&secret=fe4b64e1f96f38463033927e038e97a1&js_code=',
+    wx_query_openid: 'https://api.weixin.qq.com/sns/jscode2session?js_code=',
     //siteBaseUrl: 'http://api.laravel.com/',
     siteBaseUrl: 'https://api.collocationlab.com/',
     sessionKey: '',

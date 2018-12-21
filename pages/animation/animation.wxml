@@ -1,0 +1,47 @@
+<view class='container'>
+  <view class='animation'>
+  <!-- <block wx:for="{{items}}"  wx:for-index="idx">
+   <view class='{{item.class}}' data-type='{{item.class}}' animation='{{item.class}}' bindtouchend="mytouchend">
+      <image src='{{item.url}}'></image>
+      <text>{{item.text}}</text>
+    </view>
+  
+  </block> -->
+
+   <view class='top' animation='{{topSlide}}' bindtouchend="toptouchend" style='{{top.style}}'>
+      <image src='{{top.url}}'></image>
+      <text>{{top.text}}</text>
+    </view>
+
+    <view wx:if="{{ center }}">
+     <view class='center' style='{{center.style}}' animation='{{centerSlide}}' bindtouchend="centertouchend" >
+      <image src='{{center.url}}'></image>
+      <text>{{center.text}}</text>
+     </view>
+    </view>
+   
+    <view  wx:if="{{ bottom }}">
+    <view class='bottom' style='{{bottom.style}}' >
+      <image src='{{bottom.url}}'></image>
+      <text>{{bottom.text}}</text>
+    </view>
+    </view>
+    
+
+
+    <!-- <view class='top' animation='{{slideUp}}' bindtouchstart="mytouchstart" bindtouchend="mytouchend">
+      <image src='http://cqingt.oss-cn-shenzhen.aliyuncs.com/image/20181107171542.png'></image>
+      <text>文字说明1</text>
+    </view>
+
+    <view class='center' animation='{{slideUp1}}'  bindtouchend="mytouchend1">
+      <image src='http://cqingt.oss-cn-shenzhen.aliyuncs.com/image/20181108094833.png'></image>
+      <text>文字说明2</text>
+    </view>
+
+    <view class='bottom' animation='{{slideUp2}}' bindtouchend="mytouchend2">
+      <image src='http://cqingt.oss-cn-shenzhen.aliyuncs.com/image/20181108094806.png'></image>
+      <text>文字说明3</text>
+    </view> -->
+  </view>
+</view>

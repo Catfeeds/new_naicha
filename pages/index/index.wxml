@@ -1,61 +1,35 @@
 <view class='faContain'>
-  <view class='faContain_top'>
-    <view>配方合伙人点赞排行榜</view>
-    <view>为你的专属配方点赞，成为CLAB配方合伙人，瓜分佣金</view>
-  </view>
-  <view class='faContain_bottom'>
-    <block wx:for="{{formulas}}">
-      <view class='faContain_bottom_list' bindtap='chooseItem' data-pk="{{item.pk}}">
-        <view class='faContain_bottom_list_list lineHeight'>
-          {{item.position}}
+  <view animation="{{rankPage}}" style='opacity:0;margin-top:80px;'>
+    <view class='faContain_top'>
+      <view>配方合伙人点赞排行榜</view>
+      <view>为你的专属配方点赞，成为CLAB配方合伙人，瓜分佣金</view>
+    </view>
+    <view class='faContain_bottom'>
+      <block wx:for="{{formulas}}">
+        <view class='faContain_bottom_list' bindtap='chooseItem' data-pk="{{item.pk}}">
+          <view class='faContain_bottom_list_list lineHeight'>
+            {{item.position}}
+          </view>
+          <view class='faContain_bottom_list_name'>
+            <image src='{{item.avatar}}' class='logo avatar'></image>
+            <text class='name_text'>{{item.name}}</text>
+          </view>
+          <view class='faContain_bottom_list_collocation'>
+            <view class='formula'>{{item.collocation}}</view>
+          </view>
+          <view class='faContain_bottom_list_num'>
+            <view>点赞数</view>
+            <view>{{item.num}}</view>
+          </view>
+          <view class='faContain_bottom_list_fa' catchtap='setLike' data-pk="{{item.pk}}">
+            <image src='/images/fabulous.png' class='logo'></image>
+          </view>
         </view>
-        <view class='faContain_bottom_list_name'>
-          <image src='{{item.avatar}}' class='logo avatar'></image>
-          <text class='name_text'>{{item.name}}</text>
-        </view>
-        <view class='faContain_bottom_list_collocation'>
-          <view class='formula'>{{item.collocation}}</view>
-        </view>
-        <view class='faContain_bottom_list_num'>
-          <view>点赞数</view>
-          <view>{{item.num}}</view>
-        </view>
-        <view class='faContain_bottom_list_fa' catchtap='setLike' data-pk="{{item.pk}}">
-          <image src='/images/fabulous.png' class='logo'></image>
-        </view>
-      </view>
-    </block>
+      </block>
 
-    <view class='mine' style='display:{{myRank}}'>
-      <view class='mine_contaner'>
-        <view class='mine_position'>{{mine.position}}</view>
-        <view class='mine_head'>
-          <image src='{{mine.avatar}}' class='mine_avatar'></image>
-          
-        </view>
-        <view class='mine_formula'>
-          <text class='mine_name'>{{mine.username}}</text>
-          <view class='mine_text'>{{mine.title}}</view>
-        </view>
-        <view class='mine_likes'>
-          <view>点赞数</view>
-          <view>{{mine.likes}}</view>
-        </view>
 
-        <!-- <view class='mine_like'>
-          <image src='/images/fabulous.png' class='logo'></image>
-        </view> -->
-      </view>
-
-      <view class='mine_line'>
-        <view class='mine_point' style='width:{{mine.percent}}%'></view>
-        <view class='mine_max'></view>
-        <view class='mine_point_num' style='right:{{100 - mine.percent}}%;display:{{mine.likes == mine.max ? "none" : "inline-block"}}'>{{mine.likes}}</view>
-        <view class='mine_max_num'>{{mine.max}}</view>
-      </view>
     </view>
   </view>
-
   <view id='popup' style='display:{{display}}'>
     <view class='popup_top'>
       <view class='popup_top_title'>
@@ -112,8 +86,8 @@
       </view>
     </view>
   </view>
-
-  <view class="wrap" >
+<!-- 
+  <view class="wrap" style='opacity:0' animation='{{wrapPage}}'>
     <swiper class="swipers" autoplay="{{autoplay}}" current="{{currentSwiper}}" bindchange="swiperChange">  
         <block wx:for="{{imgs}}">  
             <swiper-item >  
@@ -121,12 +95,59 @@
             </swiper-item>  
         </block>  
     </swiper>  
-   <!--重置小圆点的样式  -->
     <view class="dots">  
         <block wx:for="{{imgs}}">  
             <view class="dot{{index == currentSwiper ? ' active' : ''}}"></view>  
         </block>  
     </view>  
+  </view> -->
+      <view class='mine' style='opacity:0;display:{{myRank}};' animation='{{showRank}}'>
+        <view class='mine_contaner'>
+          <view class='mine_position'>{{mine.position}}</view>
+          <view class='mine_head'>
+            <image src='{{mine.avatar}}' class='mine_avatar'></image>
+            
+          </view>
+          <view class='mine_formula'>
+            <text class='mine_name'>{{mine.username}}</text>
+            <view class='mine_text'>{{mine.title}}</view>
+          </view>
+          <view class='mine_likes' style='display:table-cell;'>
+            <view>点赞数</view>
+            <view>{{mine.likes}}</view>
+          </view>
+          <view class='zan-image' style='display:table-cell;'>
+            <image src='/images/zan.png'></image>
+          </view>
+
+          <view class='share-image' style='display:table-cell;' bindtap='toShare'>
+            <image src='/images/share.png'></image>
+          </view>
+
+          <!-- <view class='mine_like'>
+            <image src='/images/fabulous.png' class='logo'></image>
+          </view> -->
+        </view>
+
+        <view class='mine_bottom'>
+          <view class='hide-image'>
+            <image src='/images/to-hide.png' bindtap='hideRank' style='width:54rpx;height:44rpx;'></image>
+          </view>
+          
+
+          <view class='mine_line'>
+            <view class='mine_point' style='width:{{mine.percent}}%'></view>
+            <view class='mine_max'></view>
+            <view class='mine_point_num' style='right:{{100 - mine.percent}}%;display:{{mine.likes == mine.max ? "none" : "inline-block"}}'>{{mine.likes}}</view>
+            <view class='mine_max_num'>{{mine.max}}</view>
+          </view>
+        </view>
+      </view>
+      
+  <view class='floating' style='opacity:1;display:{{floating}}' animation='{{hideRank}}'>
+    <view class='rank'>{{mine.position}}</view>
+    <view class='show-image' bindtap='showRank' ><image src='/images/to-show.png'></image></view>
   </view>
+
 </view>
 

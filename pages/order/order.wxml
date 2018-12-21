@@ -1,5 +1,5 @@
 
-<view hidden='{{hasOrder}}'>
+<view hidden='{{hasOrder}}' style='opacity:0;margin-top:110px;' animation='{{orderPage}}'>
 
   <view class='contain'>
     <view id='top'> </view>
@@ -97,7 +97,7 @@
   </view>
 </view>
 
-<swiper indicator-dots hidden='{{! hasOrder}}'>
+<swiper indicator-dots hidden='{{! hasOrder}}' style='opacity:0;margin-top:110px;' animation='{{orderPages}}'>
   <block wx:for="{{orders}}" wx:for-item="order">
     <swiper-item>
       <view class='contain'>
